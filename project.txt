@@ -1,0 +1,18 @@
+Il gruppo si pone come obiettivo quello di realizzare un file manager.
+Idea: applicazione per la gestione del file system.
+
+Il software esporrà le seguenti funzionalità:
+*Interfaccia grafica per lavorare sul file system.
+*Copia, creazione, rinominazione, spostamento e cacellazione di file.
+*Gestione dei permessi di accesso al file.
+*Compressione e decompressione di file.
+*Anteprima del file selezionato.
+
+
+Feature opzionali:
+*Utilizzare delle chiamate ad altri programmi per la creazione, la lettura, la modifica, la stampa o la riproduzione a seconda del tipo del file interessato in caso i file non siano in grado di farlo direttamente.
+*Cronologia delle directory visitate.
+*Bookmarks.
+*Visualizzatore 3D del file system.
+
+Suddivisione:
