@@ -7,13 +7,18 @@ Il software esporrà le seguenti funzionalità:
 *Gestione dei permessi di accesso al file.
 *Compressione e decompressione di file.
 *Anteprima del file selezionato.
-
+*Cronologia delle directory visitate.
+*Segnalibri.
 
 Feature opzionali:
 *Utilizzare delle chiamate ad altri programmi per la creazione, la lettura, la modifica, la stampa o la riproduzione a seconda del tipo del file interessato in caso i file non siano in grado di farlo direttamente.
-*Cronologia delle directory visitate.
-*Bookmarks.
 *Visualizzatore 3D del file system.
+*Possibilità di estendere il programma usando plugin creati da sviluppatori esterni.
+
+Challenge:
+*Ricerca e studio di una libreria per la compressione dei file.
+*Ricerca e studio di una libreria grafica per la visualizzazione 3D.
+*Studio della struttura dei file system dei vari sistemi operativi più utilizzati.
 
 Suddivisione:
 *Chiana Lorenzo: Controller
