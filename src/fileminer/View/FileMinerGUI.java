@@ -1,4 +1,4 @@
-package fileminer.View;
+package fileminer.view;
 
 import javax.swing.JFrame;
 
