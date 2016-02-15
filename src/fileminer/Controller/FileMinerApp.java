@@ -1,4 +1,4 @@
-package fileminer.controller;
+package fileminer.Controller;
 
 public class FileMinerApp {
 
