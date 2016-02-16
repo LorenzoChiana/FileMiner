@@ -6,10 +6,17 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 
+/**
+ * @author Michele Durante
+ *
+ */
 public class FileMinerGUI extends JFrame {
 
     private static final long serialVersionUID = -3479742762830497941L;
@@ -37,6 +44,7 @@ public class FileMinerGUI extends JFrame {
                 exitProcedure();
             }
         });
+        this.setIconImage(new ImageIcon(getClass().getResource("/images/Logo32.png")).getImage());
         this.getContentPane().setLayout(new BorderLayout());
     }
 
@@ -59,6 +67,5 @@ public class FileMinerGUI extends JFrame {
     private void exitProcedure() {
         this.dispose();
         System.exit(0);
-    }
-    
+    } 
 }
