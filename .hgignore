@@ -1,3 +1,6 @@
 syntax: glob
 *.class
-*/bin/*
+bin/*
+bin\*
+.settings/*
+.settings\*

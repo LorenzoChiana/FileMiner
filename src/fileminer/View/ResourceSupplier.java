@@ -54,7 +54,7 @@ public class ResourceSupplier implements IResourceSupplier {
         }
 
         try {
-            BufferedReader in = new BufferedReader(new FileReader(f.get()));
+            //BufferedReader in = new BufferedReader(new FileReader(f.get()));
 
         } catch (Exception e) {
             
