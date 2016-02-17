@@ -3,11 +3,25 @@ package fileminer.Model;
 import java.io.File;
 
 // Classe per la creazione di un nodo
-public class NodeImpl {
+/**
+ * @author Daniele
+ *
+ */
+public class NodeImpl implements Node {
     
-    File file;
+    private File file;
     
-    public NodeImpl(File file){
-        this.file=file;
+    /**
+     * @param file file del nodo
+     */
+    public NodeImpl(final File file) {
+        this.file = file;
+    }
+    
+    /**
+     * @return file
+     */
+    public File getFile() {
+        return this.file;
     }
 }
