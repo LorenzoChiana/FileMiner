@@ -1,9 +1,10 @@
-package fileminer.Model;
+package fileminer.Model.Commands;
 
 public class Command {
 	
-	String name;
+    String name;
 	String desc;
+	
 	
 	public Command(String name, String desc){
 		this.name=name;
