@@ -2,6 +2,8 @@ package fileminer.View;
 
 import java.awt.FlowLayout;
 import java.net.URL;
+import java.util.Optional;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
@@ -48,11 +50,11 @@ public class UpperToolbar extends JToolBar {
      */
     protected JButton createButton(final String imagePath, final String actionCmd, final String toolTipText, final String altText) {
         final JButton btn = new JButton();
-        final URL imageURL = this.getClass().getResource(imagePath);
+        final Optional<URL> imageURL = Optional.ofNullable(this.getClass().getResource(imagePath));
         btn.setActionCommand(actionCmd);
         btn.setToolTipText(toolTipText);
-        if (imageURL != null) {
-            btn.setIcon(new ImageIcon(imageURL, altText));
+        if (imageURL.isPresent()) {
+            btn.setIcon(new ImageIcon(imageURL.get(), altText));
         } else {
             btn.setText(altText);
             System.err.println("Resource not found: " + imagePath);

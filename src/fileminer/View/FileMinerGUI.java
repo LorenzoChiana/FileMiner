@@ -6,12 +6,10 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
 
 /**
  * @author Michele Durante
@@ -27,6 +25,7 @@ public class FileMinerGUI extends JFrame {
     public FileMinerGUI(/* istanza classe InfoSistema arg */) {
         super();
         // this.infoSys = arg;
+        
         initializeFrame();
         createComponents();
         this.setVisible(true);
@@ -34,17 +33,24 @@ public class FileMinerGUI extends JFrame {
 
     private void initializeFrame() {
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
         this.setTitle("FileMiner v1.0");
+
         this.setLocationByPlatform(true);
+
         this.setSize((int) (screenSize.getWidth() / SCREENRATIO), (int) (screenSize.getHeight() / SCREENRATIO));
+
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(final WindowEvent event) {
                 exitProcedure();
             }
         });
+
         this.setIconImage(new ImageIcon(getClass().getResource("/images/Logo32.png")).getImage());
+
         this.getContentPane().setLayout(new BorderLayout());
     }
 
