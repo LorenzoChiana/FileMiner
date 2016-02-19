@@ -24,11 +24,10 @@ public class FileMinerGUI extends JFrame {
 
     public FileMinerGUI(/* istanza classe InfoSistema arg */) {
         super();
-        // this.infoSys = arg;
-        
+
         initializeFrame();
+
         createComponents();
-        this.setVisible(true);
     }
 
     private void initializeFrame() {
@@ -68,6 +67,10 @@ public class FileMinerGUI extends JFrame {
             /* robe dal model */
         });
         this.add(treeView, BorderLayout.WEST);
+    }
+    
+    public void start() {
+        this.setVisible(true);
     }
 
     private void exitProcedure() {
