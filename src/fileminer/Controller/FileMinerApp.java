@@ -1,18 +1,21 @@
 package fileminer.Controller;
 
-import javax.swing.SwingUtilities;
-import fileminer.View.FileMinerGUI;
+/**
+ * 
+ * @author Lorenzo Chiana
+ *      class that contains the main
+ *
+ */
+public class FileMinerApp { 
+    /**
+     * 
+     * @param args
+     *      param in main
+     */
+    public static void main(final String[] args) {
 
-public class FileMinerApp {
-
-    public static void main(String[] args) {
-
-        /* new classe InfoSistema (?) */
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new FileMinerGUI(/* istanza InfoSistema */);
-            }
-        });
+        final Controller controller = new ControllerImpl();
+        
+        controller.inizializeGUI();
     }
 }
