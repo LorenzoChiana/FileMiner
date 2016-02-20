@@ -16,16 +16,19 @@ public class ControllerImpl implements Controller {
     @Override
     public void initializesGUI() {
         final FileBrowser root = new FileBrowserImpl();
+
+        //creo la gui e gli passo l'albero della root
+        final FileMinerGUI gui = new FileMinerGUI(root.setTree());
         
-        SwingUtilities.invokeLater(new Runnable() {
+        //faccio partire la gui
+        gui.start();
+
+        /*SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //creo la gui e gli passo l'albero della root
-                final FileMinerGUI gui = new FileMinerGUI(/* root.setTree() */);
-                //faccio partire la gui
-                gui.start();
+
             }
-        });
+        });*/
     }
 
 }
