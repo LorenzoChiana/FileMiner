@@ -73,24 +73,13 @@ public class FileBrowserImpl implements FileBrowser {
 			DefaultMutableTreeNode node = 
 					(DefaultMutableTreeNode) enumeration.nextElement();
 			File file = (File) node.getUserObject();
-			if (file.isDirectory() && !isEmpty(file.listFiles())) {
+			if (file.isDirectory()) {
 				for (File child : file.listFiles()) {
 					node.add(new DefaultMutableTreeNode(
 							child));
 				}
 			}
 		}
-	}
-
-	/**
-	 * Controlla se la lista files è vuota
-	 * @param files
-	 * @return 
-	 * 		false: File[] is empty
-	 * 		true: File[] is not empty
-	 */
-	private static boolean isEmpty(final File[] files) {
-		return files.length <= 0;
 	}
 
 	/**
