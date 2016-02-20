@@ -5,7 +5,7 @@ package fileminer.Controller;
  */
 public interface Controller {
     /**
-     * This method inizialize the GUI with the root directory.
+     * This method inizializes the GUI with the root directory.
      */
-    void inizializeGUI();
+    void initializesGUI();
 }

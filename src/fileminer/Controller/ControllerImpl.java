@@ -14,14 +14,16 @@ import fileminer.View.FileMinerGUI;
 public class ControllerImpl implements Controller {
 
     @Override
-    public void inizializeGUI() {
-        /* new classe InfoSistema (?) */
+    public void initializesGUI() {
         final FileBrowser root = new FileBrowserImpl();
-        root.setTree();
+        
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new FileMinerGUI(/* istanza InfoSistema */);
+                //creo la gui e gli passo l'albero della root
+                final FileMinerGUI gui = new FileMinerGUI(root.setTree());
+                //faccio partire la gui
+                gui.start();
             }
         });
     }

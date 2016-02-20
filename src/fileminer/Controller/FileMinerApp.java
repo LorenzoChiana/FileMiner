@@ -16,6 +16,6 @@ public class FileMinerApp {
 
         final Controller controller = new ControllerImpl();
         
-        controller.inizializeGUI();
+        controller.initializesGUI();
     }
 }

@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * @author Michele Durante
@@ -22,7 +23,7 @@ public class FileMinerGUI extends JFrame {
 
     // private final InfoSistema infoSys
 
-    public FileMinerGUI(/* istanza classe InfoSistema arg */) {
+    public FileMinerGUI(DefaultMutableTreeNode rootTree) {
         super();
 
         initializeFrame();
