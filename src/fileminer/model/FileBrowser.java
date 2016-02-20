@@ -21,13 +21,13 @@ public interface FileBrowser {
 	 * Aggiunge files alle sottocartelle all'albero.
 	 * @param rootNode root dell'albero
 	 */
-	void addGrandChilds(DefaultMutableTreeNode rootNode);
+	void addGrandChildren(DefaultMutableTreeNode rootNode);
 
 	/**
 	 * Aggiunge i file della root all'albero.
 	 * @param rootNode root dell'albero
 	 */
-	void addChilds(DefaultMutableTreeNode rootNode);
+	void addChildren(DefaultMutableTreeNode rootNode);
 
 
 }

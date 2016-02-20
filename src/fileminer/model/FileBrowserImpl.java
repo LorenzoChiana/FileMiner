@@ -44,8 +44,8 @@ public class FileBrowserImpl implements FileBrowser {
 			}
 		}
 
-		addChilds(rootNode);
-		addGrandChilds(rootNode);
+		addChildren(rootNode);
+		addGrandChildren(rootNode);
 
 		//Test di funzionamento
 		printTree(rootNode);
@@ -55,19 +55,19 @@ public class FileBrowserImpl implements FileBrowser {
 
 
 	@Override
-	public void addGrandChilds(final DefaultMutableTreeNode rootNode) {
+	public void addGrandChildren(final DefaultMutableTreeNode rootNode) {
 		Enumeration<?> enumeration = rootNode.children();
 
 		// Aggiungo figli dei figli ai vari nodi se presenti
 		while (enumeration.hasMoreElements()) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
-			addChilds(node);
+			addChildren(node);
 		}
 	}        
 
 
 	@Override
-	public void addChilds(final DefaultMutableTreeNode rootNode) throws NullPointerException {		
+	public void addChildren(final DefaultMutableTreeNode rootNode) throws NullPointerException {		
 		Enumeration<?> enumeration = rootNode.children();
 		while (enumeration.hasMoreElements()) {
 			DefaultMutableTreeNode node = 
