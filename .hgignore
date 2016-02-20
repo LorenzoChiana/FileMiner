@@ -5,7 +5,4 @@ bin/*
 bin\*
 .settings/*
 .settings\*
-<<<<<<< local
-=======
 .project
->>>>>>> other
