@@ -1,7 +1,6 @@
 package fileminer.model;
 
 import java.io.File;
-import java.nio.file.Path;
 
 // Interfaccia per le varie operazioni sui files
 /**
