@@ -91,7 +91,7 @@ public class FileBrowserImpl implements FileBrowser {
 
 
 	/**
-	 * Stampa l'albero del FileSystem
+	 * Stampa l'albero del FileSystem per i test.
 	 */
 	private static void printTree(final DefaultMutableTreeNode root) {
 		@SuppressWarnings("unchecked")
