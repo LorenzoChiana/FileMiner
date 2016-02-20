@@ -1,6 +1,5 @@
 syntax: glob
 *.class
+.project
 bin/*
 bin\*
-.settings/*
-.settings\*
