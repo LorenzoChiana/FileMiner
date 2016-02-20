@@ -8,4 +8,11 @@ public interface Controller {
      * This method inizializes the GUI with the root directory.
      */
     void initializesGUI();
+    
+    /**
+     * 
+     * @param command
+     *          String id of command invoke
+     */
+    void invokesCommand(String command);
 }
