@@ -12,6 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fileminer.controller.Controller;
+import fileminer.controller.ControllerImpl;
+
 /**
  * @author Michele Durante
  *
@@ -21,61 +24,59 @@ public class FileMinerGUI extends JFrame {
     private static final long serialVersionUID = -3479742762830497941L;
     private static final double SCREENRATIO = 1.5;
 
-    // private final InfoSistema infoSys
+    private Controller observer;
 
-    public FileMinerGUI(DefaultMutableTreeNode rootTree) {
+    public FileMinerGUI(final DefaultMutableTreeNode roots) {
         super();
-
         initializeFrame();
-
         createComponents();
     }
 
     private void initializeFrame() {
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        this.setTitle("FileMiner v1.0");
+        setTitle("FileMiner v1.0");
 
-        this.setLocationByPlatform(true);
+        setLocationByPlatform(true);
 
-        this.setSize((int) (screenSize.getWidth() / SCREENRATIO), (int) (screenSize.getHeight() / SCREENRATIO));
+        setSize((int) (screenSize.getWidth() / SCREENRATIO), (int) (screenSize.getHeight() / SCREENRATIO));
 
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        this.addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(final WindowEvent event) {
                 exitProcedure();
             }
         });
 
-        this.setIconImage(new ImageIcon(getClass().getResource("/images/Logo32.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/images/Logo32.png")).getImage());
 
-        this.getContentPane().setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
     }
 
     private void createComponents() {
-        final UpperToolbar toolbar = new UpperToolbar(/* infoSys.listaComandi */);
-        toolbar.addMouseListener(new MouseAdapter() {
-            /* robe dal model */
-        });
+        final UpperToolbar toolbar = new UpperToolbar();
+        add(toolbar, BorderLayout.NORTH);
 
-        this.add(toolbar, BorderLayout.NORTH);
-
-        final JScrollPane treeView = new JScrollPane(new TreeExplorerPanel(/* infoSys.getRoots */));
-        treeView.setPreferredSize(new Dimension(this.getWidth() / 4, this.getHeight()));
-        treeView.addMouseListener(new MouseAdapter() {
-            /* robe dal model */
-        });
-        this.add(treeView, BorderLayout.WEST);
+        final JScrollPane treeView = new JScrollPane(new TreeExplorerPanel());
+        treeView.setPreferredSize(new Dimension(getWidth() / 4, getHeight()));
+        add(treeView, BorderLayout.WEST);
     }
     
+    /**
+     * Display the frame.
+     */
     public void start() {
-        this.setVisible(true);
+        setVisible(true);
+    }
+
+    private void setObserver() {
+        
     }
 
     private void exitProcedure() {
-        this.dispose();
+        dispose();
         System.exit(0);
     } 
 }

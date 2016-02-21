@@ -8,15 +8,25 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
 
+/**
+ * @author Michele
+ *
+ */
 public class ResourceSupplier implements IResourceSupplier {
 
     private static ResourceSupplier SINGLETON = null;
     private final Map<String, URL> map;
 
+	/**
+	 * 
+	 */
 	public ResourceSupplier() {
 	    map = new HashMap<String, URL>();
 	}
 
+	/**
+	 * @return only
+	 */
 	public synchronized static ResourceSupplier getInstance() {
 	    if (SINGLETON == null) {
 	        SINGLETON = new ResourceSupplier();
