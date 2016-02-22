@@ -13,9 +13,6 @@ public class FileMinerApp {
      *      param in main
      */
     public static void main(final String[] args) {
-
-        final Controller controller = new ControllerImpl();
-        
-        controller.initializesGUI();
+        new ControllerImpl();
     }
 }

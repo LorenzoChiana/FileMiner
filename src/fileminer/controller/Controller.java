@@ -1,18 +1,21 @@
 package fileminer.controller;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 /**
  * This is an interface represents the contract for all action used by GUI.
  */
 public interface Controller {
     /**
-     * This method inizializes the GUI with the root directory.
+     * 
+     * @return the file system tree
      */
-    void initializesGUI();
+    DefaultMutableTreeNode getFileSystemTree();
     
     /**
      * 
      * @param command
-     *          String id of command invoke
+     *          String id of command to invoke
      */
     void invokesCommand(String command);
 }

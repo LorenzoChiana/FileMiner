@@ -3,6 +3,7 @@ package fileminer.controller;
 import java.io.File;
 
 import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import fileminer.model.FileSystemTree;
 import fileminer.model.FileSystemTreeImpl;
@@ -16,22 +17,20 @@ import fileminer.view.FileMinerGUI;
  *
  */
 public class ControllerImpl implements Controller {
-
-    @Override
-    public void initializesGUI() {
-        final FileSystemTree root = new FileSystemTreeImpl();
-
-        //creo la gui e gli passo l'albero della root
-        final FileMinerGUI gui = new FileMinerGUI(/* root.getTree() */);
-        
-        //faccio partire la gui
-        gui.start();
+    private final FileMinerGUI view;
+    
+    /**
+     * ControllerImpl constructor:
+     *          I create the view and the model.
+     */
+    public ControllerImpl() {
+        this.view = new FileMinerGUI();
     }
 
     @Override
     public void invokesCommand(final String command) {
         
-        final FileOperations model = new FileOperationsImpl();
+        final FileOperations operation = new FileOperationsImpl();
         
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -42,17 +41,17 @@ public class ControllerImpl implements Controller {
                  */
                 
                 if (Commands.COPY.toString().equals(command)) {
-                    model.copy(model.getFileSrc()); /*cambiare new file con effettivo file*/
+                    operation.copy(new File("")); /*cambiare new file con effettivo file*/
                 } else if (Commands.PASTE.toString().equals(command)) {
-                    model.pasteTo("");
+                    operation.pasteTo("");
                 } else if (Commands.CUT.toString().equals(command)) {
-                    model.cut();
+                    operation.cut();
                 } else if (Commands.MOVE.toString().equals(command)) {
-                    model.moveTo("");
+                    operation.moveTo("");
                 } else if (Commands.LINK.toString().equals(command)) {
                     /*link*/
                 } else if (Commands.DELETE.toString().equals(command)) {
-                    model.remove();
+                    operation.remove();
                 } else if (Commands.NEW.toString().equals(command)) {
                     /*new*/
                 } else if (Commands.MODIFY.toString().equals(command)) {
@@ -60,6 +59,11 @@ public class ControllerImpl implements Controller {
                 }
             }
         });
+    }
+
+    @Override
+    public DefaultMutableTreeNode getFileSystemTree() {
+        return new FileSystemTreeImpl().getTree();
     }
 
 }
