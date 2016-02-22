@@ -7,16 +7,16 @@ package fileminer.controller;
  *
  */
 public class FileMinerApp { 
-    /**
-     * 
-     * @param args
-     *      param in main
-     */
-    public static void main(final String[] args) {
-        /*new ControllerImpl();*/
-        Controller controller = new ControllerImpl();
-        controller.invokesCommand("COPY", "/home/lorenzo/Immagini/aa.jpg", null);
-        controller.invokesCommand("PASTE", null, "/home/lorenzo/Video/");
-        controller.invokesCommand("MOVE", "/home/lorenzo/Immagini/aa.jpg", "/home/lorenzo/Video/");
-    }
+	/**
+	 * 
+	 * @param args
+	 *      param in main
+	 */
+	public static void main(final String[] args) {
+		/*new ControllerImpl();*/
+		Controller controller = new ControllerImpl();
+		controller.invokesCommand("COPY", "C:\\Users\\Daniele\\Desktop\\prova.txt", null,false);
+		controller.invokesCommand("PASTE", null, "C:\\Users\\Daniele\\Desktop\\TORRENT",false);
+		//controller.invokesCommand("MOVE", "/home/lorenzo/Immagini/aa.jpg", "/home/lorenzo/Video/");
+	}
 }

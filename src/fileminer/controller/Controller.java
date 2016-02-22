@@ -21,6 +21,6 @@ public interface Controller {
      * @param destPath
      *          Destination path (only for operations like copy, cut, moveto...)
      */
-    void invokesCommand(String command, String srcPath, String destPath);
+    void invokesCommand(String command, String srcPath, String destPath, boolean createDestDir);
 
 }
