@@ -13,5 +13,6 @@ public enum Commands {
     LINK,
     DELETE,
     NEW,
+    OPEN,
     MODIFY;
 }

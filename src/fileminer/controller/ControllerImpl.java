@@ -1,6 +1,7 @@
 package fileminer.controller;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,7 +19,7 @@ import fileminer.view.FileMinerGUI;
  */
 public class ControllerImpl implements Controller {
     private final FileMinerGUI view;
-    
+
     /**
      * ControllerImpl constructor:
      *          I create the view and the model.
@@ -28,10 +29,10 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void invokesCommand(final String command) {
-        
+    public void invokesCommand(final String command, final String srcPath, final String destPath) {
+
         final FileOperations operation = new FileOperationsImpl();
-        
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -39,23 +40,41 @@ public class ControllerImpl implements Controller {
                  * uso la programmazione concorrente per avviare le operazioni di
                  * copia, incolla, taglia, sposta, cancella, link, crea... ecc ecc
                  */
-                
+
                 if (Commands.COPY.toString().equals(command)) {
-                    operation.copy(new File("")); /*cambiare new file con effettivo file*/
+                    operation.copy(srcPath);
                 } else if (Commands.PASTE.toString().equals(command)) {
-                    operation.pasteTo("");
+                    try {
+                        operation.pasteTo(destPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else if (Commands.CUT.toString().equals(command)) {
-                    operation.cut();
+
                 } else if (Commands.MOVE.toString().equals(command)) {
-                    operation.moveTo("");
+                    try {
+                        operation.moveTo(srcPath, destPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else if (Commands.LINK.toString().equals(command)) {
                     /*link*/
                 } else if (Commands.DELETE.toString().equals(command)) {
-                    operation.remove();
+                    try {
+                        operation.remove(srcPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else if (Commands.NEW.toString().equals(command)) {
                     /*new*/
                 } else if (Commands.MODIFY.toString().equals(command)) {
                     /*modify*/
+                } else if (Commands.OPEN.toString().equals(command)) {
+                    try {
+                        operation.open(srcPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
