@@ -1,56 +1,63 @@
 package fileminer.model;
 
 import java.io.File;
+import java.io.IOException;
 
 // Interfaccia per le varie operazioni sui files
 /**
- * @author Daniele
  *
  */
 public interface FileOperations {
 
+	
 	/**
-	 * @param src Percorso file sorgente
+	 * Copy the source path to the local Clipboard.
+	 * @param srcPath
 	 */
-	void copy(File src);
+	void copy(String srcPath);
 	
 
-	/**
-	 * @param path Percorso dove incollare
-	 */
-	void pasteTo(String path);
 	
 	/**
-	 * 
+	 * Paste the file in the directory path. 
+	 * @param destPath Directory destination path
+	 * @throws IOException
 	 */
-	void cut();
+	void pasteTo(String destPath) throws IOException;
+	
+	
 	
 	/**
-	 * @param path Percorso dove spostare
+	 * Move a file in the directory path.
+	 * @param srcPath File or directory source path
+	 * @param destPath Directory destination path
+	 * @throws IOException
 	 */
-	void moveTo(String path);
+	void moveTo(String srcPath, String destPath) throws IOException;
+	
 	
 	/**
-	 * 
+	 * Open a file.
+	 * @param srcPath File or directory source path
+	 * @throws IOException
 	 */
-	void open();
+	void open(String srcPath) throws IOException;;
+	
 	
 	/**
-	 * 
+	 * Remove a file or an entirely directory.
+	 * @param srcPath File or directory source path
+	 * @throws IOException
 	 */
-	void remove();
+	void remove(String srcPath) throws IOException;
+	
 	
 	/**
-	 * 
+	 * Print a file if printable.
+	 * @param srcPath File or directory source path
+	 * @throws IOException
 	 */
-	void print();
+	void print(String srcPath) throws IOException;;
 	
-	/**
-	 * @return file
-	 */
-	File getFileSrc();
-	
-	
-	
-	
+		
 }
