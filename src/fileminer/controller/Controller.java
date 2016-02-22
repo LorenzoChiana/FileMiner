@@ -18,4 +18,5 @@ public interface Controller {
      *          String id of command to invoke
      */
     void invokesCommand(String command);
+
 }
