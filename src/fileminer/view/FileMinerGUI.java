@@ -26,7 +26,7 @@ public class FileMinerGUI extends JFrame {
 
     private Controller observer;
 
-    public FileMinerGUI(final DefaultMutableTreeNode roots) {
+    public FileMinerGUI() {
         super();
         initializeFrame();
         createComponents();

@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-public class FolderContentPanel extends JPanel implements ActionListener {
+public class NodeContentPanel extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = 8921940660597369151L;
 
-    public FolderContentPanel() {
+    public NodeContentPanel() {
         super();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         

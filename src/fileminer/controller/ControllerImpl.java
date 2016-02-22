@@ -22,7 +22,7 @@ public class ControllerImpl implements Controller {
         final FileBrowser root = new FileBrowserImpl();
 
         //creo la gui e gli passo l'albero della root
-        final FileMinerGUI gui = new FileMinerGUI(root.getTree());
+        final FileMinerGUI gui = new FileMinerGUI(/* root.getTree() */);
         
         //faccio partire la gui
         gui.start();

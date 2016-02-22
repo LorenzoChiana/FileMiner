@@ -1,6 +1,7 @@
 package fileminer.view;
 
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.net.URL;
 import java.util.Optional;
 
@@ -54,6 +55,8 @@ public class UpperToolbar extends JToolBar {
         btn.setActionCommand(actionCmd);
         btn.setToolTipText(toolTipText);
         if (imageURL.isPresent()) {
+            //final ImageIcon img = new ImageIcon(imageURL.get());
+            //btn.setIcon(new ImageIcon(img.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH), altText));
             btn.setIcon(new ImageIcon(imageURL.get(), altText));
         } else {
             btn.setText(altText);
