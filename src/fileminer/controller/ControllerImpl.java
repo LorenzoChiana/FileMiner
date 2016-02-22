@@ -4,8 +4,8 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import fileminer.model.FileBrowser;
-import fileminer.model.FileBrowserImpl;
+import fileminer.model.FileSystemTree;
+import fileminer.model.FileSystemTreeImpl;
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
 import fileminer.view.FileMinerGUI;
@@ -19,7 +19,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void initializesGUI() {
-        final FileBrowser root = new FileBrowserImpl();
+        final FileSystemTree root = new FileSystemTreeImpl();
 
         //creo la gui e gli passo l'albero della root
         final FileMinerGUI gui = new FileMinerGUI(/* root.getTree() */);

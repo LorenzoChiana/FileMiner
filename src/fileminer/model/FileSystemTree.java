@@ -7,7 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Daniele
  *
  */
-public interface FileBrowser {
+public interface FileSystemTree {
 
 
 	/**

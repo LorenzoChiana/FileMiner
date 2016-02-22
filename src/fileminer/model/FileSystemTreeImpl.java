@@ -12,14 +12,14 @@ import javax.swing.tree.TreeNode;
 /**
  * Classe per la creazione del Tree del FileSystem.
  */
-public class FileBrowserImpl implements FileBrowser {
+public class FileSystemTreeImpl implements FileSystemTree {
 
 	private FileSystemView fsv;
 
 	/**
 	 * Costruttore di FileBrowserImpl inizializza la FileSystemView.
 	 */
-	public FileBrowserImpl() {
+	public FileSystemTreeImpl() {
 		this.fsv = FileSystemView.getFileSystemView();
 	}
 

@@ -4,8 +4,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import fileminer.model.FileBrowser;
-import fileminer.model.FileBrowserImpl;
+import fileminer.model.FileSystemTree;
+import fileminer.model.FileSystemTreeImpl;
 
 /**
  * 
@@ -16,7 +16,7 @@ public class TreeExplorerPanel extends JTree {
 
     private static final long serialVersionUID = -4298146968287193413L;
 
-    private FileBrowser roots;
+    private FileSystemTree roots;
 
     public TreeExplorerPanel() {
         super();
