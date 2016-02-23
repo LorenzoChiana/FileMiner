@@ -2,8 +2,7 @@ package fileminer.controller;
 
 import java.io.IOException;
 
-import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
@@ -17,12 +16,14 @@ import fileminer.view.FileMinerGUI;
  */
 public class ControllerImpl implements Controller {
     private final FileMinerGUI view;
+    private final FileSystemTreeImpl fst;
 
     /**
      * ControllerImpl constructor:
      *          I create the view and the model.
      */
     public ControllerImpl() {
+        this.fst = new FileSystemTreeImpl();
         this.view = new FileMinerGUI(this);
     }
 
@@ -117,8 +118,8 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public DefaultMutableTreeNode getFileSystemTree() {
-        return new FileSystemTreeImpl().getTree();
+    public DefaultTreeModel getFileSystemTree() {
+        return this.fst.getTree();
     }
 
 }

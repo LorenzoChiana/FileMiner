@@ -6,6 +6,7 @@ import java.util.Enumeration;
 
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 
@@ -14,59 +15,63 @@ import javax.swing.tree.TreeNode;
  */
 public class FileSystemTreeImpl implements FileSystemTree {
 
-	private FileSystemView fsv;
-	private DefaultMutableTreeNode tree;
+	private final FileSystemView fsv;
+	private DefaultTreeModel tree;
+	private boolean treeReady;
 
 	/**
 	 * Costruttore di FileBrowserImpl inizializza la FileSystemView.
 	 */
 	public FileSystemTreeImpl() {
 		this.fsv = FileSystemView.getFileSystemView();
+		this.treeReady = false;
 	}
 
 
 	@Override
-	public DefaultMutableTreeNode getTree() {
+	public DefaultTreeModel getTree() {
 
-		// Creo il nodo root
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+	    if (treeReady) {
+	        return tree;
+	    } else {
+	        // Creo il nodo root
+	        final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
 
-		// Ottengo le roots
-		File[] roots = fsv.getRoots();
+	        // Ottengo le roots
+	        final File[] roots = fsv.getRoots();
 
-		for (File fsRoot : roots) {
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode(fsRoot);
-			rootNode.add(node);
-			File[] files = fsv.getFiles(fsRoot, true);
-			for (File file : files) {
-				if (file.isDirectory()) {
+	        for (final File fsRoot : roots) {
+	            final DefaultMutableTreeNode node = new DefaultMutableTreeNode(fsRoot);
+	            rootNode.add(node);
+	            final File[] files = fsv.getFiles(fsRoot, true);
+	            for (final File file : files) {
+	                if (file.isDirectory()) {
 					node.add(new DefaultMutableTreeNode(file));
-				}
-			}
-		}
+	                }
+	            }
+	        }
 
-		try {
-			addChildren(rootNode);
-			addGrandChildren(rootNode);
-		} catch (NullPointerException e) {
-		}
+	        addChildren(rootNode);
+	        addGrandChildren(rootNode);
 
-		//Test di funzionamento
-		printTree(rootNode);
+	        //Test di funzionamento
+	        printTree(rootNode);
 		
-		this.tree = new DefaultMutableTreeNode(rootNode); 
+	        this.tree = new DefaultTreeModel(rootNode); 
+	        treeReady = true;
 
-		return tree;
+	        return tree;
+	    }
 	}
 
 
 	@Override
 	public void addGrandChildren(final DefaultMutableTreeNode rootNode) {
-		Enumeration<?> enumeration = rootNode.children();
+		final Enumeration<?> enumeration = rootNode.children();
 
 		// Aggiungo figli dei figli ai vari nodi se presenti
 		while (enumeration.hasMoreElements()) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
 			addChildren(node);
 		}
 	}        
@@ -74,13 +79,13 @@ public class FileSystemTreeImpl implements FileSystemTree {
 
 	@Override
 	public void addChildren(final DefaultMutableTreeNode rootNode) {		
-		Enumeration<?> enumeration = rootNode.children();
+		final Enumeration<?> enumeration = rootNode.children();
 		while (enumeration.hasMoreElements()) {
-			DefaultMutableTreeNode node = 
+			final DefaultMutableTreeNode node = 
 					(DefaultMutableTreeNode) enumeration.nextElement();
-			File file = (File) node.getUserObject();
+			final File file = (File) node.getUserObject();
 			if (file.isDirectory()) {
-				for (File child : file.listFiles()) {
+				for (final File child : file.listFiles()) {
 					node.add(new DefaultMutableTreeNode(
 							child));
 				}
@@ -99,7 +104,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 	/**
 	 * @return DefaultMutableTreeNode
 	 */
-	public DefaultMutableTreeNode getTreeNode() {
+	public DefaultTreeModel getTreeNode() {
 		return this.tree;
 	}
 
@@ -111,8 +116,8 @@ public class FileSystemTreeImpl implements FileSystemTree {
 		@SuppressWarnings("unchecked")
 		Enumeration<DefaultMutableTreeNode> en = root.preorderEnumeration();
 		while (en.hasMoreElements()) {
-			DefaultMutableTreeNode node = en.nextElement();
-			TreeNode[] path = node.getPath();
+			final DefaultMutableTreeNode node = en.nextElement();
+			final TreeNode[] path = node.getPath();
 			System.out.println((node.isLeaf() ? "  - " : "+ ") + path[path.length - 1]);
 		}
 	}

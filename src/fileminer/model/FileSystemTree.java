@@ -1,6 +1,7 @@
 package fileminer.model;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  * Classe per la creazione dell'albero del FileSystem.
@@ -14,7 +15,7 @@ public interface FileSystemTree {
 	 * Metodo per inserire file e cartelle del FileSystem nell'albero.
 	 * @return DefaultMutableTreeNode
 	 */
-	DefaultMutableTreeNode getTree();
+	DefaultTreeModel getTree();
 
 
 	/**

@@ -1,16 +1,11 @@
 package fileminer.view;
 
-import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.lang.reflect.InvocationTargetException;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -24,9 +19,11 @@ import javax.swing.border.LineBorder;
  * 
  *
  */
-public class SplashScreen extends JWindow implements MouseMotionListener {
+public class SplashScreen extends JWindow {
 
     private static final long serialVersionUID = -227987097234319421L;
+    private static final int SIZE_X  = 350;
+    private static final int SIZE_Y  = 280;
     
     /**
      * Constructor of FileMiner SplashScreen.
@@ -35,25 +32,35 @@ public class SplashScreen extends JWindow implements MouseMotionListener {
      */
     public SplashScreen(final String fileName) {
         super();
-        setAlwaysOnTop(true);
-        addMouseMotionListener(this);
+
+        if (Toolkit.getDefaultToolkit().isAlwaysOnTopSupported()) {
+            setAlwaysOnTop(true);
+        }
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(final MouseEvent e) {
+                setLocation((int) getLocation().getX() + e.getX(), (int) getLocation().getY() + e.getY());
+            }
+        });
+
         final JPanel top = new JPanel();
         top.setLayout(new BorderLayout());
-        top.setBorder(new LineBorder(Color.black));
+        top.setBorder(new LineBorder(Color.darkGray));
         setContentPane(top);
 
         final JLabel l = new JLabel(new ImageIcon(getClass().getResource(fileName)));
         final JProgressBar p = new JProgressBar();
         p.setValue(0);
         p.setIndeterminate(true);
-        
+
         getContentPane().add(l, BorderLayout.CENTER);
         getContentPane().add(p, BorderLayout.SOUTH);
-        pack();
 
+        final Dimension windowSize = new Dimension(SIZE_X, SIZE_Y);
+        setSize(windowSize);
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        final Dimension labelSize = top.getPreferredSize();
-        setLocation(screenSize.width/2 - (labelSize.width/2), screenSize.height/2 - (labelSize.height/2));
+        setLocation(screenSize.width/2 - (windowSize.width/2), screenSize.height/2 - (windowSize.height/2));
     }
 
     /**
@@ -61,6 +68,7 @@ public class SplashScreen extends JWindow implements MouseMotionListener {
      */
     public void openSplash() {
         setVisible(true);
+
     }
 
     /**
@@ -69,23 +77,5 @@ public class SplashScreen extends JWindow implements MouseMotionListener {
     public void closeSplash() {
         setVisible(false);
         dispose();
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        /*
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                setLocation(e.getX(), e.getY());
-            }
-            
-        });
-        */
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        
     }
 }

@@ -1,6 +1,7 @@
 package fileminer.controller;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  * This is an interface represents the contract for all action used by GUI.
@@ -10,7 +11,7 @@ public interface Controller {
      * 
      * @return the file system tree
      */
-    DefaultMutableTreeNode getFileSystemTree();
+    DefaultTreeModel getFileSystemTree();
     
     /**
      * 
