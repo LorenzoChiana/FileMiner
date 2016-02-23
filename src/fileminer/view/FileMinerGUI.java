@@ -11,11 +11,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -39,7 +41,12 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
 
     private JScrollPane treeView;
 
+    private JSplitPane splitPane;
+
     private NodeContentPanel ncp;
+
+    private InformationPanel infoPanel;
+
     /**
      * Constructor of FileMinerGUI.
      * @param ctrl 
@@ -50,16 +57,6 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
 
         splashScreen = new SplashScreen("/images/Logo256.png");
         splashScreen.setVisible(true);
-
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(final KeyEvent e) {
-                System.out.println(e.getKeyCode());
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    exitProcedure();
-                }
-            }
-        });
         
         initializeFrame();
         createComponents();
@@ -76,7 +73,13 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(final WindowEvent event) {
-                exitProcedure();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        exitProcedure();
+                    }
+                    
+                });
             }
         });
 
@@ -98,6 +101,10 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
         tool.add(toolbar, BorderLayout.SOUTH);
         getContentPane().add(tool, BorderLayout.NORTH);
 
+        // START SPLIT PANEL
+        splitPane = new JSplitPane();
+        removeSplitKeyBindings();
+
         // TREE EXPLORER PANE
         final SwingWorker<Void, Void> treeLoader = new SwingWorker<Void, Void>() {
             @Override
@@ -105,24 +112,40 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
                 final DefaultTreeModel root = controller.getFileSystemTree();
                 treeView = new JScrollPane(new TreeExplorerPanel(root));
                 treeView.setPreferredSize(new Dimension(getWidth() / 4, getHeight()));
-                getContentPane().add(treeView, BorderLayout.WEST);
+                splitPane.add(treeView, JSplitPane.LEFT);
                 return null;
             }
         };
         treeLoader.addPropertyChangeListener(this);
         treeLoader.execute();
         
+        // NODE CONTENT PANEL
+        ncp = new NodeContentPanel();
+        splitPane.add(ncp, JSplitPane.RIGHT);
+        getContentPane().add(splitPane, BorderLayout.CENTER);
+        // END SPLIT PANEL
+
+        // INFORMATION PANEL
+        infoPanel = new InformationPanel();
+        getContentPane().add(infoPanel, BorderLayout.SOUTH);
     }
 
+    private void removeSplitKeyBindings(){
+        final ActionMap newSplitActionMap = new ActionMap();
+        splitPane.setActionMap(newSplitActionMap);
+      }
+
     private void exitProcedure() {
+        setVisible(false);
         dispose();
-        System.exit(0);
+        controller.quit();
     }
 
     @Override
     public void propertyChange(final PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName()) && SwingWorker.StateValue.DONE == evt.getNewValue()) {
             splashScreen.closeSplash();
+            ncp.repaint();
             repaint();
             setVisible(true);
         }

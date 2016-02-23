@@ -122,4 +122,9 @@ public class ControllerImpl implements Controller {
         return this.fst.getTree();
     }
 
+    @Override
+    public void quit() {
+        System.exit(0);
+    }
+
 }

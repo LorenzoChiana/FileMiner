@@ -1,6 +1,5 @@
 package fileminer.controller;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
@@ -24,4 +23,8 @@ public interface Controller {
      */
     void invokesCommand(Commands command, String srcPath, String destPath);
 
+    /**
+     * Exit from application.
+     */
+    void quit();
 }
