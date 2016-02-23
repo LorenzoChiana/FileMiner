@@ -23,7 +23,7 @@ public class ControllerImpl implements Controller {
      *          I create the view and the model.
      */
     public ControllerImpl() {
-        this.view = new FileMinerGUI();
+        this.view = new FileMinerGUI(this);
     }
 
     @Override
