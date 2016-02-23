@@ -15,12 +15,12 @@ public interface Controller {
     /**
      * 
      * @param command
-     *          String id of command to invoke
+     *          id of command to invoke
      * @param srcPath
      *          File source path 
      * @param destPath
      *          Destination path (only for operations like copy, cut, moveto...)
      */
-    void invokesCommand(String command, String srcPath, String destPath, boolean createDestDir);
+    void invokesCommand(Commands command, String srcPath, String destPath);
 
 }
