@@ -13,34 +13,6 @@ public class FileMinerApp {
      *      param in main
      */
     public static void main(final String[] args) {
-        new ControllerImpl();
-//        Chronology cr = new ChronologyImpl();
-//        cr.addDirectory("1");
-//        cr.addDirectory("2");
-//        cr.addDirectory("3");
-//        cr.addDirectory("5");
-//        cr.addDirectory("6");
-//        cr.addDirectory("7");
-//        System.out.println(cr.getCurrentDirectory());
-//        System.out.println(cr.getChronology());
-//        cr.prevDir(); //6
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.prevDir(); //5
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.prevDir(); //3
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.prevDir(); //2
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.prevDir(); //1
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.prevDir(); //0
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.prevDir(); //-1 -> 0
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.nextDir(); //1
-//        System.out.println(cr.getCurrentDirectory());
-//        cr.addDirectory("4");
-//        System.out.println(cr.getChronology());
-//        
+        new ControllerImpl();        
     }
 }
