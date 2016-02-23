@@ -15,6 +15,7 @@ import javax.swing.tree.TreeNode;
 public class FileSystemTreeImpl implements FileSystemTree {
 
 	private FileSystemView fsv;
+	private DefaultMutableTreeNode tree;
 
 	/**
 	 * Costruttore di FileBrowserImpl inizializza la FileSystemView.
@@ -52,8 +53,10 @@ public class FileSystemTreeImpl implements FileSystemTree {
 
 		//Test di funzionamento
 		printTree(rootNode);
+		
+		this.tree = new DefaultMutableTreeNode(rootNode); 
 
-		return new DefaultMutableTreeNode(rootNode); 
+		return tree;
 	}
 
 
@@ -90,6 +93,14 @@ public class FileSystemTreeImpl implements FileSystemTree {
 	 */
 	public FileSystemView getView() {
 		return fsv;
+	}
+	
+	
+	/**
+	 * @return DefaultMutableTreeNode
+	 */
+	public DefaultMutableTreeNode getTreeNode() {
+		return this.tree;
 	}
 
 
