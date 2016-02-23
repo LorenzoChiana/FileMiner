@@ -10,12 +10,19 @@ import java.util.List;
  */
 public class ChronologyImpl implements Chronology {
     private List<String> chronology = new ArrayList<>();
-    private Integer indexCurrentDir;
+    private Integer indexCurrentDir = this.chronology.size() - 1;
     
     @Override
     public void addDirectory(final String path) {
-        this.chronology.add(path);
-        this.indexCurrentDir = this.chronology.size();
+        if (this.indexCurrentDir == this.chronology.size() - 1) {
+            this.chronology.add(path);            
+        } else {
+            this.chronology.set(this.indexCurrentDir + 1, path);
+            for (int i = this.indexCurrentDir + 2; i < this.chronology.size(); i++) {
+                this.chronology.remove(i);
+            }
+        }
+        this.indexCurrentDir = this.chronology.size() - 1;
     }
 
     @Override
@@ -32,7 +39,7 @@ public class ChronologyImpl implements Chronology {
 
     @Override
     public void prevDir() {
-        if (this.indexCurrentDir == 0) {
+        if (this.indexCurrentDir > 0) {
             this.indexCurrentDir--;
         }
     }

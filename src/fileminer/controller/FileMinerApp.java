@@ -14,9 +14,33 @@ public class FileMinerApp {
      */
     public static void main(final String[] args) {
         new ControllerImpl();
-//        Controller controller = new ControllerImpl();
-//        controller.invokesCommand(Commands.COPY, "//home//lorenzo//Immagini//aa.jpg", null);
-//        controller.invokesCommand(Commands.PASTE, null, "//home//lorenzo//Video//");
-        //controller.invokesCommand("MOVE", "//home//lorenzo//Immagini//aa.jpg", "//home//lorenzo//Video//", false);*/
+//        Chronology cr = new ChronologyImpl();
+//        cr.addDirectory("1");
+//        cr.addDirectory("2");
+//        cr.addDirectory("3");
+//        cr.addDirectory("5");
+//        cr.addDirectory("6");
+//        cr.addDirectory("7");
+//        System.out.println(cr.getCurrentDirectory());
+//        System.out.println(cr.getChronology());
+//        cr.prevDir(); //6
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.prevDir(); //5
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.prevDir(); //3
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.prevDir(); //2
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.prevDir(); //1
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.prevDir(); //0
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.prevDir(); //-1 -> 0
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.nextDir(); //1
+//        System.out.println(cr.getCurrentDirectory());
+//        cr.addDirectory("4");
+//        System.out.println(cr.getChronology());
+//        
     }
 }
