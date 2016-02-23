@@ -93,7 +93,7 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
         final SwingWorker<Void, Void> treeLoader = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                final DefaultTreeModel root = /*controller.getFileSystemTree();*/ null;
+                final DefaultTreeModel root = controller.getFileSystemTree();
                 treeView = new JScrollPane(new TreeExplorerPanel(root));
                 treeView.setPreferredSize(new Dimension(getWidth() / 4, getHeight()));
                 splitPane.add(treeView, JSplitPane.LEFT);

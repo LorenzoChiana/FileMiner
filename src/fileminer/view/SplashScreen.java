@@ -2,13 +2,16 @@ package fileminer.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,7 +30,7 @@ public class SplashScreen extends JWindow {
 
     private static final long serialVersionUID = -227987097234319421L;
     private static final int SIZE_X  = 350;
-    private static final int SIZE_Y  = 280;
+    private static final int SIZE_Y  = 300;
     
     /**
      * Constructor of FileMiner SplashScreen.
@@ -49,17 +52,25 @@ public class SplashScreen extends JWindow {
         });
 
         final JPanel top = new JPanel();
-        top.setLayout(new BorderLayout());
+        top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
         top.setBorder(new LineBorder(Color.darkGray));
         setContentPane(top);
 
         final JLabel l = new JLabel(new ImageIcon(getClass().getResource(fileName)));
+        l.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         final JProgressBar p = new JProgressBar();
         p.setValue(0);
         p.setIndeterminate(true);
+        p.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        getContentPane().add(l, BorderLayout.CENTER);
-        getContentPane().add(p, BorderLayout.SOUTH);
+        final JLabel loading = new JLabel("Loading...");
+        loading.setFont(new Font(loading.getFont().getName(), Font.PLAIN, 20));
+        loading.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        getContentPane().add(l);
+        getContentPane().add(p);
+        getContentPane().add(loading);
 
         final Dimension windowSize = new Dimension(SIZE_X, SIZE_Y);
         setSize(windowSize);
