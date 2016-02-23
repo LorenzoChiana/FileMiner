@@ -17,7 +17,7 @@ public class FileMinerApp {
      *      param in main
      */
     public static void main(final String[] args) {
-        setSystemLookAndFeel(true);
+        useSystemLookAndFeel(true);
         new ControllerImpl();
 //        Chronology cr = new ChronologyImpl();
 //        cr.addDirectory("1");
@@ -49,7 +49,7 @@ public class FileMinerApp {
 //        
     }
 
-    private static void setSystemLookAndFeel(final boolean flag) {
+    private static void useSystemLookAndFeel(final boolean flag) {
         if (flag) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

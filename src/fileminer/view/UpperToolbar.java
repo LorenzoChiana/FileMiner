@@ -30,7 +30,7 @@ public class UpperToolbar extends JToolBar {
         super();
         this.setFloatable(false);
         this.setRollover(true);
-        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         /* foreach comando in listaComandi add(...) */
         this.add(createButton(IMAGESPATH + "NewFile.png", NEWFILE, "Create new file", "New file"));
@@ -65,4 +65,5 @@ public class UpperToolbar extends JToolBar {
         btn.setFocusPainted(false);
         return btn;
     }
+
 }
