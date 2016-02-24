@@ -29,13 +29,13 @@ public class UpperToolbar {
         toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         /* foreach comando in listaComandi add(...) */
-        toolbar.add(createButton("/images/NewFile.png", Commands.NEW.toString(), "Create new file", "New file", al));
+        toolbar.add(createButton("/images/NewFile.png", Commands.NEW.toString(), "Create new item", "New file", al));
         toolbar.addSeparator();
         toolbar.add(createButton("/images/Copy.png", Commands.COPY.toString(), "Copy files or directories", "Copy", al));
         toolbar.add(createButton("/images/Cut.png", Commands.CUT.toString(), "Cut files or directories", "Cut", al));
         toolbar.add(createButton("/images/Paste.png", Commands.PASTE.toString(), "Paste files or directories", "Paste", al));
         toolbar.addSeparator();
-        toolbar.add(createButton("/images/Info.png", "INFO", "Display info about application", "Info", al));
+        toolbar.add(createButton("/images/Info.png", "INFO", "Display file properties", "Info", al));
     }
 
     /**

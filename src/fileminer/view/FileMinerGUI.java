@@ -58,7 +58,6 @@ public class FileMinerGUI {
         frame = new JFrame("FileMiner");
         initializeFrame();
         createComponents();
-
     }
 
     private void initializeFrame() {
@@ -66,7 +65,7 @@ public class FileMinerGUI {
         
         frame.setLocationByPlatform(true);
         frame.setSize((int) (screenSize.getWidth() / SCREENRATIO), (int) (screenSize.getHeight() / SCREENRATIO));
-        frame.setMinimumSize(new Dimension(295, 276));
+        frame.setMinimumSize(new Dimension((int) screenSize.getWidth() / 8, (int) screenSize.getHeight() / 8));
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         frame.addWindowListener(new WindowAdapter() {
@@ -76,14 +75,6 @@ public class FileMinerGUI {
             }
         });
 
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(final ComponentEvent e) {
-                final JFrame f = (JFrame) e.getComponent();
-                final Dimension newDim = f.getSize();
-                FileMinerLogger.getInstance().getConsole().put(this.toString(), newDim.getWidth(), newDim.getHeight());
-            }
-        });
         frame.setIconImage(new ImageIcon(getClass().getResource("/images/Logo32.png")).getImage());
         frame.getContentPane().setLayout(new BorderLayout());
     }
@@ -107,12 +98,12 @@ public class FileMinerGUI {
         splitPane = new JSplitPane();
         final ActionMap newSplitActionMap = new ActionMap();
         splitPane.setActionMap(newSplitActionMap);
+        
 
         // TREE EXPLORER PANE
         final SwingWorker<Void, Void> treeLoader = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                System.out.println(SwingUtilities.isEventDispatchThread());
                 final DefaultTreeModel root = null; //controller.getFileSystemTree();
                 treeView = new JScrollPane(new TreeExplorerPanel(root));
                 treeView.setPreferredSize(new Dimension(frame.getWidth() / 4, frame.getHeight()));
@@ -202,6 +193,12 @@ public class FileMinerGUI {
                 toolbar.getToolBar().setFloatable(false);
                 logger.getConsole().put(toolbar.toString(), toolbar.getToolBar().isFloatable());
             }
+        });
+        menu.add(item);
+        menu.addSeparator();
+        item = new JMenuItem("Clear console");
+        item.addActionListener(e -> {
+            logger.getConsole().clear();
         });
         menu.add(item);
         menuBar2.add(menu);

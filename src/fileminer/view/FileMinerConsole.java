@@ -17,6 +17,11 @@ public class FileMinerConsole {
         return console;
     }
 
+    /**
+     * Print info.
+     * @param invoker who want to print info
+     * @param objects arguments
+     */
     public void put(final String invoker, final Object... objects) {
         console.append(invoker + " -> ");
         
@@ -36,5 +41,12 @@ public class FileMinerConsole {
             
         }
         console.append("\n");
+    }
+
+    /**
+     * Clear the console.
+     */
+    public void clear() {
+        console.setText("");
     }
 }

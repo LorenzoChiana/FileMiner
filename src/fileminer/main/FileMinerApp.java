@@ -16,7 +16,7 @@ public class FileMinerApp {
      * @param args
      *      param in main
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
 
         if (args.length > 0) {
             useSystemLookAndFeel(Boolean.parseBoolean(args[0]));
