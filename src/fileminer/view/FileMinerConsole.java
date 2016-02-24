@@ -1,7 +1,6 @@
 package fileminer.view;
 
 import java.awt.Font;
-
 import javax.swing.JTextArea;
 
 public class FileMinerConsole {
@@ -31,9 +30,10 @@ public class FileMinerConsole {
             case "F": console.append((float) obj + ","); break;
             case "I": console.append((int) obj + ","); break;
             case "J": console.append((long) obj + ","); break;
-            case "S": console.append((short) obj + ","); break;
+            //case "S": console.append((short) obj + ","); break;
             default: console.append(obj.toString() + ",");
             }
+            
         }
         console.append("\n");
     }
