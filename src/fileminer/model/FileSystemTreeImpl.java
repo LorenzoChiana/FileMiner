@@ -2,12 +2,19 @@
 package fileminer.model;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 
 /**
@@ -31,37 +38,50 @@ public class FileSystemTreeImpl implements FileSystemTree {
 	@Override
 	public DefaultTreeModel getTree() {
 
-	    if (treeReady) {
-	        return tree;
-	    } else {
-	        // Creo il nodo root
-	        final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+		if (treeReady) {
+			return tree;
+		} else {
+			// Creo il nodo root
+			final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
+			List<File> roots = new ArrayList<>();
 
-	        // Ottengo le roots
-	        final File[] roots = fsv.getRoots();
 
-	        for (final File fsRoot : roots) {
-	            final DefaultMutableTreeNode node = new DefaultMutableTreeNode(fsRoot);
-	            rootNode.add(node);
-	            final File[] files = fsv.getFiles(fsRoot, true);
-	            for (final File file : files) {
-	                if (file.isDirectory()) {
-					node.add(new DefaultMutableTreeNode(file));
-	                }
-	            }
-	        }
+			// HOME
+			Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "");	
+			roots.add(new File(path.toUri()));
+			
+			//Desktop
+			path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "Desktop");	
+			roots.add(new File(path.toUri()));
+			
+			//Desktop
+			path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "Documents");	
+			roots.add(new File(path.toUri()));
+			
+			
+			// Partizioni
+			for(File file : File.listRoots()){
+				roots.add(file);
+			}
 
-	        addChildren(rootNode);
-	        addGrandChildren(rootNode);
+			
+			for (final File fsRoot : roots) {
+				final DefaultMutableTreeNode node = new DefaultMutableTreeNode(fsRoot);
+				rootNode.add(node);
+			}
 
-	        //Test di funzionamento
-	        printTree(rootNode);
-		
-	        this.tree = new DefaultTreeModel(rootNode); 
-	        treeReady = true;
 
-	        return tree;
-	    }
+			addChildren(rootNode);
+	        
+
+			//Test di funzionamento
+			printTree(rootNode);
+
+			this.tree = new DefaultTreeModel(rootNode); 
+			treeReady = true;
+
+			return tree;
+		}
 	}
 
 
@@ -85,7 +105,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 					(DefaultMutableTreeNode) enumeration.nextElement();
 			final File file = (File) node.getUserObject();
 			if (file.isDirectory()) {
-				for (final File child : file.listFiles()) {
+				for (final File child : file.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY)) {
 					node.add(new DefaultMutableTreeNode(
 							child));
 				}
@@ -99,8 +119,8 @@ public class FileSystemTreeImpl implements FileSystemTree {
 	public FileSystemView getView() {
 		return fsv;
 	}
-	
-	
+
+
 	/**
 	 * @return DefaultMutableTreeNode
 	 */
