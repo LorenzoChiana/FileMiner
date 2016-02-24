@@ -8,15 +8,18 @@ public class InformationScrollPane {
 
     private final JScrollPane scrollPane;
 
-    private final JTextArea textArea;
+    private final FileMinerConsole console;
 
     public InformationScrollPane(final JFrame owner) {
-        textArea = new JTextArea(10, owner.getWidth());
-        textArea.setEditable(false);
-        scrollPane = new JScrollPane(textArea);
+        console = new FileMinerConsole(10, owner.getWidth() / 12);
+        scrollPane = new JScrollPane(console.getTextArea());
     }
 
     public JScrollPane getScrollPane() {
         return scrollPane;
+    }
+
+    public FileMinerConsole getConsole() {
+        return console;
     }
 }

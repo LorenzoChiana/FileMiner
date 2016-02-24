@@ -14,26 +14,26 @@ import fileminer.controller.Commands;
  * @author Michele Durante
  *
  */
-public class UpperToolbar extends JToolBar {
+public class UpperToolbar {
 
     private static final long serialVersionUID = 712167899479629945L;
 
-    private static final String IMAGESPATH = "/images/"; /* da reperire dal model */
+    private final JToolBar toolbar;
 
     public UpperToolbar() {
-        super();
-        this.setFloatable(false);
-        this.setRollover(true);
-        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        toolbar = new JToolBar();
+        toolbar.setFloatable(false);
+        toolbar.setRollover(true);
+        toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         /* foreach comando in listaComandi add(...) */
-        this.add(createButton(IMAGESPATH + "NewFile.png", Commands.NEW.toString(), "Create new file", "New file"));
-        this.addSeparator();
-        this.add(createButton(IMAGESPATH + "Copy.png", Commands.COPY.toString(), "Copy files or directories", "Copy"));
-        this.add(createButton(IMAGESPATH + "Cut.png", Commands.CUT.toString(), "Cut files or directories", "Cut"));
-        this.add(createButton(IMAGESPATH + "Paste.png", Commands.PASTE.toString(), "Paste files or directories", "Paste"));
-        this.addSeparator();
-        this.add(createButton(IMAGESPATH + "Info.png", "INFO", "Display info about application", "Info"));
+        toolbar.add(createButton("/images/NewFile.png", Commands.NEW.toString(), "Create new file", "New file"));
+        toolbar.addSeparator();
+        toolbar.add(createButton("/images/Copy.png", Commands.COPY.toString(), "Copy files or directories", "Copy"));
+        toolbar.add(createButton("/images/Cut.png", Commands.CUT.toString(), "Cut files or directories", "Cut"));
+        toolbar.add(createButton("/images/Paste.png", Commands.PASTE.toString(), "Paste files or directories", "Paste"));
+        toolbar.addSeparator();
+        toolbar.add(createButton("/images/Info.png", "INFO", "Display info about application", "Info"));
     }
 
     /**
@@ -43,7 +43,7 @@ public class UpperToolbar extends JToolBar {
      * @param altText button name if image not found
      * @return button with imageicon
      */
-    protected JButton createButton(final String imagePath, final String actionCmd, final String toolTipText, final String altText) {
+    private JButton createButton(final String imagePath, final String actionCmd, final String toolTipText, final String altText) {
         final JButton btn = new JButton();
         final Optional<URL> imageURL = Optional.ofNullable(this.getClass().getResource(imagePath));
         btn.setActionCommand(actionCmd);
@@ -60,4 +60,7 @@ public class UpperToolbar extends JToolBar {
         return btn;
     }
 
+    public JToolBar getToolBar() {
+        return toolbar;
+    }
 }
