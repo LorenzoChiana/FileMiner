@@ -1,13 +1,14 @@
 package fileminer.view;
 
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.net.URL;
 import java.util.Optional;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
+
+import fileminer.controller.Commands;
 
 /**
  * @author Michele Durante
@@ -19,27 +20,20 @@ public class UpperToolbar extends JToolBar {
 
     private static final String IMAGESPATH = "/images/"; /* da reperire dal model */
 
-    // da reperire dal model
-    private static final String NEWFILE = "newfile";
-    private static final String COPY = "copy";
-    private static final String CUT = "cut";
-    private static final String PASTE = "paste";
-    private static final String INFO = "info";
-
-    public UpperToolbar(/* listaComandi */) {
+    public UpperToolbar() {
         super();
         this.setFloatable(false);
         this.setRollover(true);
-        this.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         /* foreach comando in listaComandi add(...) */
-        this.add(createButton(IMAGESPATH + "NewFile.png", NEWFILE, "Create new file", "New file"));
+        this.add(createButton(IMAGESPATH + "NewFile.png", Commands.NEW.toString(), "Create new file", "New file"));
         this.addSeparator();
-        this.add(createButton(IMAGESPATH + "Copy.png", COPY, "Copy files or directories", "Copy"));
-        this.add(createButton(IMAGESPATH + "Cut.png", CUT, "Cut files or directories", "Cut"));
-        this.add(createButton(IMAGESPATH + "Paste.png", PASTE, "Paste files or directories", "Paste"));
+        this.add(createButton(IMAGESPATH + "Copy.png", Commands.COPY.toString(), "Copy files or directories", "Copy"));
+        this.add(createButton(IMAGESPATH + "Cut.png", Commands.CUT.toString(), "Cut files or directories", "Cut"));
+        this.add(createButton(IMAGESPATH + "Paste.png", Commands.PASTE.toString(), "Paste files or directories", "Paste"));
         this.addSeparator();
-        this.add(createButton(IMAGESPATH + "Info.png", INFO, "Display info about application", "Info"));
+        this.add(createButton(IMAGESPATH + "Info.png", "INFO", "Display info about application", "Info"));
     }
 
     /**

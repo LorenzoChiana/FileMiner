@@ -3,8 +3,6 @@ package fileminer.view;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -23,12 +21,13 @@ import fileminer.controller.Controller;
 public class FileMinerGUI extends JFrame implements PropertyChangeListener {
 
     private static final long serialVersionUID = -3479742762830497941L;
-    private static final double SCREENRATIO = 1.25;
+    private static final double SCREENRATIO = 1.5;
 
     private final Controller controller;
     private final SplashScreen splashScreen;
 
     private JScrollPane treeView;
+    private JSplitPane splitPane;
     private JMenuBar menuBar;
     private UpperToolbar toolbar;
     private NodeContentPanel ncp;
@@ -47,7 +46,7 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
 
         initializeFrame();
         createComponents();
-        setVisible(true);
+
     }
 
     private void initializeFrame() {
@@ -55,7 +54,7 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
         setTitle("FileMiner v1.0");
         setLocationByPlatform(true);
         setSize((int) (screenSize.getWidth() / SCREENRATIO), (int) (screenSize.getHeight() / SCREENRATIO));
-        setMinimumSize(new Dimension(720, 480));
+        //setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         addWindowListener(new WindowAdapter() {
@@ -86,50 +85,34 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
         getContentPane().add(tool, BorderLayout.NORTH);
         // END TOOL PANEL
 
-        // START TOP SPLIT PANE
-        JSplitPane topSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        topSplitPane.setBorder(null);
+        // START SPLIT PANEL
+        splitPane = new JSplitPane();
+        final ActionMap newSplitActionMap = new ActionMap();
+        splitPane.setActionMap(newSplitActionMap);
 
-        // TREE EXPLORER PANEL
+        // TREE EXPLORER PANE
         final SwingWorker<Void, Void> treeLoader = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                final DefaultTreeModel root = null; //controller.getFileSystemTree();
+                final DefaultTreeModel root = null;//controller.getFileSystemTree();
                 treeView = new JScrollPane(new TreeExplorerPanel(root));
                 treeView.setPreferredSize(new Dimension(getWidth() / 4, getHeight()));
-                topSplitPane.add(treeView, JSplitPane.LEFT);
+                splitPane.add(treeView, JSplitPane.LEFT);
                 return null;
             }
         };
         treeLoader.addPropertyChangeListener(this);
         treeLoader.execute();
-
+        
         // NODE CONTENT PANEL
         ncp = new NodeContentPanel();
-        topSplitPane.add(ncp, JSplitPane.RIGHT);
-        // END TOP SPLIT PANE
+        splitPane.add(ncp, JSplitPane.RIGHT);
+        getContentPane().add(splitPane, BorderLayout.CENTER);
+        // END SPLIT PANEL
 
-        // START BOTTOM SPLIT PANE
         // INFORMATION PANEL
         info = new InformationScrollPane(this);
-        final JPanel infoPanel = new JPanel();
-        infoPanel.add(info.getScrollPane());
-
-        JSplitPane bottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topSplitPane, infoPanel);
-        bottomSplitPane.setDividerLocation(0.2);
-        //System.out.println(bottomSplitPane.getDividerLocation());
-        //bottomSplitPane.setDividerLocation(0);
-        //System.out.println(bottomSplitPane.getDividerLocation());
-        /*
-        bottomSplitPane.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("")
-            }
-        });
-        */
-        getContentPane().add(bottomSplitPane, BorderLayout.CENTER);
-        // END BOTTOM SPLIT PANE
+        getContentPane().add(info.getScrollPane(), BorderLayout.SOUTH);
     }
 
     private JMenuBar createMenuBar() {
@@ -144,7 +127,6 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
         itemIcon = new ImageIcon(getClass().getResource("/images/NewFile.png"));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
-        menu.addSeparator();
         item = new JMenuItem("Copy");
         itemIcon = new ImageIcon(getClass().getResource("/images/Copy.png"));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
@@ -169,7 +151,6 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
 
         // CONFIG MENU
         menu = new JMenu("Config");
-        final JMenu menuConf = new JMenu("Toolbar");
         item = new JCheckBoxMenuItem("Set toolbar floatable");
         item.addItemListener(i -> {
             if (i.getStateChange() == ItemEvent.SELECTED) {
@@ -178,9 +159,7 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
                 toolbar.setFloatable(false);
             }
         });
-        menuConf.add(item);
-        menuConf.addSeparator();
-        menu.add(menuConf);
+        menu.add(item);
         menuBar2.add(menu);
 
         return menuBar2;
@@ -197,6 +176,7 @@ public class FileMinerGUI extends JFrame implements PropertyChangeListener {
         if ("state".equals(evt.getPropertyName()) && SwingWorker.StateValue.DONE == evt.getNewValue()) {
             splashScreen.closeSplash();
             repaint();
+            setVisible(true);
             requestFocus();
         }
     }

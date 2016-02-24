@@ -6,9 +6,9 @@ import javax.swing.JTextArea;
 
 public class InformationScrollPane {
 
-    private JScrollPane scrollPane;
+    private final JScrollPane scrollPane;
 
-    private JTextArea textArea;
+    private final JTextArea textArea;
 
     public InformationScrollPane(final JFrame owner) {
         textArea = new JTextArea(10, owner.getWidth());
