@@ -1,4 +1,4 @@
-package fileminer.view;
+package fileminer.view.components;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;

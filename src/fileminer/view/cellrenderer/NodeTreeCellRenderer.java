@@ -1,4 +1,4 @@
-package fileminer.view;
+package fileminer.view.cellrenderer;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -16,6 +16,9 @@ public class NodeTreeCellRenderer implements TreeCellRenderer {
     private final FileSystemTreeImpl fst;
     private final JLabel label;
 
+    /**
+     * @param fst file system object
+     */
     public NodeTreeCellRenderer(final FileSystemTreeImpl fst) {
         this.fst = fst;
         this.label = new JLabel(" ");
@@ -23,20 +26,21 @@ public class NodeTreeCellRenderer implements TreeCellRenderer {
     }
 
     @Override
-    public Component getTreeCellRendererComponent(final JTree arg0, final Object arg1,
-                                                  final boolean arg2, final boolean arg3,
-                                                  final boolean arg4, final int arg5, final boolean arg6) {
+    public Component getTreeCellRendererComponent(final JTree tree, final Object value,
+                                                  final boolean selected, final boolean expanded,
+                                                  final boolean leaf, final int row, final boolean hasFocus) {
 
-        final DefaultMutableTreeNode node = (DefaultMutableTreeNode) arg1;
+        final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
         final File file = (File) node.getUserObject();
+
         if (file != null) {
             label.setIcon(fst.getFileIcon(file));
             label.setText(fst.getFileText(file));
         } else {
-            label.setText(arg1.toString());
+            label.setText(value.toString());
         }
          
-        if (arg2) {
+        if (selected) {
             label.setBackground(Color.BLUE);
             label.setForeground(Color.WHITE);
         } else {

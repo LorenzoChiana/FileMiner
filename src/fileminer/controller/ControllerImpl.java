@@ -2,6 +2,7 @@ package fileminer.controller;
 
 import java.io.IOException;
 
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultTreeModel;
 
 import fileminer.model.FileOperations;
@@ -15,8 +16,8 @@ import fileminer.view.FileMinerGUI;
  *
  */
 public class ControllerImpl implements Controller {
-    private final FileMinerGUI view;
-    private final FileSystemTreeImpl fst;
+    private FileMinerGUI view;
+    private FileSystemTreeImpl fst;
 
     /**
      * ControllerImpl constructor:

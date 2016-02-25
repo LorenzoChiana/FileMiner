@@ -21,9 +21,9 @@ public class OSPropertiesImpl implements OSProperties {
 
     @Override
     public boolean isUnix() {
-        return (os.indexOf(OSNames.NUX.toString()) >= 0
+        return os.indexOf(OSNames.NUX.toString()) >= 0
                 || os.indexOf(OSNames.NIX.toString()) >= 0 
-                || os.indexOf(OSNames.AIX.toString()) >= 0);
+                || os.indexOf(OSNames.AIX.toString()) >= 0;
     }
 
     @Override
@@ -31,4 +31,15 @@ public class OSPropertiesImpl implements OSProperties {
         return os.indexOf(OSNames.SUNOS.toString()) >= 0;
     }
 
+    @Override
+    public String toString() {
+        return   "======> STARTUP INFO <======\n"
+               + "Java: " + System.getProperty("java.vendor") + " (" + System.getProperty("java.version") + ")" + "\n"
+               + "OS name: " + os + "\n"
+               + "OS architecture: " + System.getProperty("os.arch") + "\n"
+               + "OS version: " + System.getProperty("os.version") + "\n"
+               + "Logged user: " + System.getProperty("user.name") + "\n"
+               + "User home: " + System.getProperty("user.home") + "\n"
+               + "============================\n";
+    }
 }

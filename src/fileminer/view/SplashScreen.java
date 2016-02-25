@@ -17,8 +17,7 @@ import javax.swing.JWindow;
 import javax.swing.border.LineBorder;
 
 /**
- * 
- *
+ * Startup splashscreen of FileMiner.
  */
 public class SplashScreen extends JWindow {
 

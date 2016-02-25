@@ -22,8 +22,15 @@ import javax.swing.tree.DefaultTreeModel;
 
 import fileminer.controller.Controller;
 import fileminer.listeners.CommandInvokeListener;
+import fileminer.listeners.TreeExpandListener;
+import fileminer.listeners.TreeNodeSelectionListener;
 import fileminer.controller.Commands;
 import fileminer.main.FileMinerLogger;
+import fileminer.view.cellrenderer.NodeTreeCellRenderer;
+import fileminer.view.components.InformationScrollPane;
+import fileminer.view.components.NodeContentTable;
+import fileminer.view.components.TreeExplorer;
+import fileminer.view.components.UpperToolbar;
 
 /**
  * @author Michele Durante
@@ -31,10 +38,10 @@ import fileminer.main.FileMinerLogger;
  */
 public class FileMinerGUI implements DefaultGUI {
 
-    private static final long serialVersionUID = -3479742762830497941L;
     private static final double SCREENRATIO = 1.5;
 
     private final JFrame frame;
+    private final FileMinerGUI self;
     private final FileMinerLogger logger;
     private final Controller controller;
     private final SplashScreen splashScreen;
@@ -52,6 +59,7 @@ public class FileMinerGUI implements DefaultGUI {
      */
     public FileMinerGUI(final Controller ctrl) {
         controller = ctrl;
+        self = this;
         logger = FileMinerLogger.getInstance();
 
         splashScreen = new SplashScreen("/images/Logo256.png");
@@ -104,12 +112,23 @@ public class FileMinerGUI implements DefaultGUI {
 
         // TREE EXPLORER PANE
         final SwingWorker<Void, Void> treeLoader = new SwingWorker<Void, Void>() {
+            private DefaultTreeModel treeModel;
+            private TreeExplorer treeExplorer;
             @Override
             protected Void doInBackground() throws Exception {
-                treeView = new JScrollPane(new TreeExplorer(controller.getFileSystem()).getTree());
+                treeModel = controller.getFileSystem().getTree();
+                return null;
+            }
+            @Override
+            protected void done() {
+                treeExplorer = new TreeExplorer(treeModel);
+                treeExplorer.getTree().addTreeSelectionListener(new TreeNodeSelectionListener(controller.getFileSystem(), self));
+                treeExplorer.getTree().addTreeWillExpandListener(new TreeExpandListener(controller.getFileSystem()));
+                treeExplorer.getTree().setCellRenderer(new NodeTreeCellRenderer(controller.getFileSystem()));
+                treeView = new JScrollPane(treeExplorer.getTree());
                 treeView.setPreferredSize(new Dimension(frame.getWidth() / 4, frame.getHeight()));
                 splitPane.add(treeView, JSplitPane.LEFT);
-                return null;
+                frame.repaint();
             }
         };
         treeLoader.addPropertyChangeListener(new PropertyChangeListener() {
@@ -117,7 +136,6 @@ public class FileMinerGUI implements DefaultGUI {
             public void propertyChange(final PropertyChangeEvent evt) {
                 if ("state".equals(evt.getPropertyName()) && SwingWorker.StateValue.DONE == evt.getNewValue()) {
                     splashScreen.closeSplash();
-                    frame.repaint();
                     frame.setVisible(true);
                     frame.requestFocus();
                 }
@@ -127,7 +145,6 @@ public class FileMinerGUI implements DefaultGUI {
         
         // NODE CONTENT PANEL
         ncp = new NodeContentTable();
-        ncp.getNodesTable().setEnabled(false);
         splitPane.add(ncp.getNodesTable(), JSplitPane.RIGHT);
         frame.getContentPane().add(splitPane, BorderLayout.CENTER);
         // END SPLIT PANEL
