@@ -13,10 +13,19 @@ import fileminer.model.runnable.AddFileNodes;
  * Classe per aggiornare la view quando l'albero si espande 
  * o quando si comprime un nodo.
  */
+/**
+ * 
+ * @author Lorenzo Chiana
+ *
+ */
 public class TreeExpandListener implements TreeWillExpandListener {
 
     private final FileSystemTreeImpl modelTree;
-
+    /**
+     * 
+     * @param modelTree
+     *          tree of file system.
+     */
     public TreeExpandListener(final FileSystemTreeImpl modelTree) {
         this.modelTree = modelTree;
     }
