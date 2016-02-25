@@ -29,7 +29,7 @@ import fileminer.main.FileMinerLogger;
  * @author Michele Durante
  *
  */
-public class FileMinerGUI {
+public class FileMinerGUI implements DefaultGUI {
 
     private static final long serialVersionUID = -3479742762830497941L;
     private static final double SCREENRATIO = 1.5;

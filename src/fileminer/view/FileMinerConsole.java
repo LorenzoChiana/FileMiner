@@ -3,25 +3,34 @@ package fileminer.view;
 import java.awt.Font;
 import javax.swing.JTextArea;
 
-public class FileMinerConsole {
+/**
+ * A customized class that encapsulate a JTextArea component to print logs of application.
+ * @author Michele
+ *
+ */
+public class FileMinerConsole implements DefaultConsole {
 
     private final JTextArea console;
 
+    /**
+     * Constructor of FileMinerConsole.
+     * @param lines 
+     * @param rows 
+     */
     public FileMinerConsole(final int lines, final int rows) {
         console = new JTextArea(lines, rows);
         console.setEditable(false);
         console.setFont(new Font("Courier New", Font.PLAIN, 13));
     }
 
+    /**
+     * @return the component
+     */
     public JTextArea getTextArea() {
         return console;
     }
 
-    /**
-     * Print info.
-     * @param invoker who want to print info
-     * @param objects arguments
-     */
+    @Override
     public void put(final String invoker, final Object... objects) {
         console.append(invoker + " -> ");
         
@@ -43,9 +52,7 @@ public class FileMinerConsole {
         console.append("\n");
     }
 
-    /**
-     * Clear the console.
-     */
+    @Override
     public void clear() {
         console.setText("");
     }
