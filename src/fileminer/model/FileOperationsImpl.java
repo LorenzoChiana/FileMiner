@@ -10,9 +10,13 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileOperationsImpl implements FileOperations {
 
-	String srcPath;
+	private String srcPath;
 
-	public String getSrc(){
+	
+	/**
+	 * @return path of source file
+	 */
+	public String getSrc() {
 		return srcPath;
 	}
 
@@ -47,7 +51,7 @@ public class FileOperationsImpl implements FileOperations {
 	}
 
 	@Override
-	public void open(String srcPath) throws IOException{
+	public void open(final String srcPath) throws IOException{
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class FileOperationsImpl implements FileOperations {
 	}
 
 	@Override
-	public void print(String srcPath) throws IOException{
+	public void print(final String srcPath) throws IOException{
 	}
 
 }
