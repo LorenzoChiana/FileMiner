@@ -35,7 +35,6 @@ public class FileSystemTreeImpl implements FileSystemTree {
 		this.treeReady = false;
 	}
 
-
 	@Override
 	public DefaultTreeModel getTree() {
 
@@ -44,11 +43,10 @@ public class FileSystemTreeImpl implements FileSystemTree {
 		} else {
 			// Creo il nodo root
 			final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-			List<File> roots = new ArrayList<>();
-
+			final List<File> roots = new ArrayList<>();
 
 			// HOME
-			Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "");	
+			Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "");
 			roots.add(new File(path.toUri()));
 			
 			//Desktop
@@ -59,24 +57,20 @@ public class FileSystemTreeImpl implements FileSystemTree {
 			path = FileSystems.getDefault().getPath(System.getProperty("user.home"), "Documents");	
 			roots.add(new File(path.toUri()));
 			
-			
 			// Partizioni
-			for(File file : File.listRoots()){
+			for (final File file : File.listRoots()) {
 				roots.add(file);
 			}
 
-			
 			for (final File fsRoot : roots) {
 				final DefaultMutableTreeNode node = new DefaultMutableTreeNode(fsRoot);
 				rootNode.add(node);
 			}
 
-
 			addChildren(rootNode);
-	        
 
 			//Test di funzionamento
-			printTree(rootNode);
+			//printTree(rootNode);
 
 			this.tree = new DefaultTreeModel(rootNode); 
 			treeReady = true;
