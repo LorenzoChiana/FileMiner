@@ -2,9 +2,6 @@ package fileminer.controller;
 
 import java.io.IOException;
 
-import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultTreeModel;
-
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
 import fileminer.model.FileSystemTreeImpl;
@@ -29,18 +26,22 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void invokesCommand(final Commands command, final String srcPath, final String destPath) {
+    public void invokesCommand(final Commands command) {
 
         final FileOperations operation = new FileOperationsImpl();
-
+        final Clipboard clipboard = new ClipboardImpl();
+        
         switch (command) {
         case COPY:
-            operation.copy(srcPath);
+            clipboard.addPathFiles("");
+            operation.copy("");
             break;
 
         case PASTE:
             try {
-                operation.pasteTo(destPath);
+                clipboard.getPathFiles();
+                operation.pasteTo("");
+                clipboard.clean();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -58,7 +59,7 @@ public class ControllerImpl implements Controller {
 
         case DELETE:
             try {
-                operation.remove(srcPath);
+                operation.remove("");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -69,7 +70,7 @@ public class ControllerImpl implements Controller {
 
         case OPEN:
             try {
-                operation.open(srcPath);
+                operation.open("");
             } catch (IOException e) {
                 e.printStackTrace();
             }

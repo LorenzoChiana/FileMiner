@@ -1,7 +1,5 @@
 package fileminer.controller;
 
-import javax.swing.tree.DefaultTreeModel;
-
 import fileminer.model.FileSystemTreeImpl;
 
 /**
@@ -18,12 +16,8 @@ public interface Controller {
      * 
      * @param command
      *          id of command to invoke
-     * @param srcPath
-     *          File source path 
-     * @param destPath
-     *          Destination path (only for operations like copy, cut, moveto...)
      */
-    void invokesCommand(Commands command, String srcPath, String destPath);
+    void invokesCommand(Commands command);
 
     /**
      * Exit from application.

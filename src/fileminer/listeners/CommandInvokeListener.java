@@ -33,7 +33,7 @@ public class CommandInvokeListener implements ActionListener {
                 public void run() {
                     for (final Commands cmd : Commands.values()) {
                         if (e.getActionCommand().equals(cmd.toString())) {
-                            controller.invokesCommand(cmd, null, null);
+                            controller.invokesCommand(cmd);
                             break;
                         }
                     }
