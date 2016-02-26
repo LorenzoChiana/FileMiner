@@ -19,6 +19,7 @@ public class ControllerImpl implements Controller {
     private final FileSystemTreeImpl fst;
     private final FileMinerLogger logger;
     private final Clipboard clipboard;
+    private final FileOperations operation;
 
     /**
      * ControllerImpl constructor:
@@ -29,33 +30,35 @@ public class ControllerImpl implements Controller {
         this.fst = new FileSystemTreeImpl();
         this.view = new FileMinerGUI(this);
         this.clipboard = new ClipboardImpl();
+        this.operation = new FileOperationsImpl();
     }
 
     @Override
     public void invokesCommand(final Commands command) {
 
-        final FileOperations operation = new FileOperationsImpl();
-        
+
         switch (command) {
-        case COPY:
+        case COPY:            
             this.clipboard.addPathFiles(new ArrayList<>()); //richiamo metodo view che mi passa la lista di path
-            //operation.copy(this.clipboard.getPathFiles());
+            this.clipboard.setParameter(true);
+            operation.copy(this.clipboard.getPathFiles());
             break;
 
         case PASTE:
             try {
-                operation.pasteTo("richiamo metodo della view che mi restituisce la path della directory su cui copiare");
-                this.clipboard.clean();
+                if (!this.clipboard.isEmpty()) {
+                    operation.pasteTo("", this.clipboard.getParameter());
+                    this.clipboard.clean();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             break;
 
-        case CUT:
-            break;
-
-        case MOVE:
-            //operation.moveTo(srcPath, destPath, createDestDir);
+        case CUT:            
+            this.clipboard.addPathFiles(new ArrayList<>()); //richiamo metodo view che mi passa la lista di path
+            this.clipboard.setParameter(false);
+            operation.copy(this.clipboard.getPathFiles());
             break;
 
         case LINK:
@@ -63,7 +66,9 @@ public class ControllerImpl implements Controller {
 
         case DELETE:
             try {
-                operation.remove("");
+                this.clipboard.addPathFiles(new ArrayList<>());
+                operation.remove(this.clipboard.getPathFiles());
+                this.clipboard.clean();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,51 +87,15 @@ public class ControllerImpl implements Controller {
 
         case MODIFY:
             break;
-            
+
         case COMPRESS:
             break;
-        
+
         case DECOMPRESS: 
             break;
 
         default: break;
         }
-
-        //        if (Commands.COPY.toString().equals(command)) {
-        //            operation.copy(srcPath);
-        //        } else if (Commands.PASTE.toString().equals(command)) {
-        //            try {
-        //                operation.pasteTo(destPath);
-        //            } catch (IOException e) {
-        //                e.printStackTrace();
-        //            }
-        //        } else if (Commands.CUT.toString().equals(command)) {
-        //
-        //        } else if (Commands.MOVE.toString().equals(command)) {
-        //            /*try {
-        //                        operation.moveTo(srcPath, destPath);
-        //                    } catch (IOException e) {
-        //                        e.printStackTrace();
-        //                    }*/
-        //        } else if (Commands.LINK.toString().equals(command)) {
-        //            /*link*/
-        //        } else if (Commands.DELETE.toString().equals(command)) {
-        //            try {
-        //                operation.remove(srcPath);
-        //            } catch (IOException e) {
-        //                e.printStackTrace();
-        //            }
-        //        } else if (Commands.NEW.toString().equals(command)) {
-        //            /*new*/
-        //        } else if (Commands.MODIFY.toString().equals(command)) {
-        //            /*modify*/
-        //        } else if (Commands.OPEN.toString().equals(command)) {
-        //            try {
-        //                operation.open(srcPath);
-        //            } catch (IOException e) {
-        //                e.printStackTrace();
-        //            }
-        //        }
     }
 
     @Override

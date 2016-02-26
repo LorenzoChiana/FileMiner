@@ -1,6 +1,9 @@
 package fileminer.main;
 
 import javax.swing.UIManager;
+
+import fileminer.controller.Commands;
+import fileminer.controller.Controller;
 import fileminer.controller.ControllerImpl;
 
 /**

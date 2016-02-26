@@ -58,7 +58,7 @@ public class FileOperationsImpl implements FileOperations {
 		if (isCopy) {
 			for (File file : files) {
 				if (file.isDirectory()) {
-					FileUtils.copyDirectory(file, dest);
+					FileUtils.copyDirectoryToDirectory(file, dest);
 				} else {
 					FileUtils.copyFileToDirectory(file, dest);			
 				}
@@ -67,7 +67,7 @@ public class FileOperationsImpl implements FileOperations {
 
 			for (File file : files) {
 				if (file.isDirectory()) {
-					FileUtils.moveDirectory(file, dest);
+					FileUtils.moveDirectoryToDirectory(file, dest, false);
 				} else {
 					FileUtils.moveFileToDirectory(file, dest, true);
 				}

@@ -21,10 +21,6 @@ public enum Commands {
     /**
      * MOVE = operation that move files into other directory.
      */
-    MOVE,
-    /**
-     * LINK = operation that link files..
-     */
     LINK,
     /**
      * DELETE = operation that remove files..

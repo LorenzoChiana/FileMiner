@@ -21,6 +21,8 @@ public interface Controller {
 
     /**
      * Print OS information.
+     * 
+     * @return OS information.
      */
     String getOSInfo();
 

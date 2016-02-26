@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class ClipboardImpl implements Clipboard {
     private List<String> clipboard;
+    private boolean isCopy;
     
     /**
      * ClipboardImpl constructor that initializes the clipboard. 
@@ -30,6 +31,21 @@ public class ClipboardImpl implements Clipboard {
     @Override
     public void clean() {
         this.clipboard = new ArrayList<>();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.clipboard.isEmpty();
+    }
+
+    @Override
+    public void setParameter(final boolean isCopy) {
+        this.isCopy = isCopy;
+    }
+
+    @Override
+    public boolean getParameter() {
+        return this.isCopy;
     }
 
 }
