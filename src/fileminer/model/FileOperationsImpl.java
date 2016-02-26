@@ -14,7 +14,6 @@ import org.apache.commons.io.FileUtils;
 public class FileOperationsImpl implements FileOperations {
 
 	private List<String> clipboard;
-	private boolean isCopy;
 
 
 	/**
@@ -44,20 +43,19 @@ public class FileOperationsImpl implements FileOperations {
 	}
 
 	@Override
-	public void copy(final List<String> clipboard, final boolean isCopy) {
+	public void copy(final List<String> clipboard) {
 		setClipboard(clipboard);
-		this.isCopy = isCopy;
 	}
 
 	@Override
-	public void pasteTo(final String destPath) throws IOException {
+	public void pasteTo(final String destPath, final boolean isCopy) throws IOException {
 
 		List<File> files = new ArrayList<File>();
 		File dest = FileUtils.getFile(destPath); // Directory
 
 		files = addFiles(files, this.clipboard);
 
-		if (this.isCopy) {
+		if (isCopy) {
 			for (File file : files) {
 				if (file.isDirectory()) {
 					FileUtils.copyDirectory(file, dest);
