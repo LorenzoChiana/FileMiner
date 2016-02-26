@@ -17,7 +17,7 @@ public interface Clipboard {
      * @param path
      *          method for adding file into the clipboard.
      */
-    void addPathFiles(String path);
+    void addPathFiles(List<String> path);
     /**
      * method for erase files on clipboard.
      */
