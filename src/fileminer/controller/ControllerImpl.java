@@ -1,13 +1,16 @@
 package fileminer.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import fileminer.main.FileMinerLogger;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
 import fileminer.model.FileSystemTreeImpl;
 import fileminer.view.FileMinerGUI;
+import java.util.List;
 
 /**
  * 
@@ -33,10 +36,12 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void invokesCommand(final Commands command) {
-
-
+        /*List<String> l = new ArrayList<>();
+        File file;*/
         switch (command) {
-        case COPY:            
+        case COPY:       
+            /*file = new File("/home/lorenzo/Immagini/Prova");
+            l.add(file.getAbsolutePath());*/
             this.clipboard.addPathFiles(new ArrayList<>()); //richiamo metodo view che mi passa la lista di path
             this.clipboard.setParameter(true);
             operation.copy(this.clipboard.getPathFiles());
@@ -45,15 +50,18 @@ public class ControllerImpl implements Controller {
         case PASTE:
             try {
                 if (!this.clipboard.isEmpty()) {
-                    operation.pasteTo("", this.clipboard.getParameter());
+                    operation.pasteTo("/home/lorenzo/Documenti", this.clipboard.getParameter());
                     this.clipboard.clean();
+                    this.fst.getTree().reload();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
             break;
 
-        case CUT:            
+        case CUT:         
+            /*file = new File("/home/lorenzo/Immagini/Prova");
+            l.add(file.getAbsolutePath());    */      
             this.clipboard.addPathFiles(new ArrayList<>()); //richiamo metodo view che mi passa la lista di path
             this.clipboard.setParameter(false);
             operation.copy(this.clipboard.getPathFiles());
@@ -67,12 +75,14 @@ public class ControllerImpl implements Controller {
                 this.clipboard.addPathFiles(new ArrayList<>());
                 operation.remove(this.clipboard.getPathFiles());
                 this.clipboard.clean();
+                this.fst.getTree().reload();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             break;
 
         case NEW:
+            this.fst.getTree().reload();
             break;
 
         case OPEN:
@@ -81,9 +91,6 @@ public class ControllerImpl implements Controller {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            break;
-
-        case MODIFY:
             break;
 
         case COMPRESS:

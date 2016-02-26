@@ -35,10 +35,6 @@ public enum Commands {
      */
     OPEN,
     /**
-     * MODIFY = operation that modify a file.
-     */
-    MODIFY,
-    /**
      * COMPRESS = operation that compress files.
      */
     COMPRESS,
