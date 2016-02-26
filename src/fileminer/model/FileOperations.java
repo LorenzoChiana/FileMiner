@@ -13,18 +13,18 @@ public interface FileOperations {
 
 	/**
 	 * Copy the source path to the local Clipboard.
+	 * @param isCopy
 	 * @param srcPath
 	 */
-	void copy(List<String> srcPath);
+	void copy(List<String> srcPath, final boolean isCopy);
 
 
 	/**
 	 * Paste the file in the directory path. 
 	 * @param destPath
-	 * @param isCopy
 	 * @throws IOException
 	 */
-	void pasteTo(final String destPath, final boolean isCopy) throws IOException;
+	void pasteTo(final String destPath) throws IOException;
 
 
 
