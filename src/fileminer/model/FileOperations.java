@@ -33,7 +33,7 @@ public interface FileOperations {
 	 * @param srcPath File or directory source path
 	 * @throws IOException
 	 */
-	void open(String srcPath) throws IOException;;
+	void open(String srcPath) throws IOException;
 
 
 	/**
@@ -51,6 +51,29 @@ public interface FileOperations {
 	 */
 	void print(String srcPath) throws IOException;
 
+	
+	/**
+	 * @param srcPath
+	 * @param name
+	 * @throws IOException
+	 */
+	void mkDir(String srcPath, String name) throws IOException;
+
+	
+	/**
+	 * @param srcPath
+	 * @param name
+	 * @throws IOException
+	 */
+	void mkFile(String srcPath, String name) throws IOException;
+
+	
+	/**
+	 * @param srcPath
+	 * @param name
+	 * @throws IOException
+	 */
+	void mkLink(String srcPath, String name) throws IOException;
 
 
 }
