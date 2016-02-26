@@ -1,14 +1,26 @@
 package fileminer.model.archiver;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Daniele
  *
  */
 public interface Archiver {
-	void compress(File file);
+
+
+	/**
+	 * @param files
+	 * @param name
+	 * @param dest
+	 */
+	void compress(List<String> files, String name, String dest);
 	
-	void decompress(File file);
+	
+	/**
+	 * @param archive
+	 */
+	void decompress(String archive);
 	
 }
