@@ -10,9 +10,9 @@ import fileminer.controller.ControllerImpl;
  *      class that contains the main
  *
  */
-public class FileMinerApp { 
+public class FileMinerApp {
+
     /**
-     * 
      * @param args
      *      param in main
      */
@@ -62,4 +62,5 @@ public class FileMinerApp {
             }
         }
     }
+
 }

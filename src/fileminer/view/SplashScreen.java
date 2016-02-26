@@ -17,10 +17,9 @@ import javax.swing.JWindow;
 import javax.swing.border.LineBorder;
 
 /**
- * 
- *
+ * Startup splashscreen of FileMiner.
  */
-public class SplashScreen extends JWindow {
+public final class SplashScreen extends JWindow {
 
     private static final long serialVersionUID = -227987097234319421L;
     private static final int SIZE_X  = 350;

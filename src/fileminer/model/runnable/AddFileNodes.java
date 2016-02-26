@@ -3,6 +3,7 @@ package fileminer.model.runnable;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fileminer.model.FileSystemTreeImpl;
+import fileminer.model.Node;
 
 /**
  *
@@ -21,10 +22,14 @@ public class AddFileNodes implements Runnable {
 		this.fst = fst;
 		this.node = node;
 	}
-	
-	@Override
-	public void run() {
-        fst.addGrandChildren(node);
-	}
 
+    @Override
+    public void run() {
+        final Node fileNode = (Node) node.getUserObject();
+        if (!fileNode.hasNodeGenerated()) {
+            fst.addGrandChildren(node);
+            fileNode.setNodeHasGenerated(true);
+        }
+        
+    }
 }

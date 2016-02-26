@@ -1,28 +1,28 @@
 package fileminer.main;
 
-import fileminer.view.FileMinerConsole;
+import fileminer.view.DefaultConsole;
 
 public class FileMinerLogger {
 
     private static FileMinerLogger singleton;
-    private FileMinerConsole console;
+    private DefaultConsole console;
 
     public FileMinerLogger() {
         
     }
 
-    public static FileMinerLogger getInstance() {
+    public static synchronized FileMinerLogger getInstance() {
         if (singleton == null) {
             singleton = new FileMinerLogger();
         }
         return singleton;
     }
 
-    public void setConsole(final FileMinerConsole cons) {
+    public void setConsole(final DefaultConsole cons) {
         console = cons;
     }
 
-    public FileMinerConsole getConsole() {
+    public DefaultConsole getConsole() {
         return console;
     }
 }

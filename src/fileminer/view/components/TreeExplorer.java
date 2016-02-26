@@ -1,10 +1,13 @@
-package fileminer.view;
+package fileminer.view.components;
 
+import javax.swing.ActionMap;
 import javax.swing.JTree;
 
 import fileminer.listeners.TreeExpandListener;
 import fileminer.listeners.TreeNodeSelectionListener;
 import fileminer.model.FileSystemTreeImpl;
+import fileminer.view.FileMinerGUI;
+import fileminer.view.cellrenderer.NodeTreeCellRenderer;
 
 /**
  * 
@@ -17,15 +20,15 @@ public class TreeExplorer {
 
     /**
      * Constructor of TreeExplorerPanel.
-     * @param fst the file system object
      */
-    public TreeExplorer(final FileSystemTreeImpl fst) {
+    public TreeExplorer(final FileSystemTreeImpl fst, final FileMinerGUI gui) {
         tree = new JTree(fst.getTree());
-        tree.addTreeWillExpandListener(new TreeExpandListener());
-        tree.addTreeSelectionListener(new TreeNodeSelectionListener());
-        tree.setCellRenderer(new NodeTreeCellRenderer(fst));
+        tree.addTreeWillExpandListener(new TreeExpandListener(fst));
+        tree.addTreeSelectionListener(new TreeNodeSelectionListener(fst, gui));
+        tree.setCellRenderer(new NodeTreeCellRenderer());
         tree.setRootVisible(false);
         tree.setShowsRootHandles(true);
+        tree.setActionMap(new ActionMap());
     }
 
     /**
@@ -34,4 +37,5 @@ public class TreeExplorer {
     public JTree getTree() {
         return tree;
     }
+
 }
