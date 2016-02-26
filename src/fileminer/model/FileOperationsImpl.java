@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -14,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 public class FileOperationsImpl implements FileOperations {
 
 	private List<String> clipboard;
+	
 
 
 	/**
@@ -72,7 +76,8 @@ public class FileOperationsImpl implements FileOperations {
 					FileUtils.moveFileToDirectory(file, dest, true);
 				}
 			}
-		}
+		}	
+		
 	}
 
 
@@ -102,6 +107,23 @@ public class FileOperationsImpl implements FileOperations {
 
 	@Override
 	public void print(final String srcPath) throws IOException {
+	}
+
+
+	@Override
+	public void mkDir(final String srcPath, final String name) throws IOException {
+		new File(srcPath + name).mkdir();
+	}
+
+
+	@Override
+	public void mkFile(final String srcPath, final String name) throws IOException {
+	}
+
+
+	@Override
+	public void mkLink(final String srcPath, final String name) throws IOException {
+		
 	}
 
 
