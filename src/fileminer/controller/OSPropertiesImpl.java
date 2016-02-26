@@ -33,13 +33,11 @@ public final class OSPropertiesImpl implements OSProperties {
 
     @Override
     public String toString() {
-        return   "==========> STARTUP INFO <==========\n"
-               + "Java: " + System.getProperty("java.vendor") + " (" + System.getProperty("java.version") + ")" + "\n"
+        return   "Java: " + System.getProperty("java.vendor") + " (" + System.getProperty("java.version") + ")" + "\n"
                + "OS name: " + os + "\n"
                + "OS architecture: " + System.getProperty("os.arch") + "\n"
                + "OS version: " + System.getProperty("os.version") + "\n"
                + "Logged user: " + System.getProperty("user.name") + "\n"
-               + "User home: " + System.getProperty("user.home") + "\n"
-               + "====================================\n";
+               + "User home: " + System.getProperty("user.home") + "\n";
     }
 }

@@ -60,7 +60,16 @@ public class UpperToolbar {
         return btn;
     }
 
+    /**
+     * Get the toolbar component.
+     * @return toolbar
+     */
     public JToolBar getToolBar() {
         return toolbar;
+    }
+ 
+    @Override
+    public String toString() {
+        return "UpperToolbar";
     }
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import fileminer.main.FileMinerLogger;
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
+import fileminer.model.FileSystemTree;
 import fileminer.model.FileSystemTreeImpl;
 import fileminer.view.FileMinerGUI;
 
@@ -14,8 +15,8 @@ import fileminer.view.FileMinerGUI;
  *
  */
 public class ControllerImpl implements Controller {
-    private FileMinerGUI view;
-    private FileSystemTreeImpl fst;
+    private final FileMinerGUI view;
+    private final FileSystemTreeImpl fst;
     private final FileMinerLogger logger;
 
     /**
@@ -134,9 +135,6 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void quit() {
-        this.fst = null;
-        this.view = null;
         System.exit(0);
     }
-
 }

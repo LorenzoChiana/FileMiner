@@ -39,9 +39,6 @@ public class FileMinerGUI implements DefaultGUI {
     private final Controller controller;
     private final SplashScreen splashScreen;
 
-    private JScrollPane treeView;
-    private JSplitPane splitPane;
-    private JMenuBar menuBar;
     private UpperToolbar toolbar;
     private TreeExplorer treeExplorer;
     private NodeContentTable ncp;
@@ -65,13 +62,14 @@ public class FileMinerGUI implements DefaultGUI {
             protected Void doInBackground() throws Exception {
                 initializeFrame();
                 createComponents();
-
-                splashScreen.closeSplash();
-                controller.printOSInfo();
-
-                frame.setVisible(true);
-                frame.requestFocus();
                 return null;
+            }
+            @Override
+            protected void done() {
+                splashScreen.closeSplash();
+                frame.setVisible(true);
+                controller.printOSInfo();
+                frame.requestFocus();
             }
         };
         guiBuilder.execute();
@@ -96,6 +94,11 @@ public class FileMinerGUI implements DefaultGUI {
     }
 
     private void createComponents() {
+
+        JMenuBar menuBar;
+        JScrollPane treeView, ncpView;
+        JSplitPane splitPane;
+
         // START TOOL PANEL
         final JPanel tool = new JPanel();
         tool.setLayout(new BorderLayout());
@@ -104,7 +107,7 @@ public class FileMinerGUI implements DefaultGUI {
         menuBar = createMenuBar();
         menuBar.getAccessibleContext().setAccessibleDescription("Menu of FileMiner application");
         frame.setJMenuBar(menuBar);
-        
+
         // TOOLBAR
         toolbar = new UpperToolbar(new CommandInvokeListener(controller));
         frame.getContentPane().add(toolbar.getToolBar(), BorderLayout.NORTH);
@@ -112,17 +115,16 @@ public class FileMinerGUI implements DefaultGUI {
 
         // START SPLIT PANEL
         splitPane = new JSplitPane();
-        //final ActionMap newSplitActionMap = new ActionMap();
-        //splitPane.setActionMap(newSplitActionMap);
 
         treeExplorer = new TreeExplorer(controller.getFileSystem(), this);
         treeView = new JScrollPane(treeExplorer.getTree());
         treeView.setPreferredSize(new Dimension(frame.getWidth() / 4, frame.getHeight()));
         splitPane.add(treeView, JSplitPane.LEFT);
-         
+
         // NODE CONTENT PANEL
         ncp = new NodeContentTable();
-        splitPane.add(ncp.getNodesTable(), JSplitPane.RIGHT);
+        ncpView = new JScrollPane(ncp.getNodesTable());
+        splitPane.add(ncpView, JSplitPane.RIGHT);
         frame.getContentPane().add(splitPane, BorderLayout.CENTER);
         // END SPLIT PANEL
 
@@ -225,6 +227,5 @@ public class FileMinerGUI implements DefaultGUI {
                 controller.quit();
             }
         });
-        
     }
 }
