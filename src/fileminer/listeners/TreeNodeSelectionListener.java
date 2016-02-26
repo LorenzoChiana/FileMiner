@@ -35,7 +35,6 @@ public class TreeNodeSelectionListener implements TreeSelectionListener {
     @Override
     public void valueChanged(final TreeSelectionEvent e) {
         final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-        
         final Node fileNode = (Node) treeNode.getUserObject();
         
         final AddFileNodes addFileNodes = new AddFileNodes(this.model, treeNode);

@@ -32,7 +32,7 @@ public class TreeExpandListener implements TreeWillExpandListener {
 
     @Override
     public void treeWillCollapse(final TreeExpansionEvent event) throws ExpandVetoException {
-        
+
     }
 
     @Override
@@ -40,9 +40,8 @@ public class TreeExpandListener implements TreeWillExpandListener {
         final TreePath path = event.getPath();
         // Prendo l'ultimo elemento della path.
         final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        // Richiamo il metodo del model per aggiungere i nodi nipoti del nodo corrente.
+       // Richiamo il metodo del model per aggiungere i nodi nipoti del nodo corrente.
         final AddFileNodes addFileNodes = new AddFileNodes(this.modelTree, treeNode);
         new Thread(addFileNodes).start();
     }
-
 }

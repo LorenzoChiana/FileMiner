@@ -1,32 +1,17 @@
 package fileminer.view;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeModel;
 
 import fileminer.controller.Controller;
 import fileminer.listeners.CommandInvokeListener;
-import fileminer.listeners.TreeExpandListener;
-import fileminer.listeners.TreeNodeSelectionListener;
 import fileminer.controller.Commands;
 import fileminer.main.FileMinerLogger;
-import fileminer.view.cellrenderer.NodeTreeCellRenderer;
 import fileminer.view.components.InformationScrollPane;
 import fileminer.view.components.NodeContentTable;
 import fileminer.view.components.TreeExplorer;
@@ -40,8 +25,16 @@ public class FileMinerGUI implements DefaultGUI {
 
     private static final double SCREENRATIO = 1.5;
 
+    private static final String LOGO_32 = "/images/Logo32.png";
+    private static final String LOGO_256 = "/images/Logo256.png";
+    private static final String NEW_ICON = "/images/NewFile.png";
+    private static final String COPY_ICON = "/images/Copy.png";
+    private static final String CUT_ICON = "/images/Cut.png";
+    private static final String PASTE_ICON = "/images/Paste.png";
+    private static final String INFO_ICON = "/images/Info.png";
+    private static final String EXIT_ICON = "/images/Exit.png";
+
     private final JFrame frame;
-    private final FileMinerGUI self;
     private final FileMinerLogger logger;
     private final Controller controller;
     private final SplashScreen splashScreen;
@@ -50,6 +43,7 @@ public class FileMinerGUI implements DefaultGUI {
     private JSplitPane splitPane;
     private JMenuBar menuBar;
     private UpperToolbar toolbar;
+    private TreeExplorer treeExplorer;
     private NodeContentTable ncp;
     private InformationScrollPane info;
 
@@ -59,20 +53,32 @@ public class FileMinerGUI implements DefaultGUI {
      */
     public FileMinerGUI(final Controller ctrl) {
         controller = ctrl;
-        self = this;
         logger = FileMinerLogger.getInstance();
 
-        splashScreen = new SplashScreen("/images/Logo256.png");
+        frame = new JFrame("FileMiner");
+        splashScreen = new SplashScreen(LOGO_256);
         splashScreen.setVisible(true);
 
-        frame = new JFrame("FileMiner");
-        initializeFrame();
-        createComponents();
+        final SwingWorker<Void, Void> guiBuilder = new SwingWorker<Void, Void>() {
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                initializeFrame();
+                createComponents();
+
+                splashScreen.closeSplash();
+                controller.printOSInfo();
+
+                frame.setVisible(true);
+                frame.requestFocus();
+                return null;
+            }
+        };
+        guiBuilder.execute();
     }
 
     private void initializeFrame() {
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        
         frame.setLocationByPlatform(true);
         frame.setSize((int) (screenSize.getWidth() / SCREENRATIO), (int) (screenSize.getHeight() / SCREENRATIO));
         frame.setMinimumSize(new Dimension((int) screenSize.getWidth() / 8, (int) screenSize.getHeight() / 8));
@@ -85,7 +91,7 @@ public class FileMinerGUI implements DefaultGUI {
             }
         });
 
-        frame.setIconImage(new ImageIcon(getClass().getResource("/images/Logo32.png")).getImage());
+        frame.setIconImage(new ImageIcon(getClass().getResource(LOGO_32)).getImage());
         frame.getContentPane().setLayout(new BorderLayout());
     }
 
@@ -106,43 +112,14 @@ public class FileMinerGUI implements DefaultGUI {
 
         // START SPLIT PANEL
         splitPane = new JSplitPane();
-        final ActionMap newSplitActionMap = new ActionMap();
-        splitPane.setActionMap(newSplitActionMap);
-        
+        //final ActionMap newSplitActionMap = new ActionMap();
+        //splitPane.setActionMap(newSplitActionMap);
 
-        // TREE EXPLORER PANE
-        final SwingWorker<Void, Void> treeLoader = new SwingWorker<Void, Void>() {
-            private DefaultTreeModel treeModel;
-            private TreeExplorer treeExplorer;
-            @Override
-            protected Void doInBackground() throws Exception {
-                treeModel = controller.getFileSystem().getTree();
-                return null;
-            }
-            @Override
-            protected void done() {
-                treeExplorer = new TreeExplorer(treeModel);
-                treeExplorer.getTree().addTreeSelectionListener(new TreeNodeSelectionListener(controller.getFileSystem(), self));
-                treeExplorer.getTree().addTreeWillExpandListener(new TreeExpandListener(controller.getFileSystem()));
-                treeExplorer.getTree().setCellRenderer(new NodeTreeCellRenderer(controller.getFileSystem()));
-                treeView = new JScrollPane(treeExplorer.getTree());
-                treeView.setPreferredSize(new Dimension(frame.getWidth() / 4, frame.getHeight()));
-                splitPane.add(treeView, JSplitPane.LEFT);
-                frame.repaint();
-            }
-        };
-        treeLoader.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(final PropertyChangeEvent evt) {
-                if ("state".equals(evt.getPropertyName()) && SwingWorker.StateValue.DONE == evt.getNewValue()) {
-                    splashScreen.closeSplash();
-                    frame.setVisible(true);
-                    frame.requestFocus();
-                }
-            }
-        });
-        treeLoader.execute();
-        
+        treeExplorer = new TreeExplorer(controller.getFileSystem(), this);
+        treeView = new JScrollPane(treeExplorer.getTree());
+        treeView.setPreferredSize(new Dimension(frame.getWidth() / 4, frame.getHeight()));
+        splitPane.add(treeView, JSplitPane.LEFT);
+         
         // NODE CONTENT PANEL
         ncp = new NodeContentTable();
         splitPane.add(ncp.getNodesTable(), JSplitPane.RIGHT);
@@ -167,32 +144,32 @@ public class FileMinerGUI implements DefaultGUI {
         item = new JMenuItem("New");
         item.setActionCommand(Commands.NEW.toString());
         item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource("/images/NewFile.png"));
+        itemIcon = new ImageIcon(getClass().getResource(NEW_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         menu.addSeparator();
         item = new JMenuItem("Copy");
         item.setActionCommand(Commands.COPY.toString());
         item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource("/images/Copy.png"));
+        itemIcon = new ImageIcon(getClass().getResource(COPY_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         item = new JMenuItem("Cut");
         item.setActionCommand(Commands.CUT.toString());
         item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource("/images/Cut.png"));
+        itemIcon = new ImageIcon(getClass().getResource(CUT_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         item = new JMenuItem("Paste");
         item.setActionCommand(Commands.PASTE.toString());
         item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource("/images/Paste.png"));
+        itemIcon = new ImageIcon(getClass().getResource(PASTE_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         menu.addSeparator();
         item = new JMenuItem("Exit");
         item.setActionCommand("EXIT");
-        itemIcon = new ImageIcon(getClass().getResource("/images/Exit.png"));
+        itemIcon = new ImageIcon(getClass().getResource(EXIT_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         item.addActionListener(e -> {
             exitProcedure();
@@ -224,7 +201,7 @@ public class FileMinerGUI implements DefaultGUI {
         // HELP MENU
         menu = new JMenu("?");
         item = new JMenuItem("About FileMiner");
-        itemIcon = new ImageIcon(getClass().getResource("/images/Info.png"));
+        itemIcon = new ImageIcon(getClass().getResource(INFO_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         item.addActionListener(e -> {
             JOptionPane.showMessageDialog(null,

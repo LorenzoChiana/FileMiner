@@ -7,11 +7,17 @@ package fileminer.view;
 public interface DefaultConsole {
 
     /**
-     * Print info.
-     * @param invoker who want to print info
-     * @param objects log arguments
+     * Print string on console.
+     * @param arg string argument
      */
-    void put(String invoker, Object... objects);
+    void putString(String arg);
+
+    /**
+     * Print info on console with invoker name.
+     * @param invoker who want to print info
+     * @param args object arguments
+     */
+    void put(String invoker, Object... args);
 
     /**
      * Clear the console.

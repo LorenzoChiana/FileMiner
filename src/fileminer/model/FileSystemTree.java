@@ -17,7 +17,6 @@ public interface FileSystemTree {
 	 */
 	DefaultTreeModel getTree();
 
-
 	/**
 	 * Aggiunge files alle sottocartelle all'albero.
 	 * @param rootNode root dell'albero

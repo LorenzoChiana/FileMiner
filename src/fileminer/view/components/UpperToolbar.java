@@ -2,7 +2,6 @@ package fileminer.view.components;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.net.URL;
 import java.util.Optional;
 
@@ -17,8 +16,6 @@ import fileminer.controller.Commands;
  *
  */
 public class UpperToolbar {
-
-    private static final long serialVersionUID = 712167899479629945L;
 
     private final JToolBar toolbar;
 

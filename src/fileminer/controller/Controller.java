@@ -20,6 +20,11 @@ public interface Controller {
     void invokesCommand(Commands command);
 
     /**
+     * Print OS information.
+     */
+    void printOSInfo();
+
+    /**
      * Exit from application.
      */
     void quit();

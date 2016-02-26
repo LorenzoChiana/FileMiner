@@ -2,26 +2,24 @@ package fileminer.view.cellrenderer;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.io.File;
+import java.awt.SystemColor;
 
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 
-import fileminer.model.FileSystemTreeImpl;
+import fileminer.model.Node;
 
 public class NodeTreeCellRenderer implements TreeCellRenderer {
 
-    private final FileSystemTreeImpl fst;
     private final JLabel label;
 
     /**
-     * @param fst file system object
+     * @param f file system object
      */
-    public NodeTreeCellRenderer(final FileSystemTreeImpl fst) {
-        this.fst = fst;
-        this.label = new JLabel(" ");
+    public NodeTreeCellRenderer() {
+        this.label = new JLabel("");
         label.setOpaque(true);
     }
 
@@ -31,17 +29,20 @@ public class NodeTreeCellRenderer implements TreeCellRenderer {
                                                   final boolean leaf, final int row, final boolean hasFocus) {
 
         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-        final File file = (File) node.getUserObject();
+        final Node fileNode = (Node) node.getUserObject();
 
-        if (file != null) {
-            label.setIcon(fst.getFileIcon(file));
-            label.setText(fst.getFileText(file));
+        if (fileNode != null) {
+            label.setIcon(fileNode.getFileIcon());
+            label.setText(fileNode.getFileName());
         } else {
             label.setText(value.toString());
         }
          
-        if (selected) {
-            label.setBackground(Color.BLUE);
+        if (selected && hasFocus) {
+            label.setBackground(SystemColor.textHighlight);
+            label.setForeground(Color.WHITE);
+        } else if (selected) {
+            label.setBackground(Color.LIGHT_GRAY);
             label.setForeground(Color.WHITE);
         } else {
             label.setBackground(Color.WHITE);

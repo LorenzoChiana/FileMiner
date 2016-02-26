@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
  * @author Michele
  *
  */
-public class FileMinerConsole implements DefaultConsole {
+public final class FileMinerConsole implements DefaultConsole {
 
     private final JTextArea console;
 
@@ -31,10 +31,10 @@ public class FileMinerConsole implements DefaultConsole {
     }
 
     @Override
-    public void put(final String invoker, final Object... objects) {
+    public void put(final String invoker, final Object... args) {
         console.append(invoker + " -> ");
         
-        for (final Object obj : objects) {
+        for (final Object obj : args) {
             switch (obj.getClass().getName()) {
             case "java.lang.String": console.append(obj + ","); break;
             case "Z": console.append((boolean) obj + ","); break;
@@ -55,5 +55,10 @@ public class FileMinerConsole implements DefaultConsole {
     @Override
     public void clear() {
         console.setText("");
+    }
+
+    @Override
+    public void putString(final String arg) {
+        console.append(arg + "\n");
     }
 }
