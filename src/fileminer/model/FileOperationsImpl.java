@@ -51,7 +51,7 @@ public class FileOperationsImpl implements FileOperations {
 	}
 
 	@Override
-	public void open(final String srcPath) throws IOException{
+	public void open(final String srcPath) throws IOException {
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class FileOperationsImpl implements FileOperations {
 	}
 
 	@Override
-	public void print(final String srcPath) throws IOException{
+	public void print(final String srcPath) throws IOException {
 	}
 
 }

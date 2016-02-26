@@ -16,12 +16,7 @@ public class Node {
 	private Icon fileIcon;
 	private String fileName;
 	private String filePath;
-	/*
-	private boolean writable;
-	private boolean readable;
-	private boolean executable;
-	private long size;
-	*/
+	
 	
 	/**
 	 * Inizializzazione nodo.
@@ -40,12 +35,7 @@ public class Node {
 		    this.fileName = file.getName();
 		    this.fileIcon = UIManager.getIcon("FileView.directoryIcon");
 		}
-		/*
-		this.writable = file.canWrite();
-		this.readable = file.canRead();
-		this.executable = file.canExecute();
-		this.size = file.getTotalSpace();
-		*/
+		
 	}
 
 	/**
@@ -96,62 +86,6 @@ public class Node {
 	    return this.fileIcon;
 	}
 
-//	/**
-//	 * @return writable
-//	 */
-//	public boolean isWritable() {
-//		return writable;
-//	}
-//
-//	/**
-//	 * @param writable
-//	 */
-//	public void setWritable(final boolean writable) {
-//		this.writable = file.canWrite();
-//	}
-//
-//	/**
-//	 * @return readable
-//	 */
-//	public boolean isReadable() {
-//		return readable;
-//	}
-//
-//	/**
-//	 * @param readable
-//	 */
-//	public void setReadable(final boolean readable) {
-//		this.readable = file.canRead();
-//	}
-//
-//	/**
-//	 * @return executable
-//	 */
-//	public boolean isExecutable() {
-//		return executable;
-//	}
-//
-//	/**
-//	 * @param executable
-//	 */
-//	public void setExecutable(final boolean executable) {
-//		this.executable = file.canExecute();
-//	}
-//
-//	/**
-//	 * @return size
-//	 */
-//	public long getSize() {
-//		return size;
-//	}
-//
-//	/**
-//	 * @param size
-//	 */
-//	public void setSize(final long size) {
-//		this.size = file.getTotalSpace();
-//	}
-//
 	/**
 	 * @return file
 	 */
