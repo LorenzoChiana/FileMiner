@@ -8,7 +8,14 @@ import java.util.List;
  *
  */
 public class ClipboardImpl implements Clipboard {
-    private List<String> clipboard = new ArrayList<>();
+    private List<String> clipboard;
+    
+    /**
+     * ClipboardImpl constructor that initializes the clipboard. 
+     */
+    public ClipboardImpl() {
+        this.clipboard = new ArrayList<>();
+    }
 
     @Override
     public List<String> getPathFiles() {
@@ -16,8 +23,8 @@ public class ClipboardImpl implements Clipboard {
     }
 
     @Override
-    public void addPathFiles(final String path) {
-        this.clipboard.add(path);
+    public void addPathFiles(final List<String> path) {
+        this.clipboard.addAll(path);
     }
 
     @Override

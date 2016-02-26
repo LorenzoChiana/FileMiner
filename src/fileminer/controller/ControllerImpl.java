@@ -1,11 +1,11 @@
 package fileminer.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import fileminer.main.FileMinerLogger;
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
-import fileminer.model.FileSystemTree;
 import fileminer.model.FileSystemTreeImpl;
 import fileminer.view.FileMinerGUI;
 
@@ -18,6 +18,7 @@ public class ControllerImpl implements Controller {
     private final FileMinerGUI view;
     private final FileSystemTreeImpl fst;
     private final FileMinerLogger logger;
+    private final Clipboard clipboard;
 
     /**
      * ControllerImpl constructor:
@@ -27,25 +28,24 @@ public class ControllerImpl implements Controller {
         this.logger = FileMinerLogger.getInstance();
         this.fst = new FileSystemTreeImpl();
         this.view = new FileMinerGUI(this);
+        this.clipboard = new ClipboardImpl();
     }
 
     @Override
     public void invokesCommand(final Commands command) {
 
         final FileOperations operation = new FileOperationsImpl();
-        final Clipboard clipboard = new ClipboardImpl();
         
         switch (command) {
         case COPY:
-            clipboard.addPathFiles("");
-            operation.copy("");
+            this.clipboard.addPathFiles(new ArrayList<>()); //richiamo metodo view che mi passa la lista di path
+            //operation.copy(this.clipboard.getPathFiles());
             break;
 
         case PASTE:
             try {
-                clipboard.getPathFiles();
-                operation.pasteTo("");
-                clipboard.clean();
+                operation.pasteTo("richiamo metodo della view che mi restituisce la path della directory su cui copiare");
+                this.clipboard.clean();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -81,6 +81,12 @@ public class ControllerImpl implements Controller {
             break;
 
         case MODIFY:
+            break;
+            
+        case COMPRESS:
+            break;
+        
+        case DECOMPRESS: 
             break;
 
         default: break;

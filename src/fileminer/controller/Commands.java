@@ -41,5 +41,13 @@ public enum Commands {
     /**
      * MODIFY = operation that modify a file.
      */
-    MODIFY;
+    MODIFY,
+    /**
+     * COMPRESS = operation that compress files.
+     */
+    COMPRESS,
+    /**
+     * DECOMPRESS = operation that decompress files.
+     */
+    DECOMPRESS;
 }
