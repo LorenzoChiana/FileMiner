@@ -1,7 +1,10 @@
 package fileminer.model;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -10,63 +13,99 @@ import org.apache.commons.io.FileUtils;
  */
 public class FileOperationsImpl implements FileOperations {
 
-	private String srcPath;
+	private List<String> clipboard;
+
+
+	/**
+	 * @return clipboard
+	 */
+	public List<String> getClipboard() {
+		return clipboard;
+	}
 
 	
 	/**
-	 * @return path of source file
+	 * @param clipboard
 	 */
-	public String getSrc() {
-		return srcPath;
+	public void setClipboard(final List<String> clipboard) {
+		this.clipboard = clipboard;
+	}
+
+	/**
+	 * Add files from path.
+	 * @param files
+	 */
+	private List<File> addFiles(final List<File> files) {
+		for (String path : this.clipboard) {
+			files.add(FileUtils.getFile(path)); // File o Directory
+		}
+		return new ArrayList<File>(files);
 	}
 
 	@Override
-	public void copy(final String srcPath) {
-		this.srcPath = srcPath;
+	public void copy(final List<String> clipboard) {
+		setClipboard(clipboard);
 	}
 
 	@Override
 	public void pasteTo(final String destPath) throws IOException {
-		File src = FileUtils.getFile(this.srcPath); // File o Directory
+
+		List<File> files = new ArrayList<File>();
 		File dest = FileUtils.getFile(destPath); // Directory
 
-		if (src.isDirectory()) {
-			FileUtils.copyDirectory(src, dest);
-		} else {
-			FileUtils.copyFileToDirectory(src, dest);			
-		}
+		files = addFiles(files);
 
+		for (File file : files) {
+			if (file.isDirectory()) {
+				FileUtils.copyDirectory(file, dest);
+			} else {
+				FileUtils.copyFileToDirectory(file, dest);			
+			}
+		}
 	}
 
 	@Override
-	public void moveTo(final String srcPath, final String destPath, final boolean createDestDir) throws IOException {
-		File src = FileUtils.getFile(srcPath); // File o Directory
+	public void moveTo(final String srcPath, final String destPath) throws IOException {
+		List<File> files = new ArrayList<File>();
 		File dest = FileUtils.getFile(destPath); // Directory
 
-		if (src.isDirectory()) {
-			FileUtils.moveDirectory(src, dest);
-		} else {
-			FileUtils.moveFileToDirectory(src, dest, createDestDir);
+		files = addFiles(files);
+
+		for (File file : files) {
+			if (file.isDirectory()) {
+				FileUtils.moveDirectory(file, dest);
+			} else {
+				FileUtils.moveFileToDirectory(file, dest, true);
+			}
 		}
 	}
 
 	@Override
 	public void open(final String srcPath) throws IOException {
+		File file = FileUtils.getFile(srcPath);
+		Desktop desktop = Desktop.getDesktop();
+		if (file.exists()) {
+			desktop.open(file);
+		}
 	}
 
 	@Override
 	public void remove(final String srcPath) throws IOException {
-		File src = FileUtils.getFile(srcPath); // File o Directory
+		List<File> files = new ArrayList<File>();
 
-		if (src.isDirectory()) {
-			FileUtils.deleteDirectory(src);
-		} else {
-			FileUtils.forceDelete(src);
+		files = addFiles(files);
+		for (File file : files) {
+			if (file.isDirectory()) {
+				FileUtils.deleteDirectory(file);
+			} else {
+				FileUtils.forceDelete(file);
+			}
 		}
 	}
 
 	@Override
 	public void print(final String srcPath) throws IOException {
 	}
+
 
 }

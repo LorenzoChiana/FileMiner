@@ -2,6 +2,7 @@ package fileminer.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 // Interfaccia per le varie operazioni sui files
 /**
@@ -14,7 +15,7 @@ public interface FileOperations {
 	 * Copy the source path to the local Clipboard.
 	 * @param srcPath
 	 */
-	void copy(String srcPath);
+	void copy(List<String> srcPath);
 
 
 
@@ -33,7 +34,7 @@ public interface FileOperations {
 	 * @param destPath Directory destination path
 	 * @throws IOException
 	 */
-	void moveTo(String srcPath, String destPath, boolean createDestDir) throws IOException;
+	void moveTo(String srcPath, String destPath) throws IOException;
 
 
 	/**
@@ -57,7 +58,8 @@ public interface FileOperations {
 	 * @param srcPath File or directory source path
 	 * @throws IOException
 	 */
-	void print(String srcPath) throws IOException;;
+	void print(String srcPath) throws IOException;
+
 
 
 }
