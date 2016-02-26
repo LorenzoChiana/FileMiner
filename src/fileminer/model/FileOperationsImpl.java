@@ -23,7 +23,7 @@ public class FileOperationsImpl implements FileOperations {
 		return clipboard;
 	}
 
-	
+
 	/**
 	 * @param clipboard
 	 */
@@ -35,8 +35,8 @@ public class FileOperationsImpl implements FileOperations {
 	 * Add files from path.
 	 * @param files
 	 */
-	private List<File> addFiles(final List<File> files) {
-		for (String path : this.clipboard) {
+	private List<File> addFiles(final List<File> files, List<String> clipboard) {
+		for (String path : clipboard) {
 			files.add(FileUtils.getFile(path)); // File o Directory
 		}
 		return new ArrayList<File>(files);
@@ -48,37 +48,33 @@ public class FileOperationsImpl implements FileOperations {
 	}
 
 	@Override
-	public void pasteTo(final String destPath) throws IOException {
+	public void pasteTo(final String destPath, final boolean isCopy) throws IOException {
 
 		List<File> files = new ArrayList<File>();
 		File dest = FileUtils.getFile(destPath); // Directory
 
-		files = addFiles(files);
+		files = addFiles(files, this.clipboard);
 
-		for (File file : files) {
-			if (file.isDirectory()) {
-				FileUtils.copyDirectory(file, dest);
-			} else {
-				FileUtils.copyFileToDirectory(file, dest);			
+		if (isCopy) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					FileUtils.copyDirectory(file, dest);
+				} else {
+					FileUtils.copyFileToDirectory(file, dest);			
+				}
+			}
+		} else {
+
+			for (File file : files) {
+				if (file.isDirectory()) {
+					FileUtils.moveDirectory(file, dest);
+				} else {
+					FileUtils.moveFileToDirectory(file, dest, true);
+				}
 			}
 		}
 	}
 
-	@Override
-	public void moveTo(final String srcPath, final String destPath) throws IOException {
-		List<File> files = new ArrayList<File>();
-		File dest = FileUtils.getFile(destPath); // Directory
-
-		files = addFiles(files);
-
-		for (File file : files) {
-			if (file.isDirectory()) {
-				FileUtils.moveDirectory(file, dest);
-			} else {
-				FileUtils.moveFileToDirectory(file, dest, true);
-			}
-		}
-	}
 
 	@Override
 	public void open(final String srcPath) throws IOException {
@@ -90,10 +86,11 @@ public class FileOperationsImpl implements FileOperations {
 	}
 
 	@Override
-	public void remove(final String srcPath) throws IOException {
+	public void remove(final List<String> clipboard) throws IOException {
 		List<File> files = new ArrayList<File>();
 
-		files = addFiles(files);
+		files = addFiles(files, clipboard);
+		
 		for (File file : files) {
 			if (file.isDirectory()) {
 				FileUtils.deleteDirectory(file);

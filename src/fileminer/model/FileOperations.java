@@ -18,23 +18,14 @@ public interface FileOperations {
 	void copy(List<String> srcPath);
 
 
-
 	/**
 	 * Paste the file in the directory path. 
-	 * @param destPath Directory destination path
+	 * @param destPath
+	 * @param isCopy
 	 * @throws IOException
 	 */
-	void pasteTo(String destPath) throws IOException;
+	void pasteTo(final String destPath, final boolean isCopy) throws IOException;
 
-
-
-	/**
-	 * Move a file in the directory path.
-	 * @param srcPath File or directory source path
-	 * @param destPath Directory destination path
-	 * @throws IOException
-	 */
-	void moveTo(String srcPath, String destPath) throws IOException;
 
 
 	/**
@@ -47,10 +38,10 @@ public interface FileOperations {
 
 	/**
 	 * Remove a file or an entirely directory.
-	 * @param srcPath File or directory source path
+	 * @param clipboard Files or directories source path
 	 * @throws IOException
 	 */
-	void remove(String srcPath) throws IOException;
+	void remove(final List<String> clipboard) throws IOException;
 
 
 	/**
