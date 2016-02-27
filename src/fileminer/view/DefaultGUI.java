@@ -33,4 +33,18 @@ public interface DefaultGUI {
 	 * @param node
 	 */
 	void updateNodesTable(DefaultMutableTreeNode node);
+	
+	/**
+	 * 
+	 * @return 0 if is a directory
+	 *         1 if is a file
+	 *         else if the dialog was closed.
+	 */
+	int newObjectType();
+	
+	/**
+	 * 
+	 * @return the name of new object (file, directory or zip)
+	 */
+	String newObjectName();
 }

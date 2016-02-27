@@ -36,7 +36,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void invokesCommand(final Commands command) {
         final Archiver archiver;
-        
+
         switch (command) {
         case COPY:       
             this.clipboard.addPathFiles(this.view.getSelectedItems());
@@ -85,12 +85,16 @@ public class ControllerImpl implements Controller {
 
         case NEW:
             try {
-                this.operation.mkDir("", "");
+                final int option = this.view.newObjectType();
+                if (option == 0) {
+                    this.operation.mkDir(this.view.getCurrentDir(), this.view.newObjectName());
+                } else if (option == 1) {
+                    this.operation.mkFile(this.view.getCurrentDir(), this.view.newObjectName());
+                }
                 this.updateTree();
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
-            this.fst.getTree().reload();
             break;
 
         case OPEN:
@@ -104,7 +108,8 @@ public class ControllerImpl implements Controller {
         case COMPRESS:            
             archiver = new ArchiverZIP();
             try {
-                archiver.compress(view.getSelectedItems(), "Archivio", view.getCurrentDir());
+                final String name = this.view.newObjectName();
+                archiver.compress(view.getSelectedItems(), name, view.getCurrentDir());
             } catch (FileNotFoundException | ZipException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
@@ -139,7 +144,7 @@ public class ControllerImpl implements Controller {
     public void quit() {
         System.exit(0);
     }
-    
+
     private void updateTree() {
         this.fst = new FileSystemTreeImpl();
         this.view.updateTree(this.fst.getTree());

@@ -7,6 +7,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -257,7 +259,7 @@ public class FileMinerGUI implements DefaultGUI {
 
         return menuBar2;
     }
-    
+
     public void repaintGUI() {
         this.frame.repaint();
     }
@@ -300,5 +302,28 @@ public class FileMinerGUI implements DefaultGUI {
     @Override
     public void updateNodesTable(final DefaultMutableTreeNode node) {
         ncp.generateTableByNode(node);
+    }
+
+    /*
+     * this method was implemented with the help of this site:
+     * https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html 
+     */
+    @Override
+    public int newObjectType() {
+        Object[] options = {"Directory", "File"};
+        return JOptionPane.showOptionDialog(frame,
+                "Creare nuova directory o nuovo file?",
+                "New",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[0]); //default button title
+    }
+    @Override
+    public String newObjectName() {
+
+        return JOptionPane.showInputDialog("Inserire nome: ");
+
     }
 }
