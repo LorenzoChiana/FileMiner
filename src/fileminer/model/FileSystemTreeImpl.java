@@ -2,7 +2,6 @@
 package fileminer.model;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,7 +14,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 /**
- * Classe per la creazione del Tree del FileSystem.
+ * @author Daniele Gambaletta
+ * Class for tree creation.
  */
 public class FileSystemTreeImpl implements FileSystemTree {
 
@@ -24,7 +24,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 	private boolean treeReady;
 
 	/**
-	 * Costruttore di FileBrowserImpl inizializza la FileSystemView.
+	 * Initializations.
 	 */
 	public FileSystemTreeImpl() {
 		this.fsv = FileSystemView.getFileSystemView();
@@ -114,16 +114,18 @@ public class FileSystemTreeImpl implements FileSystemTree {
 		return this.fsv;
 	}
 
+
 	/**
-	 * Stampa l'albero del FileSystem per i test.
+	 * Print tree from node.
+	 * @param node print from node 
 	 */
-	public static void printTree(final DefaultMutableTreeNode root) {
+	public static void printTree(final DefaultMutableTreeNode node) {
 		@SuppressWarnings("unchecked")
-		Enumeration<DefaultMutableTreeNode> en = root.preorderEnumeration();
+		Enumeration<DefaultMutableTreeNode> en = node.preorderEnumeration();
 		while (en.hasMoreElements()) {
-			final DefaultMutableTreeNode node = en.nextElement();
-			final TreeNode[] path = node.getPath();
-			System.out.println((node.isLeaf() ? "  - " : "+ ") + path[path.length - 1]);
+			final DefaultMutableTreeNode tmpNode = en.nextElement();
+			final TreeNode[] path = tmpNode.getPath();
+			System.out.println((tmpNode.isLeaf() ? "  - " : "+ ") + path[path.length - 1]);
 		}
 	}
 }

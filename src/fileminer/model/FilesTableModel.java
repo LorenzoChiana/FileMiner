@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -16,12 +15,9 @@ import javax.swing.table.TableColumn;
 
 import fileminer.cellrenderer.ObjectRenderer;
 
-
-
 /**
- * Classe per impostare la tabella dei files e delle directories.
- * @author Daniele
- *
+ * @author Daniele Gambaletta
+ * Table management.
  */
 public class FilesTableModel extends AbstractTableModel implements FilesTable {
 
@@ -35,7 +31,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	private List<List<Object>> rows;
 
 	/**
-	 * 
+	 * FilesTableModel constructor.
 	 */
 	public FilesTableModel() {
         this.rows = new ArrayList<List<Object>>();
@@ -53,7 +49,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	}
 
 	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
 		//super.setValueAt(aValue, rowIndex, columnIndex);
 		this.rows.get(rowIndex).set(columnIndex, aValue);
 		fireTableCellUpdated(rowIndex, columnIndex);
@@ -65,7 +61,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	}
 
 	@Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
+    public boolean isCellEditable(final int rowIndex, final int columnIndex) {
         return columnIndex == 0;
     }
 
@@ -119,6 +115,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 		}
 	}
 	
+	@Override
 	public int setColumnWidths(final JTable table) {
         DefaultTableCellRenderer centerRenderer = new ObjectRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -138,7 +135,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
         return width + 30;
     }
      
-    private int setColumnWidth(final JTable table, int column, int width) {
+	private int setColumnWidth(final JTable table, final int column, int width) {
         TableColumn tableColumn = table.getColumnModel().getColumn(column);
         JLabel label = new JLabel((String) tableColumn.getHeaderValue());
         Dimension preferred = label.getPreferredSize();

@@ -1,20 +1,32 @@
 package fileminer.model;
 
-import javax.swing.JButton;
 import javax.swing.JTable;
 
-//Interfaccia per impostare la tabella dei files e delle directories
 /**
- * @author Daniele
- *
+ * @author Daniele Gambaletta
+ * Table management.
  */
 public interface FilesTable {
 
+	/**
+	 * Add a new row(file) in the table.
+	 * @param node node to add
+	 * @param fst FileSystemTreeImpl
+	 */
 	void addRow(Node node, FileSystemTreeImpl fst);
 	
+	/**
+	 * Remove all rows.
+	 */
 	void removeRows();
+
+	/**
+	 * Set width of the entire table.
+	 * @param table JTable
+	 * @return total width
+	 */
+	int setColumnWidths(JTable table);
 	
-	int setColumnWidths(final JTable table);
 	
 	
 	

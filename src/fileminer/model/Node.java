@@ -7,8 +7,8 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * @author Daniele
- *	Nodo dell'albero del file system.
+ * @author Daniele Gambaletta
+ * Node of the tree.
  */
 public class Node {
 	private final File file;
@@ -19,8 +19,8 @@ public class Node {
 	
 	
 	/**
-	 * Inizializzazione nodo.
-	 * @param file
+	 * Initializations.
+	 * @param file file to add in the node
 	 */
 	public Node(final File file) {
 		this.file = file;
@@ -55,6 +55,7 @@ public class Node {
 	}
 	
 	/**
+	 * Get file name.
 	 * @return file name
 	 */
 	public String getFileName() {
@@ -62,13 +63,14 @@ public class Node {
 	}
 
 	/**
-	 * 
+	 * Set file name.
 	 */
 	public void setFileName() {
 		this.fileName = file.getName();
 	}
 
 	/**
+	 * Get file path.
 	 * @return file path
 	 */
 	public String getFilePath() {
@@ -76,17 +78,22 @@ public class Node {
 	}
 
 	/**
-	 * 
+	 * Set file path.
 	 */
 	public void setFilePath() {
 		this.filePath = file.getAbsolutePath();
 	}
 
+	/**
+	 * Get file icon.
+	 * @return file icon
+	 */
 	public Icon getFileIcon() {
 	    return this.fileIcon;
 	}
 
 	/**
+	 * Get file.
 	 * @return file
 	 */
 	public File getFile() {

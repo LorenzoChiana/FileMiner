@@ -6,7 +6,7 @@ import fileminer.model.FileSystemTreeImpl;
 import fileminer.model.Node;
 
 /**
- *
+ * Class for add nodes.
  */
 public class AddFileNodes implements Runnable {
 	

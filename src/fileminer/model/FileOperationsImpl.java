@@ -9,21 +9,19 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.apache.commons.io.FileUtils;
 
 /**
- * Classe per le varie operazioni sui files.
+ * @author Daniele Gambaletta
+ * Class for various file operations.
  */
 public class FileOperationsImpl implements FileOperations {
 
     private List<String> clipboard;
 
 
-
     /**
+     * Getter for clipboard.
      * @return clipboard
      */
     public List<String> getClipboard() {
@@ -32,28 +30,35 @@ public class FileOperationsImpl implements FileOperations {
 
 
     /**
-     * @param clipboard
+     * Setter for clipboard.
+     * @param clipboard list of paths
      */
     public void setClipboard(final List<String> clipboard) {
         this.clipboard = clipboard;
     }
+    
 
+    
     /**
-     * Add files from path.
-     * @param files
+     * Add files from paths
+     * @param files list of file
+     * @param clipboard list of paths
+     * @return file list
      */
-    private List<File> addFiles(final List<File> files, List<String> clipboard) {
+    private List<File> addFiles(final List<File> files, final List<String> clipboard) {
         for (String path : clipboard) {
             files.add(FileUtils.getFile(path)); // File o Directory
         }
         return new ArrayList<File>(files);
     }
+    
 
     @Override
     public void copy(final List<String> clipboard) {
         setClipboard(clipboard);
     }
 
+    
     @Override
     public void pasteTo(final String destPath, final boolean isCopy) throws IOException {
 
@@ -71,7 +76,6 @@ public class FileOperationsImpl implements FileOperations {
                 }
             }
         } else {
-
             for (File file : files) {
                 if (file.isDirectory()) {
                     FileUtils.moveDirectoryToDirectory(file, dest, false);
@@ -80,7 +84,6 @@ public class FileOperationsImpl implements FileOperations {
                 }
             }
         }	
-
     }
 
 
@@ -93,9 +96,9 @@ public class FileOperationsImpl implements FileOperations {
                 desktop.open(file);
             }  
         }
-
     }
 
+    
     @Override
     public void remove(final List<String> clipboard) throws IOException {
         List<File> files = new ArrayList<File>();
@@ -111,6 +114,7 @@ public class FileOperationsImpl implements FileOperations {
         }
     }
 
+    
     @Override
     public void print(final String srcPath) throws IOException {
     }
@@ -135,6 +139,5 @@ public class FileOperationsImpl implements FileOperations {
         Path link = Paths.get(srcLink + System.getProperty("file.separator") + name);
         Files.createSymbolicLink(link, target);
     }
-
 
 }

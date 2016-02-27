@@ -11,8 +11,8 @@ import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
 /**
- * @author Daniele
- *
+ * @author Daniele Gambaletta
+ * Compress file in .zip
  */
 public class ArchiverZIP implements Archiver {
 
@@ -44,7 +44,7 @@ public class ArchiverZIP implements Archiver {
     }
 
     @Override
-    public void decompress(final List<String> archives, final String dest) throws ZipException {
+    public void decompress(final List<String> archives, final String dest) throws FileNotFoundException, ZipException {
         for (String archive: archives) {
             ZipFile zipFile = new ZipFile(archive);
             zipFile.extractAll(dest);

@@ -122,6 +122,8 @@ public class ControllerImpl implements Controller {
                 archiver.decompress(view.getSelectedItems(), view.getCurrentDir());
             } catch (ZipException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+            } catch (FileNotFoundException e) {
+                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
             this.updateTree();
             break;
