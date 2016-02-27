@@ -13,6 +13,17 @@ public interface DefaultGUI {
 	List<String> getSelectedItems();
 
 	/**
+	 * Clear selected item path.
+	 */
+	void clearSelectedItems();
+
+	/**
+	 * Set current directory path.
+	 * @param path current path
+	 */
+	void setCurrentDir(String path);
+
+	/**
 	 * Return the path of the current directory.
 	 * @return String
 	 */

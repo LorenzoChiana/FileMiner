@@ -5,6 +5,7 @@ import java.awt.event.ItemEvent;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -37,6 +38,9 @@ public class FileMinerGUI implements DefaultGUI {
     private TreeExplorer treeExplorer;
     private NodeContentTable ncp;
     private InformationScrollPane info;
+
+    private List<String> selectedNodes;
+    private String currentDir;
 
     /**
      * Constructor of FileMinerGUI.
@@ -115,6 +119,7 @@ public class FileMinerGUI implements DefaultGUI {
         splitPane.add(treeView, JSplitPane.LEFT);
 
         // NODE CONTENT PANEL
+        selectedNodes = new ArrayList<>();
         ncp = new NodeContentTable(controller.getFileSystem(), this);
         ncpView = new JScrollPane(ncp.getTable());
         splitPane.add(ncpView, JSplitPane.RIGHT);
@@ -232,7 +237,17 @@ public class FileMinerGUI implements DefaultGUI {
 
 	@Override
 	public List<String> getSelectedItems() {
-		return null;
+		return selectedNodes;
+	}
+
+	@Override
+	public void clearSelectedItems() {
+		selectedNodes = new ArrayList<String>();
+	}
+
+	@Override
+	public void setCurrentDir(final String path) {
+		currentDir = path;
 	}
 
 	@Override

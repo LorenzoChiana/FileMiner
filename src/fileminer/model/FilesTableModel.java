@@ -30,7 +30,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String[] columns = { "Icon", "Name", "Last Modified", "Size", "Hidden", "Writable", "Readable", "Executable" };
+	private String[] columns = { "X", "Icon", "Name", "Last Modified", "Size", "Hidden", "Writable", "Readable", "Executable" };
 
 	private List<List<Object>> rows;
 
@@ -53,14 +53,27 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	}
 
 	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		//super.setValueAt(aValue, rowIndex, columnIndex);
+		this.rows.get(rowIndex).set(columnIndex, aValue);
+		fireTableCellUpdated(rowIndex, columnIndex);
+	}
+
+	@Override
 	public Object getValueAt(final int row, final int column) {
 		return this.rows.get(row).get(column);
 	}
 
 	@Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex == 0;
+    }
+
+	@Override
 	public void addRow(final Node node, final FileSystemTreeImpl fst) {
 		List<Object> row = new ArrayList<>();
 
+		row.add(Boolean.valueOf(false));
 		row.add(node.getFileIcon());
 		row.add(node);
 		row.add(node.getFile().lastModified());
@@ -87,33 +100,32 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	public Class<?> getColumnClass(final int column) {
 		switch (column) {
 		case 0:
+			return Boolean.class;
+		case 1:
 			return ImageIcon.class;
-		case 1: 
+		case 2: 
 			return String.class;
-		case 2:
-			return Date.class;
 		case 3:
-			return Long.class;
+			return Date.class;
 		case 4:
+			return Long.class;
 		case 5:
 		case 6:
 		case 7:
+		case 8:
 			return Boolean.class;
 		default:
 			return null;
 		}
 	}
 	
-
 	public int setColumnWidths(final JTable table) {
-        DefaultTableCellRenderer centerRenderer = 
-                new ObjectRenderer();
+        DefaultTableCellRenderer centerRenderer = new ObjectRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        table.getColumnModel().getColumn(3)
-            .setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
          
-        int width = setColumnWidth(table, 0, 35);
-        width += setColumnWidth(table, 1, 200);
+        int width = setColumnWidth(table, 0, 20);
+        width += setColumnWidth(table, 1, 100);
         width += setColumnWidth(table, 2, 70);
         width += setColumnWidth(table, 3, 80);
         width += setColumnWidth(table, 4, 0);
@@ -121,13 +133,13 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
         width += setColumnWidth(table, 6, 0);
         width += setColumnWidth(table, 7, 0);
         width += setColumnWidth(table, 8, 0);
+        width += setColumnWidth(table, 9, 0);
          
         return width + 30;
     }
      
     private int setColumnWidth(final JTable table, int column, int width) {
-        TableColumn tableColumn = table.getColumnModel()
-                .getColumn(column);
+        TableColumn tableColumn = table.getColumnModel().getColumn(column);
         JLabel label = new JLabel((String) tableColumn.getHeaderValue());
         Dimension preferred = label.getPreferredSize();
         width = Math.max(width, (int) preferred.getWidth() + 14);

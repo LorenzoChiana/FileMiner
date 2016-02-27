@@ -41,8 +41,10 @@ public class TreeNodeSelectionListener implements TreeSelectionListener {
         if (f.isDirectory()) {
         	final AddFileNodes addFileNodes = new AddFileNodes(this.model, treeNode);
         	new Thread(addFileNodes).start();
+        	view.setCurrentDir(f.getAbsolutePath());
         	view.updateNodesTable(treeNode);
         } else {
+        	view.setCurrentDir(f.getParentFile().getAbsolutePath());
         	view.updateNodesTable(treeNode);
         }
     }
