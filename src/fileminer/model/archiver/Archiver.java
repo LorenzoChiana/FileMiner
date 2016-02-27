@@ -21,6 +21,6 @@ public interface Archiver {
 	/**
 	 * @param archive
 	 */
-	void decompress(String archive);
+	void decompress(String archive, String dest);
 	
 }
