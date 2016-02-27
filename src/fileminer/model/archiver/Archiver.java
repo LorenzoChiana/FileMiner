@@ -26,6 +26,6 @@ public interface Archiver {
 	/**
 	 * @param archive
 	 */
-	void decompress(String archive, String dest);
+	void decompress(List<String> archives, String dest) throws ZipException;
 	
 }

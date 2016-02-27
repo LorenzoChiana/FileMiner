@@ -113,7 +113,11 @@ public class ControllerImpl implements Controller {
 
         case DECOMPRESS: 
             archiver = new ArchiverZIP();
-            archiver.decompress("/home/lorenzo/Documenti/archivio.zip", view.getCurrentDir());
+            try {
+                archiver.decompress(view.getSelectedItems(), view.getCurrentDir());
+            } catch (ZipException e) {
+                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+            }
             this.updateTree();
             break;
 

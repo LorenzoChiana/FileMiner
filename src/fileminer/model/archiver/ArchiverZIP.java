@@ -16,45 +16,44 @@ import net.lingala.zip4j.util.Zip4jConstants;
  */
 public class ArchiverZIP implements Archiver {
 
-	private static final String EXTENSION_ZIP = ".zip";
-	
-	@Override
-	public void compress(final List<String> paths, final String name, final String dest) throws FileNotFoundException, ZipException {
-			
-			List<File> files = new ArrayList<File>(); 
-		
-			for (String path : paths) {
-				files.add(new File(path));
-			}
-			
-			ZipFile zipFile = new ZipFile(dest + System.getProperty("file.separator") + name + EXTENSION_ZIP);
+    private static final String EXTENSION_ZIP = ".zip";
 
-			ZipParameters parameters = new ZipParameters();
-			parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
-			parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
-			parameters.setEncryptFiles(false);
+    @Override
+    public void compress(final List<String> paths, final String name, final String dest) throws FileNotFoundException, ZipException {
 
-			for (File f : files) {
-				if (f.isDirectory()) {
-					zipFile.addFolder(f.getAbsolutePath(), parameters);
-				} else {
-					zipFile.addFile(f, parameters);
-				}
-			}
-	}
+        List<File> files = new ArrayList<File>(); 
 
-	@Override
-	public void decompress(final String archive, final String dest) {
-		try {
-		     ZipFile zipFile = new ZipFile(archive + EXTENSION_ZIP);
-		     
-		     zipFile.extractAll(dest);
-		     
-		 } catch (ZipException e) {
-		     e.printStackTrace();
-		 }
-		 
-	}
+        for (String path : paths) {
+            files.add(new File(path));
+        }
 
-	
+        ZipFile zipFile = new ZipFile(dest + System.getProperty("file.separator") + name + EXTENSION_ZIP);
+
+        ZipParameters parameters = new ZipParameters();
+        parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
+        parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+        parameters.setEncryptFiles(false);
+
+        for (File f : files) {
+            if (f.isDirectory()) {
+                zipFile.addFolder(f.getAbsolutePath(), parameters);
+            } else {
+                zipFile.addFile(f, parameters);
+            }
+        }
+    }
+
+    @Override
+    public void decompress(final List<String> archives, final String dest) throws ZipException {
+        /*for (String archive: archives) { */
+        File file = new File("/home/lorenzo/Video/Archivio" + EXTENSION_ZIP);
+        System.out.println(file.getAbsolutePath());
+        ZipFile zipFile = new ZipFile(file.getAbsolutePath());
+        zipFile.extractAll(dest);
+
+        //}
+
+    }
+
+
 }
