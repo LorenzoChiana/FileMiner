@@ -82,5 +82,14 @@ public interface FileOperations {
 	 */
 	void mkLink(String srcTarget, String srcLink, String name) throws IOException;
 
+	
+	
+	/**
+	 * Rename a file or directory.
+	 * @param srcPath path of the file
+	 * @param name name of new file
+	 * @throws IOException input/output exceptions
+	 */
+	void rename(String srcPath, String name) throws IOException;
 
 }

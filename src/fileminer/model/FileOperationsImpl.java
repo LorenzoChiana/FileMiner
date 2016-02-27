@@ -36,9 +36,9 @@ public class FileOperationsImpl implements FileOperations {
     public void setClipboard(final List<String> clipboard) {
         this.clipboard = clipboard;
     }
-    
 
-    
+
+
     /**
      * Add files from paths
      * @param files list of file
@@ -51,14 +51,14 @@ public class FileOperationsImpl implements FileOperations {
         }
         return new ArrayList<File>(files);
     }
-    
+
 
     @Override
     public void copy(final List<String> clipboard) {
         setClipboard(clipboard);
     }
 
-    
+
     @Override
     public void pasteTo(final String destPath, final boolean isCopy) throws IOException {
 
@@ -98,7 +98,7 @@ public class FileOperationsImpl implements FileOperations {
         }
     }
 
-    
+
     @Override
     public void remove(final List<String> clipboard) throws IOException {
         List<File> files = new ArrayList<File>();
@@ -114,7 +114,7 @@ public class FileOperationsImpl implements FileOperations {
         }
     }
 
-    
+
     @Override
     public void print(final String srcPath) throws IOException {
     }
@@ -139,5 +139,24 @@ public class FileOperationsImpl implements FileOperations {
         Path link = Paths.get(srcLink + System.getProperty("file.separator") + name);
         Files.createSymbolicLink(link, target);
     }
+
+
+    @Override
+    public void rename(final String srcPath, final String name) throws IOException {
+        File file = FileUtils.getFile(srcPath);
+
+        if (file.isDirectory()) {
+            FileUtils.moveDirectory(
+                    FileUtils.getFile(srcPath), 
+                    FileUtils.getFile(file.getParentFile().getAbsolutePath() + System.getProperty("file.separator") + name)
+                    );
+        } else {
+            FileUtils.moveFile(
+                    FileUtils.getFile(srcPath), 
+                    FileUtils.getFile(file.getParentFile().getAbsolutePath() + System.getProperty("file.separator") + name)
+                    );
+        }
+    }
+
 
 }
