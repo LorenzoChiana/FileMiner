@@ -45,13 +45,10 @@ public class ArchiverZIP implements Archiver {
 
     @Override
     public void decompress(final List<String> archives, final String dest) throws ZipException {
-        /*for (String archive: archives) { */
-        File file = new File("/home/lorenzo/Video/Archivio" + EXTENSION_ZIP);
-        System.out.println(file.getAbsolutePath());
-        ZipFile zipFile = new ZipFile(file.getAbsolutePath());
-        zipFile.extractAll(dest);
-
-        //}
+        for (String archive: archives) {
+            ZipFile zipFile = new ZipFile(archive);
+            zipFile.extractAll(dest);
+        }
 
     }
 
