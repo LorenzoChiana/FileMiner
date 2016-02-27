@@ -95,7 +95,7 @@ public class ControllerImpl implements Controller {
 
         case OPEN:
             try {
-                this.operation.open("");
+                this.operation.open(this.view.getSelectedItems());
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }

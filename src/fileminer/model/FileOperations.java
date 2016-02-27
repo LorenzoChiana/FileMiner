@@ -33,7 +33,7 @@ public interface FileOperations {
 	 * @param srcPath File or directory source path
 	 * @throws IOException
 	 */
-	void open(String srcPath) throws IOException;
+	void open(List<String> srcPaths) throws IOException;
 
 
 	/**

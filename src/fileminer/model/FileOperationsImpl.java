@@ -85,12 +85,15 @@ public class FileOperationsImpl implements FileOperations {
 
 
     @Override
-    public void open(final String srcPath) throws IOException {
-        File file = FileUtils.getFile(srcPath);
-        Desktop desktop = Desktop.getDesktop();
-        if (file.exists()) {
-            desktop.open(file);
+    public void open(final List<String> srcPaths) throws IOException {
+        for (String path: srcPaths) {
+            File file = FileUtils.getFile(path);
+            Desktop desktop = Desktop.getDesktop();
+            if (file.exists()) {
+                desktop.open(file);
+            }  
         }
+
     }
 
     @Override
