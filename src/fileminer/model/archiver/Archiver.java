@@ -1,7 +1,9 @@
 package fileminer.model.archiver;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
+
+import net.lingala.zip4j.exception.ZipException;
 
 /**
  * @author Daniele
@@ -10,12 +12,15 @@ import java.util.List;
 public interface Archiver {
 
 
+	
 	/**
-	 * @param files
+	 * @param paths
 	 * @param name
 	 * @param dest
+	 * @throws FileNotFoundException
+	 * @throws ZipException
 	 */
-	void compress(List<String> files, String name, String dest);
+	void compress( List<String> paths,  String name,  String dest) throws FileNotFoundException, ZipException;
 	
 	
 	/**
