@@ -3,6 +3,9 @@ package fileminer.model;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,18 +115,21 @@ public class FileOperationsImpl implements FileOperations {
 
 	@Override
 	public void mkDir(final String srcPath, final String name) throws IOException {
-		new File(srcPath + name).mkdir();
+		new File(srcPath + System.getProperty("path.separator") + name).mkdir();
 	}
 
 
 	@Override
 	public void mkFile(final String srcPath, final String name) throws IOException {
+		new File(srcPath + System.getProperty("path.separator") + name).createNewFile();
 	}
 
 
 	@Override
-	public void mkLink(final String srcPath, final String name) throws IOException {
-		
+	public void mkLink(final String srcPath, final String srcLink, final String name) throws IOException {
+		Path target = Paths.get(srcPath + System.getProperty("path.separator") + name);
+		Path link = Paths.get(srcLink);
+		Files.createSymbolicLink(link, target);
 	}
 
 
