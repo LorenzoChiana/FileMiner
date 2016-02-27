@@ -24,6 +24,7 @@ public class FileMinerApp {
             useSystemLookAndFeel(Boolean.parseBoolean(args[0]));
         }
         Controller controller = new ControllerImpl();
+        //controller.invokesCommand(Commands.COMPRESS);
         //controller.invokesCommand(Commands.LINK);
     }
 

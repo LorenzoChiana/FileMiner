@@ -2,6 +2,7 @@ package fileminer.view.components;
 
 import javax.swing.ActionMap;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeModel;
 
 import fileminer.cellrenderer.NodeTreeCellRenderer;
 import fileminer.listeners.TreeNodeExpandListener;
@@ -38,4 +39,7 @@ public class TreeExplorer {
         return tree;
     }
 
+    public void updateTree(final DefaultTreeModel dtm) {
+        tree.setModel(dtm);
+    }
 }

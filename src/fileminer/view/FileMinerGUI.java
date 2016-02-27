@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import fileminer.controller.Controller;
 import fileminer.listeners.CommandInvokeListener;
@@ -196,7 +197,7 @@ public class FileMinerGUI implements DefaultGUI {
         menu.addSeparator();
         item = new JMenuItem("Clear console");
         item.addActionListener(e -> {
-        	FileMinerLogger.getInstance().getConsole().clear();
+            FileMinerLogger.getInstance().getConsole().clear();
         });
         menu.add(item);
         menuBar2.add(menu);
@@ -205,7 +206,7 @@ public class FileMinerGUI implements DefaultGUI {
         menu = new JMenu("Help");
         item = new JMenuItem("About OS");
         item.addActionListener(e -> {
-        	new OSInfoDialog(controller).openDialog();
+            new OSInfoDialog(controller).openDialog();
         });
         menu.add(item);
         item = new JMenuItem("About FileMiner");
@@ -213,15 +214,23 @@ public class FileMinerGUI implements DefaultGUI {
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         item.addActionListener(e -> {
             JOptionPane.showMessageDialog(null,
-                                          "Created by Chiana Lorenzo, Durante Michele, Gambaletta Daniele",
-                                          "About FileMiner",
-                                          JOptionPane.INFORMATION_MESSAGE,
-                                          null);
+                    "Created by Chiana Lorenzo, Durante Michele, Gambaletta Daniele",
+                    "About FileMiner",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null);
         });
         menu.add(item);
         menuBar2.add(menu);
 
         return menuBar2;
+    }
+    
+    public void repaintGUI() {
+        this.frame.repaint();
+    }
+
+    public void updateTree(final DefaultTreeModel updatedTreeModel) {
+        treeExplorer.updateTree(updatedTreeModel);
     }
 
     private void exitProcedure() {
@@ -235,28 +244,28 @@ public class FileMinerGUI implements DefaultGUI {
         });
     }
 
-	@Override
-	public List<String> getSelectedItems() {
-		return selectedNodes;
-	}
+    @Override
+    public List<String> getSelectedItems() {
+        return selectedNodes;
+    }
 
-	@Override
-	public void clearSelectedItems() {
-		selectedNodes = new ArrayList<String>();
-	}
+    @Override
+    public void clearSelectedItems() {
+        selectedNodes = new ArrayList<String>();
+    }
 
-	@Override
-	public void setCurrentDir(final String path) {
-		currentDir = path;
-	}
+    @Override
+    public void setCurrentDir(final String path) {
+        currentDir = path;
+    }
 
-	@Override
-	public String getCurrentDir() {
-		return null;
-	}
+    @Override
+    public String getCurrentDir() {
+        return currentDir;
+    }
 
-	@Override
-	public void updateNodesTable(final DefaultMutableTreeNode node) {
-		ncp.generateTableByNode(node);
-	}
+    @Override
+    public void updateNodesTable(final DefaultMutableTreeNode node) {
+        ncp.generateTableByNode(node);
+    }
 }
