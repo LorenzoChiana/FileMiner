@@ -23,7 +23,8 @@ public class FileMinerApp {
         if (args.length > 0) {
             useSystemLookAndFeel(Boolean.parseBoolean(args[0]));
         }
-        new ControllerImpl();
+        Controller controller = new ControllerImpl();
+        controller.invokesCommand(Commands.LINK);
     }
 
     private static void useSystemLookAndFeel(final boolean flag) {

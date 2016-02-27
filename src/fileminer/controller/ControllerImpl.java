@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
 import fileminer.model.FileSystemTreeImpl;
@@ -44,13 +42,13 @@ public class ControllerImpl implements Controller {
             l.add(file.getAbsolutePath());*/
             this.clipboard.addPathFiles(new ArrayList<>()); //richiamo metodo view che mi passa la lista di path
             this.clipboard.setParameter(true);
-            operation.copy(this.clipboard.getPathFiles());
+            this.operation.copy(this.clipboard.getPathFiles());
             break;
 
         case PASTE:
             try {
                 if (!this.clipboard.isEmpty()) {
-                    operation.pasteTo("/home/lorenzo/Documenti", this.clipboard.getParameter());
+                    this.operation.pasteTo("/home/lorenzo/Documenti", this.clipboard.getParameter());
                     this.clipboard.clean();
                     this.fst.getTree().reload();
                 }
@@ -64,16 +62,22 @@ public class ControllerImpl implements Controller {
             l.add(file.getAbsolutePath());    */      
             this.clipboard.addPathFiles(new ArrayList<>()); //richiamo metodo view che mi passa la lista di path
             this.clipboard.setParameter(false);
-            operation.copy(this.clipboard.getPathFiles());
+            this.operation.copy(this.clipboard.getPathFiles());
             break;
 
         case LINK:
+            try {
+                this.operation.mkLink("/home/lorenzo/Documenti", "www.google.it", "google");
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+            this.fst.getTree().reload();
             break;
 
         case DELETE:
             try {
                 this.clipboard.addPathFiles(new ArrayList<>());
-                operation.remove(this.clipboard.getPathFiles());
+                this.operation.remove(this.clipboard.getPathFiles());
                 this.clipboard.clean();
                 this.fst.getTree().reload();
             } catch (IOException e) {
@@ -82,21 +86,28 @@ public class ControllerImpl implements Controller {
             break;
 
         case NEW:
+            try {
+                this.operation.mkDir("", "");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             this.fst.getTree().reload();
             break;
 
         case OPEN:
             try {
-                operation.open("");
+                this.operation.open("");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             break;
 
         case COMPRESS:
+            this.fst.getTree().reload();
             break;
 
         case DECOMPRESS: 
+            this.fst.getTree().reload();
             break;
 
         default: break;
