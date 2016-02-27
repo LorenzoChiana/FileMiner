@@ -127,9 +127,9 @@ public class FileOperationsImpl implements FileOperations {
 
 
     @Override
-    public void mkLink(final String srcPath, final String srcLink, final String name) throws IOException {
-        Path target = Paths.get(srcPath + System.getProperty("file.separator") + name);
-        Path link = Paths.get(srcLink);
+    public void mkLink(final String srcTarget, final String srcLink, final String name) throws IOException {
+        Path target = Paths.get(srcTarget);
+        Path link = Paths.get(srcLink + System.getProperty("file.separator") + name);
         Files.createSymbolicLink(link, target);
     }
 

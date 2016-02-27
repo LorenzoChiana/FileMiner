@@ -67,7 +67,7 @@ public class ControllerImpl implements Controller {
 
         case LINK:
             try {
-                this.operation.mkLink("/home/lorenzo/Documenti", "www.google.it", "google");
+                this.operation.mkLink("/home/lorenzo/Immagini/aa.jpg", "/home/lorenzo/Documenti", "google");
             } catch (IOException e2) {
                 e2.printStackTrace();
             }

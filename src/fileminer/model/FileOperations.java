@@ -73,7 +73,7 @@ public interface FileOperations {
 	 * @param name
 	 * @throws IOException
 	 */
-	void mkLink(String srcPath, String name, String link) throws IOException;
+	void mkLink(String srcTarget, String srcLink, String name) throws IOException;
 
 
 }
