@@ -18,4 +18,14 @@ public class ResourcePath {
 
     public static final String EXIT_ICON = "/images/Exit.png";
 
+    public static final String LINK_ICON = "/images/Info.png";
+
+    public static final String COMPRESS_ICON = "/images/Info.png";
+
+    public static final String DECOMPRESS_ICON = "/images/Info.png";
+
+    public static final String NEW_OPEN = "/images/Info.png";
+
+    public static final String DELETE_ICON = "/images/Info.png";
+
 }
