@@ -1,8 +1,7 @@
 package fileminer.controller;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import fileminer.main.FileMinerLogger;
 import fileminer.model.FileOperations;
@@ -11,10 +10,7 @@ import fileminer.model.FileSystemTreeImpl;
 import fileminer.model.archiver.Archiver;
 import fileminer.model.archiver.ArchiverZIP;
 import fileminer.view.FileMinerGUI;
-import java.util.List;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-
+import net.lingala.zip4j.exception.ZipException;
 /**
  * 
  * @author Lorenzo Chiana
@@ -22,7 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class ControllerImpl implements Controller {
     private final FileMinerGUI view;
-    private final FileSystemTreeImpl fst;
+    private FileSystemTreeImpl fst;
     private final Clipboard clipboard;
     private final FileOperations operation;
 
@@ -39,6 +35,8 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void invokesCommand(final Commands command) {
+        final Archiver archiver;
+        
         switch (command) {
         case COPY:       
             this.clipboard.addPathFiles(this.view.getSelectedItems());
@@ -51,9 +49,7 @@ public class ControllerImpl implements Controller {
                 if (!this.clipboard.isEmpty()) {
                     this.operation.pasteTo(this.view.getCurrentDir(), this.clipboard.getParameter());
                     this.clipboard.clean();
-                    this.fst.getTree().reload();
-                    this.view.updateTree(this.fst.getTree());
-                    this.view.repaintGUI();
+                    this.updateTree();
                 }
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
@@ -69,6 +65,7 @@ public class ControllerImpl implements Controller {
         case LINK:
             try {
                 this.operation.mkLink("/home/lorenzo/Immagini/aa.jpg", "/home/lorenzo/Documenti", "google");
+                this.updateTree();
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
@@ -80,7 +77,7 @@ public class ControllerImpl implements Controller {
                 this.clipboard.addPathFiles(this.view.getSelectedItems());
                 this.operation.remove(this.clipboard.getPathFiles());
                 this.clipboard.clean();
-                this.fst.getTree().reload();
+                this.updateTree();
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
@@ -89,6 +86,7 @@ public class ControllerImpl implements Controller {
         case NEW:
             try {
                 this.operation.mkDir("", "");
+                this.updateTree();
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
@@ -103,18 +101,20 @@ public class ControllerImpl implements Controller {
             }
             break;
 
-        case COMPRESS:
-            /*file = new File("/home/lorenzo/Immagini/Prova/1.txt");
-            l.add(file.getAbsolutePath());
-            final Archiver archiver = new ArchiverZIP();
-            archiver.compress(l, "archivio", "/home/lorenzo/Documenti");*/
-            this.fst.getTree().reload();
+        case COMPRESS:            
+            archiver = new ArchiverZIP();
+            try {
+                archiver.compress(view.getSelectedItems(), "Archivio", view.getCurrentDir());
+            } catch (FileNotFoundException | ZipException e) {
+                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+            }
+            this.updateTree();
             break;
 
         case DECOMPRESS: 
-            /*final Archiver archiver = new ArchiverZIP();
-            archiver.decompress("/home/lorenzo/Documenti/archivio.zip", "/home/lorenzo/Documenti");*/
-            this.fst.getTree().reload();
+            archiver = new ArchiverZIP();
+            archiver.decompress("/home/lorenzo/Documenti/archivio.zip", view.getCurrentDir());
+            this.updateTree();
             break;
 
         default: break;
@@ -134,5 +134,11 @@ public class ControllerImpl implements Controller {
     @Override
     public void quit() {
         System.exit(0);
+    }
+    
+    private void updateTree() {
+        this.fst = new FileSystemTreeImpl();
+        this.view.updateTree(this.fst.getTree());
+        this.view.repaintGUI();
     }
 }
