@@ -43,7 +43,15 @@ public class ArchiverZIP implements Archiver {
 
 	@Override
 	public void decompress(final String archive, final String dest) {
-		
+		try {
+		     ZipFile zipFile = new ZipFile(archive);
+		     
+		     zipFile.extractAll(dest);
+		     
+		 } catch (ZipException e) {
+		     e.printStackTrace();
+		 }
+		 
 	}
 
 	
