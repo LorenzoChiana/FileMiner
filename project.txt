@@ -1,0 +1,31 @@
+Il gruppo si pone come obiettivo quello di realizzare un file manager, 
+un'applicazione in grado di gestire le operazioni basilari sul file system 
+del sistema operativo ospite insieme a funzionalità aggiuntive; 
+quest'ultime serviranno all'utente per permettergli un gradevole utilizzo 
+del programma e un maggior controllo delle risorse a disposizione.
+
+Il software esporrà le seguenti funzionalità:
+ •Interfaccia grafica (GUI)
+ •Creazione, copia, spostamento, link e cancellazione dei file e la modifica dei loro attributi
+ •Gestione dei permessi di accesso ai file
+ •Compressione/decompressione dei file
+ •Anteprima del file selezionato
+ •Cronologia delle directory visitate
+ •Segnalibri
+
+Feature opzionali:
+ •Utilizzare delle chiamate ad altri programmi per la creazione, la lettura, la modifica, la stampa o la riproduzione del/dei file interessato/i
+ •Rappresentazione 3D del file system tramite visualizzatore
+ •Possibilità di estendere il programma usando plugin sviluppati dagli utenti
+
+Challenge:
+ •Studio della struttura dei file system dei vari sistemi operativi più utilizzati
+ •Ricerca e studio delle librerie per la compressione dei file, per il visualizzatore 3D e per la creazione di anteprime
+
+Suddivisione:
+ •Chiana Lorenzo: Controller
+ •Durante Michele: View
+ •Gambaletta Daniele: Model
+
+Deadline scelta: B
+ 
