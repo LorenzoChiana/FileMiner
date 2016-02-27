@@ -16,6 +16,8 @@ import net.lingala.zip4j.util.Zip4jConstants;
  */
 public class ArchiverZIP implements Archiver {
 
+	private static final String EXTENSION_ZIP = ".zip";
+	
 	@Override
 	public void compress(final List<String> paths, final String name, final String dest) throws FileNotFoundException, ZipException {
 			
@@ -25,7 +27,7 @@ public class ArchiverZIP implements Archiver {
 				files.add(new File(path));
 			}
 			
-			ZipFile zipFile = new ZipFile(dest + System.getProperty("file.separator") + name + ".zip");
+			ZipFile zipFile = new ZipFile(dest + System.getProperty("file.separator") + name + EXTENSION_ZIP);
 
 			ZipParameters parameters = new ZipParameters();
 			parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
@@ -44,7 +46,7 @@ public class ArchiverZIP implements Archiver {
 	@Override
 	public void decompress(final String archive, final String dest) {
 		try {
-		     ZipFile zipFile = new ZipFile(archive);
+		     ZipFile zipFile = new ZipFile(archive + EXTENSION_ZIP);
 		     
 		     zipFile.extractAll(dest);
 		     
