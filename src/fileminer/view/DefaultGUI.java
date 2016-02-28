@@ -44,7 +44,9 @@ public interface DefaultGUI {
 	
 	/**
 	 * 
+	 * @param message 
+	 *             message displayed in the InputDialog
 	 * @return the name of new object (file, directory or zip)
 	 */
-	String newObjectName();
+	String newObjectName(String message);
 }

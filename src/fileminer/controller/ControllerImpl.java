@@ -64,12 +64,17 @@ public class ControllerImpl implements Controller {
 
         case LINK:
             try {
-                this.operation.mkLink("/home/lorenzo/Immagini/aa.jpg", "/home/lorenzo/Documenti", "google");
-                this.updateTree();
+                final String srcDest = this.view.newObjectName("Inserire indirizzo del file che si vuole collegare:");
+                if (srcDest != null) {
+                    final String name = this.view.newObjectName("Inserire nome collegamento:");
+                    if (name != null) {
+                        this.operation.mkLink(srcDest, this.view.getCurrentDir(), name);
+                        this.updateTree();
+                    }
+                }
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
-            this.fst.getTree().reload();
             break;
 
         case DELETE:
@@ -86,12 +91,25 @@ public class ControllerImpl implements Controller {
         case NEW:
             try {
                 final int option = this.view.newObjectType();
+                /*
+                 * 0 = directory
+                 * 1 = file
+                 * altro = ha chiuso la finestra annullando l'operazione
+                 */
                 if (option == 0) {
-                    this.operation.mkDir(this.view.getCurrentDir(), this.view.newObjectName());
+                    final String name = this.view.newObjectName("Inserire nome della nuova directory:");
+                    if (name != null) {
+                        System.out.println("non null");
+                        this.operation.mkDir(this.view.getCurrentDir(), name);
+                        this.updateTree();
+                    }
                 } else if (option == 1) {
-                    this.operation.mkFile(this.view.getCurrentDir(), this.view.newObjectName());
+                    final String name = this.view.newObjectName("Inserire nome del nuovo file:");
+                    if (name != null) {
+                        this.operation.mkFile(this.view.getCurrentDir(), name);
+                        this.updateTree();
+                    }
                 }
-                this.updateTree();
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
@@ -108,7 +126,7 @@ public class ControllerImpl implements Controller {
         case COMPRESS:            
             archiver = new ArchiverZIP();
             try {
-                final String name = this.view.newObjectName();
+                final String name = this.view.newObjectName("Inserire nome dell'archivio:");
                 archiver.compress(view.getSelectedItems(), name, view.getCurrentDir());
             } catch (FileNotFoundException | ZipException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());

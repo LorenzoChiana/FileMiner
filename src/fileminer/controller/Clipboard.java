@@ -31,8 +31,8 @@ public interface Clipboard {
     /**
      * 
      * @param isCopy
-     *          true if it is copy
-     *          false if it is cut
+     *          true if is copy
+     *          false if is cut
      */
     void setParameter(boolean isCopy);
     /**

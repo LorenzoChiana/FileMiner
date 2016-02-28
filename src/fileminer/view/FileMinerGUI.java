@@ -321,9 +321,9 @@ public class FileMinerGUI implements DefaultGUI {
                 options[0]); //default button title
     }
     @Override
-    public String newObjectName() {
+    public String newObjectName(final String message) {
 
-        return JOptionPane.showInputDialog("Inserire nome: ");
+        return JOptionPane.showInputDialog(message);
 
     }
 }
