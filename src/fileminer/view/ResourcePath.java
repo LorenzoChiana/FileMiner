@@ -16,6 +16,8 @@ public class ResourcePath {
 
     public static final String INFO_ICON = "/images/Info.png";
 
+    public static final String OPEN_ICON = "/images/Open.png";
+
     public static final String EXIT_ICON = "/images/Exit.png";
 
     public static final String LEFT_ARROW_ICON = "/images/LeftArrow.png";

@@ -35,7 +35,7 @@ public class UpperToolbar {
         toolbar.add(createButton(ResourcePath.CUT_ICON, Commands.CUT.toString(), "Cut files or directories", "Cut", al));
         toolbar.add(createButton(ResourcePath.PASTE_ICON, Commands.PASTE.toString(), "Paste files or directories", "Paste", al));
         toolbar.addSeparator();
-        toolbar.add(createButton(ResourcePath.INFO_ICON, "INFO", "Display file properties", "Info", al));
+        toolbar.add(createButton(ResourcePath.OPEN_ICON, Commands.OPEN.toString(), "Open file in OS", "Open", al));
     }
 
     /**

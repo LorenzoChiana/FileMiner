@@ -57,9 +57,9 @@ public class ControllerImpl implements Controller {
             if (!this.view.getSelectedItems().isEmpty()) {
                 this.clipboard.addPathFiles(this.view.getSelectedItems());
                 this.clipboard.setParameter(true);
-                logger.getConsole().putString(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
+                logger.getConsole().putStringLater(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
             } else {
-                logger.getConsole().putString("Nothing to copy...");
+                logger.getConsole().putStringLater("Nothing to copy...");
             }
             break;
 
@@ -75,10 +75,10 @@ public class ControllerImpl implements Controller {
                     this.view.updateNodesTable(this.view.getCurrentDir());
 
                 } else {
-                    logger.getConsole().putString("Nothing to paste...");
+                    logger.getConsole().putStringLater("Nothing to paste...");
                 }
             } catch (IOException e) {
-                logger.getConsole().putString(e.getMessage());
+                logger.getConsole().putStringLater(e.getMessage());
             }
             break;
 
@@ -86,9 +86,9 @@ public class ControllerImpl implements Controller {
             if (!this.view.getSelectedItems().isEmpty()) {
                 this.clipboard.addPathFiles(this.view.getSelectedItems()); 
                 this.clipboard.setParameter(false);
-                logger.getConsole().putString(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
+                logger.getConsole().putStringLater(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
             } else {
-                logger.getConsole().putString("Nothing to cut...");
+                logger.getConsole().putStringLater("Nothing to cut...");
             }
             break;
 
@@ -99,10 +99,10 @@ public class ControllerImpl implements Controller {
                                           this.view.getCurrentDir(),
                                           "google");
                 } else {
-                    logger.getConsole().putString("Nessun elemento selezionato");
+                    logger.getConsole().putStringLater("Nessun elemento selezionato");
                 }
             } catch (IOException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+                logger.getConsole().putString(e.getMessage());
             }
 
             break;
@@ -114,7 +114,7 @@ public class ControllerImpl implements Controller {
                 this.clipboard.clean();
 
             } catch (IOException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+                logger.getConsole().putStringLater(e.getMessage());
             }
             break;
 
@@ -122,7 +122,7 @@ public class ControllerImpl implements Controller {
             try {
                 this.operation.mkDir(this.view.getCurrentDir(), "");
             } catch (IOException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+                logger.getConsole().putStringLater(e.getMessage());
             }
 
             break;
@@ -132,10 +132,10 @@ public class ControllerImpl implements Controller {
                 if (Desktop.isDesktopSupported()) {
                     this.operation.open(this.view.getSelectedItems());
                 } else {
-                    logger.getConsole().putString("Desktop mode not supported!");
+                    logger.getConsole().putStringLater("Desktop mode not supported!");
                 }
-            } catch (IOException e) {
-                logger.getConsole().putString(e.getMessage());
+            } catch (Exception e) {
+                logger.getConsole().putStringLater(e.getMessage());
             }
             break;
 

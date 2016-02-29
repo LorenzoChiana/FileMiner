@@ -12,6 +12,7 @@ import fileminer.model.Node;
 import fileminer.view.FileMinerGUI;
 import fileminer.listeners.DoubleClickOnTableListener;
 import fileminer.listeners.TableNodeSelectionListener;
+import fileminer.main.FileMinerLogger;
 import fileminer.model.FileSystemTreeImpl;
 
 public class NodeContentTable {
@@ -84,5 +85,6 @@ public class NodeContentTable {
         	tableModel.addRow(node, nodePath, fst);
         }
         tableModel.fireTableDataChanged();
+        FileMinerLogger.getInstance().getConsole().putString("Current path: " + gui.getCurrentDir().toString());
     }
 }

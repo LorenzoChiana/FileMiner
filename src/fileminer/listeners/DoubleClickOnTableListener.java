@@ -53,7 +53,6 @@ public class DoubleClickOnTableListener extends MouseAdapter {
                 view.setCurrentDir(treePath);
                 view.addPathToChronology(treePath);
                 view.updateNodesTable(treePath);
-                FileMinerLogger.getInstance().getConsole().putString("Current path: " + view.getCurrentDir().toString());
             } else {
                 
             }
