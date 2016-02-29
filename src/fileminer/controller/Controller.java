@@ -21,7 +21,7 @@ public interface Controller {
     FileSystemTreeImpl getFileSystem();
 
     /**
-     * @return
+     * @return the chronology
      */
     Chronology getChronology();
 

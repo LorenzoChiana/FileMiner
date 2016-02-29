@@ -138,7 +138,7 @@ public class FileMinerGUI implements DefaultGUI {
     public String getDialogString(final int option) {
         final String name = (String) JOptionPane.showInputDialog(frame,
                 "Enter text:",
-                option == 0 ? "New file" : (option == 1 ? "New dir" : "New link"),
+                option == 0 ? "New file" : (option == 1 ? "New dir" : (option == 2 ? "New link" : "New archiver")),
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
