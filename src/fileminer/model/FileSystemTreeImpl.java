@@ -50,7 +50,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 			final List<Node> roots = new ArrayList<>();
 
 			// Bookmarks
-			final Path pathFolder = FileSystems.getDefault().getPath(System.getProperty("user.dir") + System.getProperty("file.separator") + "FileMiner");
+			/*final Path pathFolder = FileSystems.getDefault().getPath(System.getProperty("user.dir") + System.getProperty("file.separator") + "FileMiner");
 			final File bookMarksFolder = new File(pathFolder.toUri());
 			bookMarksFolder.mkdir();
 			final DefaultMutableTreeNode bookmarksTreeNode = new DefaultMutableTreeNode("Bookmarks");
@@ -86,7 +86,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 
 			// Home
 			final Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"));
@@ -97,7 +97,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 				roots.add(new Node(file));
 			}
 
-			rootNode.add(bookmarksTreeNode);
+			//rootNode.add(bookmarksTreeNode);
 			for (final Node fsRoot : roots) {
 				final DefaultMutableTreeNode node = new DefaultMutableTreeNode(fsRoot);
 				rootNode.add(node);

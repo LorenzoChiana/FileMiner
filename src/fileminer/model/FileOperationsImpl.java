@@ -34,29 +34,40 @@ public class FileOperationsImpl implements FileOperations {
      * Add files from path.
      * @param files
      */
-    private List<File> addFiles(final List<TreePath> clipboard) {
+    private List<File> getfileFromTP(final List<TreePath> treePaths) {
         final List<File> tmp = new ArrayList<>();
-        for (final TreePath path : clipboard) {
+        for (final TreePath path : treePaths) {
             final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
             final Node node = (Node) treeNode.getUserObject();
-            tmp.add(node.getFile()); // File o Directory
+            tmp.add(node.getFile()); 
         }
         return tmp;
     }
+    
+    
+    /**
+     * Add files from path.
+     * @param files
+     */
+    private File getfileFromTP(final TreePath treePath){
+    	final DefaultMutableTreeNode destNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
+        final Node node = (Node) destNode.getUserObject();
+		return node.getFile();
+    }
 
+    
     @Override
     public void pasteTo(final List<TreePath> clipboard, final TreePath destPath, final boolean isCopy) throws IOException {
 
         final DefaultMutableTreeNode destNode = (DefaultMutableTreeNode) destPath.getLastPathComponent();
         final Node node = (Node) destNode.getUserObject();
-        final File destDir = node.getFile(); // Directory
+        final File destDir = (File) node.getFile();
 
-        final List<File> files = addFiles(clipboard);
+        final List<File> files = this.getfileFromTP(clipboard);
         int size = files.size();
 
         if (isCopy) {
             int n = 1;
-            
             for (final File file : files) {
                 logger.getConsole().putStringLater("Copy of " + n + " element out of " + size + " in progress...");
                 if (file.isDirectory()) {
@@ -94,17 +105,21 @@ public class FileOperationsImpl implements FileOperations {
     @Override
     public void open(final List<TreePath> srcPath) throws IOException {
         for (final TreePath filePath : srcPath) {
-            final Node node = (Node) filePath.getLastPathComponent();
-            final File file = node.getFile();
-            if (file.exists()) {
-                Desktop.getDesktop().open(file);
+           
+            final File file = this.getfileFromTP(filePath);
+            
+            Desktop desktop = Desktop.getDesktop();
+            
+            if(file.exists()) {
+            	desktop.open(file);
             }
+            
         }
     }
 
     @Override
     public void remove(final List<TreePath> clipboard) throws IOException {
-        final List<File> files = addFiles(clipboard);
+        final List<File> files = getfileFromTP(clipboard);
 
         for (final File file : files) {
             
@@ -116,21 +131,17 @@ public class FileOperationsImpl implements FileOperations {
         }
     }
 
-    @Override
-    public void print(final TreePath srcPath) throws IOException {
-    }
-
 
     @Override
     public void mkDir(final TreePath srcPath, final String name) throws IOException {
-        new File(srcPath + System.getProperty("file.separator") + name).mkdir();
+        new File(this.getfileFromTP(srcPath).toURI() + System.getProperty("file.separator") + name).mkdir();
 
     }
 
 
     @Override
     public void mkFile(final TreePath srcPath, final String name) throws IOException {
-        new File(srcPath + System.getProperty("file.separator") + name).createNewFile();
+        new File(this.getfileFromTP(srcPath).toURI() + System.getProperty("file.separator") + name).createNewFile();
     }
 
 
@@ -146,19 +157,14 @@ public class FileOperationsImpl implements FileOperations {
     }
 
     @Override
-    public void rename(final String srcPath, final String name) throws IOException {
-        final File file = FileUtils.getFile(srcPath);
-
+    public void rename(final TreePath srcPath, final String name) throws IOException {
+        final File file = this.getfileFromTP(srcPath);
+        final File renamed = FileUtils.getFile(file.getParentFile().getAbsolutePath() + System.getProperty("file.separator") + name);
+        
         if (file.isDirectory()) {
-            FileUtils.moveDirectory(
-                    FileUtils.getFile(srcPath), 
-                    FileUtils.getFile(file.getParentFile().getAbsolutePath() + System.getProperty("file.separator") + name)
-                    );
+            FileUtils.moveDirectory(file, renamed);
         } else {
-            FileUtils.moveFile(
-                    FileUtils.getFile(srcPath), 
-                    FileUtils.getFile(file.getParentFile().getAbsolutePath() + System.getProperty("file.separator") + name)
-                    );
+            FileUtils.moveFile(file, renamed);
         }
     }
 

@@ -37,14 +37,6 @@ public interface FileOperations {
 	 */
 	void remove(List<TreePath> clipboard) throws IOException;
 
-
-	/**
-	 * Print a file if printable.
-	 * @param srcPath File or directory source path
-	 * @throws IOException 
-	 */
-	void print(TreePath srcPath) throws IOException;
-
 	
 	/**
 	 * @param srcPath 
@@ -70,6 +62,6 @@ public interface FileOperations {
 	 */
 	void mkLink(TreePath srcTarget, TreePath srcLink, String name) throws IOException;
 
-	void rename(final String srcPath, final String name) throws IOException;
+	void rename(final TreePath srcPath, final String name) throws IOException;
 
 }
