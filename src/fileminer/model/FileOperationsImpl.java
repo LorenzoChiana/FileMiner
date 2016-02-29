@@ -31,7 +31,7 @@ public class FileOperationsImpl implements FileOperations {
     }
 
     /**
-     * Add files from path.
+     * Add files from paths.
      * @param files
      */
     private List<File> getfileFromTP(final List<TreePath> treePaths) {
@@ -46,8 +46,8 @@ public class FileOperationsImpl implements FileOperations {
     
     
     /**
-     * Add files from path.
-     * @param files
+     * Add file from path.
+     * @param file
      */
     private File getfileFromTP(final TreePath treePath){
     	final DefaultMutableTreeNode destNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
@@ -105,18 +105,15 @@ public class FileOperationsImpl implements FileOperations {
     @Override
     public void open(final List<TreePath> srcPath) throws IOException {
         for (final TreePath filePath : srcPath) {
-           
             final File file = this.getfileFromTP(filePath);
-            
             Desktop desktop = Desktop.getDesktop();
-            
             if(file.exists()) {
             	desktop.open(file);
             }
-            
         }
     }
 
+    
     @Override
     public void remove(final List<TreePath> clipboard) throws IOException {
         final List<File> files = getfileFromTP(clipboard);
@@ -156,6 +153,7 @@ public class FileOperationsImpl implements FileOperations {
         Files.createSymbolicLink(link, target);
     }
 
+    
     @Override
     public void rename(final TreePath srcPath, final String name) throws IOException {
         final File file = this.getfileFromTP(srcPath);
