@@ -48,12 +48,10 @@ public class TreeNodeSelectionListener implements TreeSelectionListener {
             view.setCurrentDir(treePath);
             view.addPathToChronology(treePath);
             view.updateNodesTable(treePath);
-            FileMinerLogger.getInstance().getConsole().putString("Current path: " + view.getCurrentDir().toString());
         } else {
             view.setCurrentDir(treePath.getParentPath());
             view.addPathToChronology(treePath.getParentPath());
             view.updateNodesTable(new TreePath(treeNode.getPath()));
-            FileMinerLogger.getInstance().getConsole().putString("Current path: " + view.getCurrentDir().toString());
         }
     }
 }
