@@ -1,8 +1,18 @@
 package fileminer.view.components;
 
-public class NewItemDialog {
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
-    public NewItemDialog() {
+public class NewItemDialog implements DefaultDialog {
 
+	private final JDialog dialog;
+
+    public NewItemDialog(final JFrame gui) {
+    	this.dialog = new JDialog(gui, "New item", true);
     }
+
+	@Override
+	public void openDialog() {
+		dialog.setVisible(true);
+	}
 }
