@@ -2,17 +2,13 @@ package fileminer.main;
 
 import javax.swing.UIManager;
 
-import fileminer.controller.Commands;
-import fileminer.controller.Controller;
 import fileminer.controller.ControllerImpl;
 
 /**
- * 
+ * Class that contains the main.
  * @author Lorenzo Chiana
- *      class that contains the main
- *
  */
-public class FileMinerApp {
+public final class FileMinerApp {
 
     /**
      * @param args

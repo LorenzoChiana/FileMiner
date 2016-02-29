@@ -26,8 +26,10 @@ public class UpperToolbar {
         toolbar.setRollover(true);
         toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        /* foreach comando in listaComandi add(...) */
-        toolbar.add(createButton(ResourcePath.NEW_ICON, Commands.NEW.toString(), "Create new item", "New file", al));
+        toolbar.add(createButton(ResourcePath.LEFT_ARROW_ICON, Commands.BACK.toString(), "Previous visited dir", "Back", al));
+        toolbar.add(createButton(ResourcePath.RIGHT_ARROW_ICON, Commands.NEXT.toString(), "Next visited dir", "Next", al));
+        toolbar.addSeparator();
+        toolbar.add(createButton(ResourcePath.NEW_ICON, Commands.NEW.toString(), "Create new item", "New item", al));
         toolbar.addSeparator();
         toolbar.add(createButton(ResourcePath.COPY_ICON, Commands.COPY.toString(), "Copy files or directories", "Copy", al));
         toolbar.add(createButton(ResourcePath.CUT_ICON, Commands.CUT.toString(), "Cut files or directories", "Cut", al));
@@ -50,8 +52,6 @@ public class UpperToolbar {
         btn.addActionListener(al);
         btn.setToolTipText(toolTipText);
         if (imageURL.isPresent()) {
-            //final ImageIcon img = new ImageIcon(imageURL.get());
-            //btn.setIcon(new ImageIcon(img.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH), altText));
             btn.setIcon(new ImageIcon(imageURL.get(), altText));
         } else {
             btn.setText(altText);

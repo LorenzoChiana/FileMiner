@@ -1,5 +1,6 @@
 package fileminer.view;
 
+import java.awt.EventQueue;
 import java.awt.Font;
 import javax.swing.JTextArea;
 
@@ -50,6 +51,7 @@ public final class FileMinerConsole implements DefaultConsole {
             
         }
         console.append("\n");
+        console.setCaretPosition(console.getDocument().getLength());
     }
 
     @Override
@@ -60,5 +62,17 @@ public final class FileMinerConsole implements DefaultConsole {
     @Override
     public void putString(final String arg) {
         console.append(arg + "\n");
+        console.setCaretPosition(console.getDocument().getLength());
+    }
+
+    @Override
+    public void putStringLater(String arg) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                console.append(arg + "\n");
+                console.setCaretPosition(console.getDocument().getLength());
+            }
+        });
     }
 }

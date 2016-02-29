@@ -7,18 +7,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import fileminer.controller.Controller;
 import fileminer.listeners.CommandInvokeListener;
 import fileminer.controller.Commands;
 import fileminer.main.FileMinerLogger;
-import fileminer.view.ResourcePath;
 import fileminer.view.components.InformationScrollPane;
 import fileminer.view.components.NodeContentTable;
 import fileminer.view.components.OSInfoDialog;
@@ -42,8 +38,8 @@ public class FileMinerGUI implements DefaultGUI {
     private NodeContentTable ncp;
     private InformationScrollPane info;
 
-    private List<String> selectedNodes;
-    private String currentDir;
+    private List<TreePath> selectedNodes;
+    private TreePath currentDir;
 
     /**
      * Constructor of FileMinerGUI.
@@ -56,7 +52,7 @@ public class FileMinerGUI implements DefaultGUI {
         splashScreen = new SplashScreen(ResourcePath.LOGO_256);
         splashScreen.setVisible(true);
 
-        final SwingWorker<Void, Void> guiBuilder = new SwingWorker<Void, Void>() {
+        new SwingWorker<Void, Void>() {
 
             @Override
             protected Void doInBackground() throws Exception {
@@ -71,8 +67,7 @@ public class FileMinerGUI implements DefaultGUI {
                 controller.getOSInfo();
                 frame.requestFocus();
             }
-        };
-        guiBuilder.execute();
+        }.execute();
     }
 
     private void initializeFrame() {
@@ -96,7 +91,8 @@ public class FileMinerGUI implements DefaultGUI {
     private void createComponents() {
 
         JMenuBar menuBar;
-        JScrollPane treeView, ncpView;
+        JScrollPane treeView,
+                    ncpView;
         JSplitPane splitPane;
 
         // START TOOL PANEL
@@ -150,12 +146,6 @@ public class FileMinerGUI implements DefaultGUI {
         itemIcon = new ImageIcon(getClass().getResource(ResourcePath.NEW_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
-        item = new JMenuItem("Open");
-        item.setActionCommand(Commands.OPEN.toString());
-        item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.NEW_OPEN));
-        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
-        menu.add(item);
         menu.addSeparator();
         item = new JMenuItem("Exit");
         item.setActionCommand("EXIT");
@@ -185,33 +175,6 @@ public class FileMinerGUI implements DefaultGUI {
         item.setActionCommand(Commands.PASTE.toString());
         item.addActionListener(cil);
         itemIcon = new ImageIcon(getClass().getResource(ResourcePath.PASTE_ICON));
-        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
-        menu.add(item);
-        item = new JMenuItem("Link");
-        item.setActionCommand(Commands.LINK.toString());
-        item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.LINK_ICON));
-        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
-        menu.add(item);
-        menu.addSeparator();
-        item = new JMenuItem("Compress");
-        item.setActionCommand(Commands.COMPRESS.toString());
-        item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.COMPRESS_ICON));
-        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
-        menu.add(item);
-        item = new JMenuItem("Decompress");
-        item.setActionCommand(Commands.DECOMPRESS.toString());
-        item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.DECOMPRESS_ICON));
-        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
-        menu.add(item);
-        menuBar2.add(menu);
-        menu.addSeparator();
-        item = new JMenuItem("Delete");
-        item.setActionCommand(Commands.DELETE.toString());
-        item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.DELETE_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         menuBar2.add(menu);
@@ -260,14 +223,6 @@ public class FileMinerGUI implements DefaultGUI {
         return menuBar2;
     }
 
-    public void repaintGUI() {
-        this.frame.repaint();
-    }
-
-    public void updateTree(final DefaultTreeModel updatedTreeModel) {
-        treeExplorer.updateTree(updatedTreeModel);
-    }
-
     private void exitProcedure() {
         frame.setVisible(false);
         frame.dispose();
@@ -280,50 +235,36 @@ public class FileMinerGUI implements DefaultGUI {
     }
 
     @Override
-    public List<String> getSelectedItems() {
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void addPathToChronology(final TreePath path) {
+        controller.getChronology().addDirectory(currentDir);
+    }
+
+    @Override
+    public List<TreePath> getSelectedItems() {
         return selectedNodes;
     }
 
     @Override
     public void clearSelectedItems() {
-        selectedNodes = new ArrayList<String>();
+        selectedNodes = new ArrayList<TreePath>();
     }
 
     @Override
-    public void setCurrentDir(final String path) {
+    public void setCurrentDir(final TreePath path) {
         currentDir = path;
     }
 
     @Override
-    public String getCurrentDir() {
+    public TreePath getCurrentDir() {
         return currentDir;
     }
 
     @Override
-    public void updateNodesTable(final DefaultMutableTreeNode node) {
-        ncp.generateTableByNode(node);
-    }
-
-    /*
-     * this method was implemented with the help of this site:
-     * https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html 
-     */
-    @Override
-    public int newObjectType() {
-        Object[] options = {"Directory", "File"};
-        return JOptionPane.showOptionDialog(frame,
-                "Creare nuova directory o nuovo file?",
-                "New",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
-                options,  //the titles of buttons
-                options[0]); //default button title
-    }
-    @Override
-    public String newObjectName(final String message) {
-
-        return JOptionPane.showInputDialog(message);
-
+    public void updateNodesTable(final TreePath path) {
+        ncp.generateTableByPath(path);
     }
 }

@@ -7,32 +7,29 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * @author Daniele Gambaletta
- * Node of the tree.
+ * @author Daniele
+ *	Nodo dell'albero del file system.
  */
 public class Node {
 	private final File file;
 	private boolean hasGenerated;
 	private Icon fileIcon;
 	private String fileName;
-	private String filePath;
-	
-	
+
 	/**
-	 * Initializations.
-	 * @param file file to add in the node
+	 * Inizializzazione nodo.
+	 * @param f file
 	 */
-	public Node(final File file) {
-		this.file = file;
+	public Node(final File f) {
+		this.file = f;
 		this.hasGenerated = false;
-		this.filePath = file.getAbsolutePath();
-		if (FileSystemView.getFileSystemView().isFileSystemRoot(file)
-		    || filePath.equals(System.getProperty("user.home"))
-		    || file.isFile()) {
-		    this.fileName = FileSystemView.getFileSystemView().getSystemDisplayName(file);
-		    this.fileIcon = FileSystemView.getFileSystemView().getSystemIcon(file);
+		if (FileSystemView.getFileSystemView().isFileSystemRoot(f)
+		    || f.getAbsolutePath().equals(System.getProperty("user.home"))
+		    || f.isFile()) {
+		    this.fileName = FileSystemView.getFileSystemView().getSystemDisplayName(f);
+		    this.fileIcon = FileSystemView.getFileSystemView().getSystemIcon(f);
 		} else {
-		    this.fileName = file.getName();
+		    this.fileName = f.getName();
 		    this.fileIcon = UIManager.getIcon("FileView.directoryIcon");
 		}
 		
@@ -55,7 +52,6 @@ public class Node {
 	}
 	
 	/**
-	 * Get file name.
 	 * @return file name
 	 */
 	public String getFileName() {
@@ -63,37 +59,20 @@ public class Node {
 	}
 
 	/**
-	 * Set file name.
+	 * 
 	 */
-	public void setFileName() {
-		this.fileName = file.getName();
+	public void setFileName(final String name) {
+		this.fileName = name;
 	}
 
 	/**
-	 * Get file path.
-	 * @return file path
-	 */
-	public String getFilePath() {
-		return filePath;
-	}
-
-	/**
-	 * Set file path.
-	 */
-	public void setFilePath() {
-		this.filePath = file.getAbsolutePath();
-	}
-
-	/**
-	 * Get file icon.
-	 * @return file icon
+	 * @return icon
 	 */
 	public Icon getFileIcon() {
 	    return this.fileIcon;
 	}
 
 	/**
-	 * Get file.
 	 * @return file
 	 */
 	public File getFile() {

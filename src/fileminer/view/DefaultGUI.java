@@ -2,15 +2,23 @@ package fileminer.view;
 
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JFrame;
+import javax.swing.tree.TreePath;
 
+/**
+ * Interface of FileMinerGUI.
+ * @author Michele
+ *
+ */
 public interface DefaultGUI {
+
+    JFrame getFrame();
 
 	/**
 	 * Return a list of string corresponding to the selected nodes paths.
 	 * @return List of String
 	 */
-	List<String> getSelectedItems();
+	List<TreePath> getSelectedItems();
 
 	/**
 	 * Clear selected item path.
@@ -21,32 +29,16 @@ public interface DefaultGUI {
 	 * Set current directory path.
 	 * @param path current path
 	 */
-	void setCurrentDir(String path);
+	void setCurrentDir(TreePath path);
 
 	/**
 	 * Return the path of the current directory.
 	 * @return String
 	 */
-	String getCurrentDir();
+	TreePath getCurrentDir();
 
 	/**
-	 * @param node
+	 * @param node 
 	 */
-	void updateNodesTable(DefaultMutableTreeNode node);
-	
-	/**
-	 * 
-	 * @return 0 if is a directory
-	 *         1 if is a file
-	 *         else if the dialog was closed.
-	 */
-	int newObjectType();
-	
-	/**
-	 * 
-	 * @param message 
-	 *             message displayed in the InputDialog
-	 * @return the name of new object (file, directory or zip)
-	 */
-	String newObjectName(String message);
+	void updateNodesTable(TreePath node);
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import fileminer.main.FileMinerLogger;
 import fileminer.model.FileSystemTreeImpl;
@@ -18,36 +19,41 @@ import fileminer.view.FileMinerGUI;
  *
  */
 public class TreeNodeSelectionListener implements TreeSelectionListener {
-    private final FileSystemTreeImpl model;
+
+    private final FileSystemTreeImpl treeModel;
     private final FileMinerGUI view;
     
     /**
      * 
      * @param model
      *          file system tree.
-     * @param view
+     * @param v
      *          GUI.
      */
-    public TreeNodeSelectionListener(final FileSystemTreeImpl model, final FileMinerGUI view) {
-        this.model = model;
-        this.view = view;
+    public TreeNodeSelectionListener(final FileSystemTreeImpl model, final FileMinerGUI v) {
+        this.treeModel = model;
+        this.view = v;
     }
     
     @Override
     public void valueChanged(final TreeSelectionEvent e) {
-        final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+        final TreePath treePath = e.getPath();
+        final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         final Node fileNode = (Node) treeNode.getUserObject();
 
         final File f = fileNode.getFile();
         if (f.isDirectory()) {
-        	final AddFileNodes addFileNodes = new AddFileNodes(this.model, treeNode);
-        	new Thread(addFileNodes).start();
-        	view.setCurrentDir(f.getAbsolutePath());
-        	view.updateNodesTable(treeNode);
-        	FileMinerLogger.getInstance().getConsole().putString(view.getCurrentDir());
+            final AddFileNodes addFileNodes = new AddFileNodes(this.treeModel, treeNode);
+            new Thread(addFileNodes).start();
+            view.setCurrentDir(treePath);
+            view.addPathToChronology(treePath);
+            view.updateNodesTable(treePath);
+            FileMinerLogger.getInstance().getConsole().putString("Current path: " + view.getCurrentDir().toString());
         } else {
-        	view.setCurrentDir(f.getParentFile().getAbsolutePath());
-        	view.updateNodesTable(treeNode);
+            view.setCurrentDir(treePath.getParentPath());
+            view.addPathToChronology(treePath.getParentPath());
+            view.updateNodesTable(new TreePath(treeNode.getPath()));
+            FileMinerLogger.getInstance().getConsole().putString("Current path: " + view.getCurrentDir().toString());
         }
     }
 }

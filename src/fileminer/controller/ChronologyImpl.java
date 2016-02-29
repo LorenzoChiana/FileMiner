@@ -4,17 +4,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.tree.TreePath;
+
 /**
  * 
  * @author Lorenzo Chiana
  *
  */
 public class ChronologyImpl implements Chronology {
-    private List<String> chronology = new ArrayList<>();
+
+    private final List<TreePath> chronology = new ArrayList<>();
     private Integer indexCurrentDir = this.chronology.size() - 1;
     
     @Override
-    public void addDirectory(final String path) {
+    public void addDirectory(final TreePath path) {
         /*
          * - Se la directory corrente è l'ultima della cronologia,
          *      aggiungo la nuova directory in fondo alla cronologia.
@@ -25,11 +28,11 @@ public class ChronologyImpl implements Chronology {
         if (this.indexCurrentDir == this.chronology.size() - 1) {
             this.chronology.add(path);  
             this.indexCurrentDir = this.chronology.size() - 1;
-        } else if (this.chronology.get(this.indexCurrentDir + 1) == path) {
+        } else if (this.chronology.get(this.indexCurrentDir + 1).equals(path)) {
             nextDir();
         } else {
             this.chronology.set(this.indexCurrentDir + 1, path);
-            final Iterator<String> it = this.chronology.listIterator(this.indexCurrentDir + 2);
+            final Iterator<TreePath> it = this.chronology.listIterator(this.indexCurrentDir + 2);
             while (it.hasNext()) {
                 it.next();
                 it.remove();
@@ -39,7 +42,7 @@ public class ChronologyImpl implements Chronology {
     }
 
     @Override
-    public List<String> getChronology() {
+    public List<TreePath> getChronology() {
         return this.chronology;
     }
 
@@ -58,7 +61,7 @@ public class ChronologyImpl implements Chronology {
     }
 
     @Override
-    public String getCurrentDirectory() {
+    public TreePath getCurrentDirectory() {
         return this.chronology.get(this.indexCurrentDir);
     }
 

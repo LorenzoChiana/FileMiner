@@ -2,13 +2,17 @@ package fileminer.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.tree.TreePath;
+
 /**
  * 
  * @author Lorenzo Chiana
  *
  */
 public class ClipboardImpl implements Clipboard {
-    private List<String> clipboard;
+
+    private List<TreePath> clipboard;
     private boolean isCopy;
     
     /**
@@ -19,12 +23,12 @@ public class ClipboardImpl implements Clipboard {
     }
 
     @Override
-    public List<String> getPathFiles() {
+    public List<TreePath> getPathFiles() {
         return this.clipboard;
     }
 
     @Override
-    public void addPathFiles(final List<String> path) {
+    public void addPathFiles(final List<TreePath> path) {
         this.clipboard = new ArrayList<>();
         this.clipboard.addAll(path);
     }

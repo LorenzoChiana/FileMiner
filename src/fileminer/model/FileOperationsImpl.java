@@ -1,6 +1,7 @@
 package fileminer.model;
 
 import java.awt.Desktop;
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,103 +10,104 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+
 import org.apache.commons.io.FileUtils;
 
+import fileminer.main.FileMinerLogger;
+
 /**
- * @author Daniele Gambaletta
- * Class for various file operations.
+ * Classe per le varie operazioni sui files.
  */
 public class FileOperationsImpl implements FileOperations {
 
-    private List<String> clipboard;
+    private final FileSystemTreeImpl fileSystemTree;
+    private final FileMinerLogger logger;
 
-
-    /**
-     * Getter for clipboard.
-     * @return clipboard
-     */
-    public List<String> getClipboard() {
-        return clipboard;
+    public FileOperationsImpl(final FileSystemTreeImpl fst) {
+        this.fileSystemTree = fst;
+        this.logger = FileMinerLogger.getInstance();
     }
 
-
     /**
-     * Setter for clipboard.
-     * @param clipboard list of paths
+     * Add files from path.
+     * @param files
      */
-    public void setClipboard(final List<String> clipboard) {
-        this.clipboard = clipboard;
-    }
-
-
-
-    /**
-     * Add files from paths
-     * @param files list of file
-     * @param clipboard list of paths
-     * @return file list
-     */
-    private List<File> addFiles(final List<File> files, final List<String> clipboard) {
-        for (String path : clipboard) {
-            files.add(FileUtils.getFile(path)); // File o Directory
+    private List<File> addFiles(final List<TreePath> clipboard) {
+        final List<File> tmp = new ArrayList<>();
+        for (final TreePath path : clipboard) {
+            final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            final Node node = (Node) treeNode.getUserObject();
+            tmp.add(node.getFile()); // File o Directory
         }
-        return new ArrayList<File>(files);
+        return tmp;
     }
 
-
     @Override
-    public void copy(final List<String> clipboard) {
-        setClipboard(clipboard);
-    }
+    public void pasteTo(final List<TreePath> clipboard, final TreePath destPath, final boolean isCopy) throws IOException {
 
+        final DefaultMutableTreeNode destNode = (DefaultMutableTreeNode) destPath.getLastPathComponent();
+        final Node node = (Node) destNode.getUserObject();
+        final File destDir = node.getFile(); // Directory
 
-    @Override
-    public void pasteTo(final String destPath, final boolean isCopy) throws IOException {
-
-        List<File> files = new ArrayList<File>();
-        File dest = FileUtils.getFile(destPath); // Directory
-
-        files = addFiles(files, this.clipboard);
+        final List<File> files = addFiles(clipboard);
+        int size = files.size();
 
         if (isCopy) {
-            for (File file : files) {
+            int n = 1;
+            
+            for (final File file : files) {
+                logger.getConsole().putStringLater("Copy of " + n + " element out of " + size + " in progress...");
                 if (file.isDirectory()) {
-                    FileUtils.copyDirectoryToDirectory(file, dest);
+                    FileUtils.copyDirectoryToDirectory(file, destDir);
                 } else {
-                    FileUtils.copyFileToDirectory(file, dest);			
+                    FileUtils.copyFileToDirectory(file, destDir);			
                 }
+                n++;
             }
+            fileSystemTree.addNodesToTree(destNode, files);
         } else {
-            for (File file : files) {
+
+            int n = 1;
+            for (final File file : files) {
+                logger.getConsole().putStringLater("Move of " + n + " element out of " + size + " in progress...");
                 if (file.isDirectory()) {
-                    FileUtils.moveDirectoryToDirectory(file, dest, false);
+                    FileUtils.moveDirectoryToDirectory(file, destDir, false);
                 } else {
-                    FileUtils.moveFileToDirectory(file, dest, true);
+                    FileUtils.moveFileToDirectory(file, destDir, true);
                 }
+                n++;
             }
-        }	
+            final List<DefaultMutableTreeNode> oldNodes = new ArrayList<>();
+            for (final TreePath oldNode : clipboard) {
+                oldNodes.add((DefaultMutableTreeNode) oldNode.getLastPathComponent());
+            }
+            final DefaultMutableTreeNode oldParent = (DefaultMutableTreeNode) oldNodes.get(0).getParent();
+            fileSystemTree.moveNodes(destNode, oldNodes);
+            fileSystemTree.reloadTreeByNode(oldParent);
+        }
+        fileSystemTree.reloadTreeByNode(destNode);
     }
 
 
     @Override
-    public void open(final List<String> srcPaths) throws IOException {
-        for (String path: srcPaths) {
-            File file = FileUtils.getFile(path);
-            Desktop desktop = Desktop.getDesktop();
+    public void open(final List<TreePath> srcPath) throws IOException {
+        for (final TreePath filePath : srcPath) {
+            final Node node = (Node) filePath.getLastPathComponent();
+            final File file = node.getFile();
             if (file.exists()) {
-                desktop.open(file);
-            }  
+                Desktop.getDesktop().open(file);
+            }
         }
     }
 
-
     @Override
-    public void remove(final List<String> clipboard) throws IOException {
-        List<File> files = new ArrayList<File>();
+    public void remove(final List<TreePath> clipboard) throws IOException {
+        final List<File> files = addFiles(clipboard);
 
-        files = addFiles(files, clipboard);
-
-        for (File file : files) {
+        for (final File file : files) {
+            
             if (file.isDirectory()) {
                 FileUtils.deleteDirectory(file);
             } else {
@@ -114,36 +116,38 @@ public class FileOperationsImpl implements FileOperations {
         }
     }
 
-
     @Override
-    public void print(final String srcPath) throws IOException {
+    public void print(final TreePath srcPath) throws IOException {
     }
 
 
     @Override
-    public void mkDir(final String srcPath, final String name) throws IOException {
+    public void mkDir(final TreePath srcPath, final String name) throws IOException {
         new File(srcPath + System.getProperty("file.separator") + name).mkdir();
 
     }
 
 
     @Override
-    public void mkFile(final String srcPath, final String name) throws IOException {
+    public void mkFile(final TreePath srcPath, final String name) throws IOException {
         new File(srcPath + System.getProperty("file.separator") + name).createNewFile();
     }
 
 
     @Override
-    public void mkLink(final String srcTarget, final String srcLink, final String name) throws IOException {
-        Path target = Paths.get(srcTarget);
-        Path link = Paths.get(srcLink + System.getProperty("file.separator") + name);
+    public void mkLink(final TreePath srcTarget, final TreePath srcLink, final String name) throws IOException {
+        final Node targetNode = (Node) srcTarget.getLastPathComponent();
+        final Node linkNode = (Node) srcLink.getLastPathComponent();
+
+        final Path target = Paths.get(targetNode.getFile().getAbsolutePath());
+        final Path link = Paths.get(linkNode.getFile().getAbsolutePath() + System.getProperty("file.separator") + name);
+
         Files.createSymbolicLink(link, target);
     }
 
-
     @Override
     public void rename(final String srcPath, final String name) throws IOException {
-        File file = FileUtils.getFile(srcPath);
+        final File file = FileUtils.getFile(srcPath);
 
         if (file.isDirectory()) {
             FileUtils.moveDirectory(
@@ -157,6 +161,5 @@ public class FileOperationsImpl implements FileOperations {
                     );
         }
     }
-
 
 }

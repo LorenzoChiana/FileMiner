@@ -1,26 +1,29 @@
 package fileminer.controller;
 
-import java.io.FileNotFoundException;
+import java.awt.Desktop;
 import java.io.IOException;
 
 import fileminer.main.FileMinerLogger;
 import fileminer.model.FileOperations;
 import fileminer.model.FileOperationsImpl;
 import fileminer.model.FileSystemTreeImpl;
-import fileminer.model.archiver.Archiver;
 import fileminer.model.archiver.ArchiverZIP;
 import fileminer.view.FileMinerGUI;
-import net.lingala.zip4j.exception.ZipException;
+
 /**
  * 
  * @author Lorenzo Chiana
  *
  */
 public class ControllerImpl implements Controller {
+
     private final FileMinerGUI view;
-    private FileSystemTreeImpl fst;
+    private final FileSystemTreeImpl fst;
+    private final FileMinerLogger logger;
     private final Clipboard clipboard;
     private final FileOperations operation;
+    private final ArchiverZIP archiver;
+    private final Chronology chronology;
 
     /**
      * ControllerImpl constructor:
@@ -29,52 +32,79 @@ public class ControllerImpl implements Controller {
     public ControllerImpl() {
         this.fst = new FileSystemTreeImpl();
         this.view = new FileMinerGUI(this);
+        this.logger = FileMinerLogger.getInstance();
         this.clipboard = new ClipboardImpl();
-        this.operation = new FileOperationsImpl();
+        this.chronology = new ChronologyImpl();
+        
+        this.operation = new FileOperationsImpl(fst);
+        this.archiver = new ArchiverZIP();
     }
 
     @Override
     public void invokesCommand(final Commands command) {
-        final Archiver archiver;
-
         switch (command) {
-        case COPY:       
-            this.clipboard.addPathFiles(this.view.getSelectedItems());
-            this.clipboard.setParameter(true);
-            this.operation.copy(this.clipboard.getPathFiles());
+        case BACK:
+            this.chronology.prevDir();
+            this.view.updateNodesTable(this.chronology.getCurrentDirectory());
+            break;
+
+        case NEXT:
+            this.chronology.nextDir();
+            this.view.updateNodesTable(this.chronology.getCurrentDirectory());
+            break;
+
+        case COPY:
+            if (!this.view.getSelectedItems().isEmpty()) {
+                this.clipboard.addPathFiles(this.view.getSelectedItems());
+                this.clipboard.setParameter(true);
+                logger.getConsole().putString(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
+            } else {
+                logger.getConsole().putString("Nothing to copy...");
+            }
             break;
 
         case PASTE:
             try {
                 if (!this.clipboard.isEmpty()) {
-                    this.operation.pasteTo(this.view.getCurrentDir(), this.clipboard.getParameter());
+
+                    this.operation.pasteTo(this.clipboard.getPathFiles(),
+                                           this.view.getCurrentDir(),
+                                           this.clipboard.getParameter());
+
                     this.clipboard.clean();
-                    this.updateTree();
+                    this.view.updateNodesTable(this.view.getCurrentDir());
+
+                } else {
+                    logger.getConsole().putString("Nothing to paste...");
                 }
             } catch (IOException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+                logger.getConsole().putString(e.getMessage());
             }
             break;
 
-        case CUT:              
-            this.clipboard.addPathFiles(this.view.getSelectedItems()); 
-            this.clipboard.setParameter(false);
-            this.operation.copy(this.clipboard.getPathFiles());
+        case CUT:
+            if (!this.view.getSelectedItems().isEmpty()) {
+                this.clipboard.addPathFiles(this.view.getSelectedItems()); 
+                this.clipboard.setParameter(false);
+                logger.getConsole().putString(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
+            } else {
+                logger.getConsole().putString("Nothing to cut...");
+            }
             break;
 
         case LINK:
             try {
-                final String srcDest = this.view.newObjectName("Inserire indirizzo del file che si vuole collegare:");
-                if (srcDest != null) {
-                    final String name = this.view.newObjectName("Inserire nome collegamento:");
-                    if (name != null) {
-                        this.operation.mkLink(srcDest, this.view.getCurrentDir(), name);
-                        this.updateTree();
-                    }
+                if (!this.clipboard.isEmpty()) {
+                    this.operation.mkLink(this.view.getSelectedItems().get(0),
+                                          this.view.getCurrentDir(),
+                                          "google");
+                } else {
+                    logger.getConsole().putString("Nessun elemento selezionato");
                 }
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
+
             break;
 
         case DELETE:
@@ -82,7 +112,7 @@ public class ControllerImpl implements Controller {
                 this.clipboard.addPathFiles(this.view.getSelectedItems());
                 this.operation.remove(this.clipboard.getPathFiles());
                 this.clipboard.clean();
-                this.updateTree();
+
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
@@ -90,60 +120,45 @@ public class ControllerImpl implements Controller {
 
         case NEW:
             try {
-                final int option = this.view.newObjectType();
-                /*
-                 * 0 = directory
-                 * 1 = file
-                 * altro = ha chiuso la finestra annullando l'operazione
-                 */
-                if (option == 0) {
-                    final String name = this.view.newObjectName("Inserire nome della nuova directory:");
-                    if (name != null) {
-                        System.out.println("non null");
-                        this.operation.mkDir(this.view.getCurrentDir(), name);
-                        this.updateTree();
-                    }
-                } else if (option == 1) {
-                    final String name = this.view.newObjectName("Inserire nome del nuovo file:");
-                    if (name != null) {
-                        this.operation.mkFile(this.view.getCurrentDir(), name);
-                        this.updateTree();
-                    }
-                }
+                this.operation.mkDir(this.view.getCurrentDir(), "");
             } catch (IOException e) {
                 FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
             }
+
             break;
 
         case OPEN:
             try {
-                this.operation.open(this.view.getSelectedItems());
+                if (Desktop.isDesktopSupported()) {
+                    this.operation.open(this.view.getSelectedItems());
+                } else {
+                    logger.getConsole().putString("Desktop mode not supported!");
+                }
             } catch (IOException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+                logger.getConsole().putString(e.getMessage());
             }
             break;
 
-        case COMPRESS:            
-            archiver = new ArchiverZIP();
-            try {
-                final String name = this.view.newObjectName("Inserire nome dell'archivio:");
-                archiver.compress(view.getSelectedItems(), name, view.getCurrentDir());
-            } catch (FileNotFoundException | ZipException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
-            }
-            this.updateTree();
+        case COMPRESS:
+
+//            try {
+//                final String name = this.view.newObjectName("Inserire nome dell'archivio:");
+//                archiver.compress(view.getSelectedItems(), name, view.getCurrentDir());
+//            } catch (FileNotFoundException | ZipException e) {
+//                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+//            }
+
             break;
 
         case DECOMPRESS: 
-            archiver = new ArchiverZIP();
-            try {
-                archiver.decompress(view.getSelectedItems(), view.getCurrentDir());
-            } catch (ZipException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
-            } catch (FileNotFoundException e) {
-                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
-            }
-            this.updateTree();
+//            try {
+//                archiver.decompress(view.getSelectedItems(), view.getCurrentDir());
+//            } catch (ZipException e) {
+//                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+//            } catch (FileNotFoundException e) {
+//                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
+//            }
+
             break;
 
         default: break;
@@ -155,6 +170,10 @@ public class ControllerImpl implements Controller {
         return this.fst;
     }
 
+    public Chronology getChronology() {
+        return this.chronology;
+    }
+
     @Override
     public String getOSInfo() {
         return new OSPropertiesImpl().toString();
@@ -163,11 +182,5 @@ public class ControllerImpl implements Controller {
     @Override
     public void quit() {
         System.exit(0);
-    }
-
-    private void updateTree() {
-        this.fst = new FileSystemTreeImpl();
-        this.view.updateTree(this.fst.getTree());
-        this.view.repaintGUI();
     }
 }

@@ -2,6 +2,8 @@ package fileminer.controller;
 
 import java.util.List;
 
+import javax.swing.tree.TreePath;
+
 /**
  * 
  * @author Lorenzo Chiana
@@ -13,14 +15,14 @@ public interface Chronology {
      * @param path
      *          this method add the new directory into the chronology.
      */
-    void addDirectory(String path);
+    void addDirectory(TreePath path);
     
     /**
      * 
      * @return a list of string.
      *          This list represents the directory chronology.
      */
-    List<String> getChronology();
+    List<TreePath> getChronology();
     /**
      * Go forward in the list of directory. 
      */
@@ -33,5 +35,5 @@ public interface Chronology {
      * 
      * @return the path of the current directory.
      */
-    String getCurrentDirectory();
+    TreePath getCurrentDirectory();
 }

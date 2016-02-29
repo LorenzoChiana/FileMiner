@@ -20,14 +20,13 @@ import fileminer.model.runnable.AddFileNodes;
  */
 public class TreeNodeExpandListener implements TreeWillExpandListener {
 
-    private final FileSystemTreeImpl modelTree;
+    private final FileSystemTreeImpl treeModel;
     /**
      * 
-     * @param modelTree
-     *          tree of file system.
+     * @param model tree of file system.
      */
-    public TreeNodeExpandListener(final FileSystemTreeImpl modelTree) {
-        this.modelTree = modelTree;
+    public TreeNodeExpandListener(final FileSystemTreeImpl model) {
+        this.treeModel = model;
     }
 
     @Override
@@ -40,8 +39,8 @@ public class TreeNodeExpandListener implements TreeWillExpandListener {
         final TreePath path = event.getPath();
         // Prendo l'ultimo elemento della path.
         final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-       // Richiamo il metodo del model per aggiungere i nodi nipoti del nodo corrente.
-        final AddFileNodes addFileNodes = new AddFileNodes(this.modelTree, treeNode);
+        // Richiamo il metodo del model per aggiungere i nodi nipoti del nodo corrente.
+        final AddFileNodes addFileNodes = new AddFileNodes(treeModel, treeNode);
         new Thread(addFileNodes).start();
     }
 }

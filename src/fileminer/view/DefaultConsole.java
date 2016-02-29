@@ -12,6 +12,8 @@ public interface DefaultConsole {
      */
     void putString(String arg);
 
+    void putStringLater(String arg);
+
     /**
      * Print info on console with invoker name.
      * @param invoker who want to print info

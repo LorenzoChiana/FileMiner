@@ -3,6 +3,8 @@ package fileminer.model.archiver;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+import javax.swing.tree.TreePath;
+
 import net.lingala.zip4j.exception.ZipException;
 
 /**
@@ -20,7 +22,7 @@ public interface Archiver {
      * @throws FileNotFoundException file not found
      * @throws ZipException zip exception
      */
-    void compress(List<String> paths,  String name,  String dest) throws FileNotFoundException, ZipException;
+    void compress(List<TreePath> paths,  String name,  TreePath dest) throws FileNotFoundException, ZipException;
 
 
     
@@ -31,6 +33,6 @@ public interface Archiver {
      * @throws FileNotFoundException file not found
      * @throws ZipException zip exception
      */
-    void decompress(List<String> archives, String dest) throws FileNotFoundException, ZipException;
+    void decompress(List<TreePath> archives, TreePath dest) throws FileNotFoundException, ZipException;
 
 }

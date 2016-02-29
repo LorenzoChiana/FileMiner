@@ -6,11 +6,6 @@ import fileminer.model.FileSystemTreeImpl;
  * This is an interface represents the contract for all action used by GUI.
  */
 public interface Controller {
-    /**
-     * 
-     * @return the file system object
-     */
-    FileSystemTreeImpl getFileSystem();
     
     /**
      * 
@@ -18,6 +13,17 @@ public interface Controller {
      *          id of command to invoke
      */
     void invokesCommand(Commands command);
+
+    /**
+     * 
+     * @return the file system object
+     */
+    FileSystemTreeImpl getFileSystem();
+
+    /**
+     * @return
+     */
+    Chronology getChronology();
 
     /**
      * Print OS information.

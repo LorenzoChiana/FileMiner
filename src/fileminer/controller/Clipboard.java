@@ -1,6 +1,8 @@
 package fileminer.controller;
 
 import java.util.List;
+
+import javax.swing.tree.TreePath;
 /**
  * 
  * @author Lorenzo Chiana
@@ -11,13 +13,13 @@ public interface Clipboard {
      * 
      * @return the list of path's files to copy
      */
-    List<String> getPathFiles();
+    List<TreePath> getPathFiles();
     /**
      * 
      * @param path
      *          method for adding file into the clipboard.
      */
-    void addPathFiles(List<String> path);
+    void addPathFiles(List<TreePath> path);
     /**
      * method for erase files on clipboard.
      */
@@ -31,8 +33,8 @@ public interface Clipboard {
     /**
      * 
      * @param isCopy
-     *          true if is copy
-     *          false if is cut
+     *          true if it is copy
+     *          false if it is cut
      */
     void setParameter(boolean isCopy);
     /**

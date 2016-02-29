@@ -7,6 +7,14 @@ package fileminer.controller;
  */
 public enum Commands {
     /**
+     * 
+     */
+    BACK,
+    /**
+     * 
+     */
+    NEXT,
+    /**
      * COPY = operation that copy files.
      */
     COPY,

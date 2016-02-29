@@ -1,10 +1,14 @@
 package fileminer.view.components;
 
-import fileminer.model.Node;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 public class FileEditDialog {
 
-	public FileEditDialog(final Node fileNode) {
-		
+    private final JDialog dialog;
+
+	public FileEditDialog(final JFrame gui) {
+		this.dialog = new JDialog(gui, "New item", true);
+
 	}
 }

@@ -12,12 +12,16 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.tree.TreePath;
 
 import fileminer.cellrenderer.ObjectRenderer;
 
+
+
 /**
- * @author Daniele Gambaletta
- * Table management.
+ * Classe per impostare la tabella dei files e delle directories.
+ * @author Daniele
+ *
  */
 public class FilesTableModel extends AbstractTableModel implements FilesTable {
 
@@ -26,12 +30,12 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String[] columns = { "X", "Icon", "Name", "Last Modified", "Size", "Hidden", "Writable", "Readable", "Executable" };
+	private final String[] columns = { "X", "Icon", "Name", "Last Modified", "Size", "Hidden", "Writable", "Readable", "Executable", "TreePath" };
 
 	private List<List<Object>> rows;
 
 	/**
-	 * FilesTableModel constructor.
+	 * 
 	 */
 	public FilesTableModel() {
         this.rows = new ArrayList<List<Object>>();
@@ -50,7 +54,6 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 
 	@Override
 	public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
-		//super.setValueAt(aValue, rowIndex, columnIndex);
 		this.rows.get(rowIndex).set(columnIndex, aValue);
 		fireTableCellUpdated(rowIndex, columnIndex);
 	}
@@ -66,18 +69,24 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
     }
 
 	@Override
-	public void addRow(final Node node, final FileSystemTreeImpl fst) {
-		List<Object> row = new ArrayList<>();
+	public void addRow(final Node node, final TreePath nodePath, final FileSystemTreeImpl fst) {
+		final List<Object> row = new ArrayList<>();
+		final long fileSize = node.getFile().length();
 
-		row.add(Boolean.valueOf(false));
+		row.add(Boolean.FALSE);
 		row.add(node.getFileIcon());
-		row.add(node);
+		row.add(node.getFileName());
 		row.add(node.getFile().lastModified());
-		row.add(node.getFile().getTotalSpace());
+		if (fileSize >= 1024) {
+		    row.add(node.getFile().length() / 1024 + " KB");
+		} else {
+		    row.add(node.getFile().length() + " B");
+		}
 		row.add(node.getFile().isHidden());
 		row.add(node.getFile().canWrite());
 		row.add(node.getFile().canRead());
 		row.add(node.getFile().canExecute());
+		row.add(nodePath);
 
 		this.rows.add(row);
 	}
@@ -104,24 +113,25 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 		case 3:
 			return Date.class;
 		case 4:
-			return Long.class;
+			return String.class;
 		case 5:
 		case 6:
 		case 7:
 		case 8:
 			return Boolean.class;
+		case 9:
+		    return String.class;
 		default:
 			return null;
 		}
 	}
 	
-	@Override
 	public int setColumnWidths(final JTable table) {
         DefaultTableCellRenderer centerRenderer = new ObjectRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
          
-        int width = setColumnWidth(table, 0, 20);
+        int width = setColumnWidth(table, 0, 10);
         width += setColumnWidth(table, 1, 100);
         width += setColumnWidth(table, 2, 70);
         width += setColumnWidth(table, 3, 80);
@@ -135,11 +145,11 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
         return width + 30;
     }
      
-	private int setColumnWidth(final JTable table, final int column, int width) {
-        TableColumn tableColumn = table.getColumnModel().getColumn(column);
-        JLabel label = new JLabel((String) tableColumn.getHeaderValue());
-        Dimension preferred = label.getPreferredSize();
-        width = Math.max(width, (int) preferred.getWidth() + 14);
+    private int setColumnWidth(final JTable table, int column, int width) {
+        final TableColumn tableColumn = table.getColumnModel().getColumn(column);
+        final JLabel label = new JLabel((String) tableColumn.getHeaderValue());
+        final Dimension preferred = label.getPreferredSize();
+        width = Math.max(width, (int) preferred.getWidth());
         tableColumn.setPreferredWidth(width);
         tableColumn.setMinWidth(width);
          
