@@ -44,20 +44,20 @@ public class ControllerImpl implements Controller {
     public void invokesCommand(final Commands command) {
         switch (command) {
         case BACK:
-            this.chronology.prevDir();
-            this.view.updateNodesTable(this.chronology.getCurrentDirectory());
+            chronology.prevDir();
+            view.updateNodesTable(chronology.getCurrentDirectory());
             break;
 
         case NEXT:
-            this.chronology.nextDir();
-            this.view.updateNodesTable(this.chronology.getCurrentDirectory());
+            chronology.nextDir();
+            view.updateNodesTable(chronology.getCurrentDirectory());
             break;
 
         case COPY:
-            if (!this.view.getSelectedItems().isEmpty()) {
-                this.clipboard.addPathFiles(this.view.getSelectedItems());
-                this.clipboard.setParameter(true);
-                logger.getConsole().putStringLater(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
+            if (!view.getSelectedItems().isEmpty()) {
+                clipboard.addPathFiles(view.getSelectedItems());
+                clipboard.setParameter(true);
+                logger.getConsole().putStringLater(clipboard.getPathFiles().size() + " elemento/i nella clipboard");
             } else {
                 logger.getConsole().putStringLater("Nothing to copy...");
             }
@@ -65,15 +65,10 @@ public class ControllerImpl implements Controller {
 
         case PASTE:
             try {
-                if (!this.clipboard.isEmpty()) {
-
-                    this.operation.pasteTo(this.clipboard.getPathFiles(),
-                                           this.view.getCurrentDir(),
-                                           this.clipboard.getParameter());
-
-                    this.clipboard.clean();
-                    this.view.updateNodesTable(this.view.getCurrentDir());
-
+                if (!clipboard.isEmpty()) {
+                    operation.pasteTo(clipboard.getPathFiles(), view.getCurrentDir(), clipboard.getParameter());
+                    clipboard.clean();
+                    view.updateNodesTable(view.getCurrentDir());
                 } else {
                     logger.getConsole().putStringLater("Nothing to paste...");
                 }
@@ -83,54 +78,73 @@ public class ControllerImpl implements Controller {
             break;
 
         case CUT:
-            if (!this.view.getSelectedItems().isEmpty()) {
-                this.clipboard.addPathFiles(this.view.getSelectedItems()); 
-                this.clipboard.setParameter(false);
-                logger.getConsole().putStringLater(this.clipboard.getPathFiles().size() + " elemento/i nella clipboard");
+            if (!view.getSelectedItems().isEmpty()) {
+                clipboard.addPathFiles(view.getSelectedItems()); 
+                clipboard.setParameter(false);
+                logger.getConsole().putStringLater(clipboard.getPathFiles().size() + " elemento/i nella clipboard");
             } else {
                 logger.getConsole().putStringLater("Nothing to cut...");
             }
             break;
 
-        case LINK:
-            try {
-                if (!this.clipboard.isEmpty()) {
-                    this.operation.mkLink(this.view.getSelectedItems().get(0),
-                                          this.view.getCurrentDir(),
-                                          "google");
-                } else {
-                    logger.getConsole().putStringLater("Nessun elemento selezionato");
-                }
-            } catch (IOException e) {
-                logger.getConsole().putString(e.getMessage());
-            }
-
-            break;
-
         case DELETE:
             try {
-                this.clipboard.addPathFiles(this.view.getSelectedItems());
-                this.operation.remove(this.clipboard.getPathFiles());
-                this.clipboard.clean();
-
+                final boolean result = view.getConfirmDialog();
+                if (result) {
+                    this.operation.remove(this.view.getSelectedItems(), this.view.getCurrentDir());
+                    this.view.updateNodesTable(this.view.getCurrentDir());
+                }
             } catch (IOException e) {
                 logger.getConsole().putStringLater(e.getMessage());
             }
             break;
 
-        case NEW:
+        case NEW_FILE:
             try {
-                this.operation.mkDir(this.view.getCurrentDir(), "");
-            } catch (IOException e) {
+                final String name = view.getDialogString(0);
+                if (name != null) {
+                    operation.mkFile(view.getCurrentDir(), name);
+                } else {
+                    logger.getConsole().putStringLater("Invalid name!");
+                    view.updateNodesTable(view.getCurrentDir());
+                }
+            } catch (Exception e) {
                 logger.getConsole().putStringLater(e.getMessage());
             }
+            break;
 
+        case NEW_DIR:
+            try {
+                final String name = view.getDialogString(1);
+                if (name != null) {
+                    operation.mkDir(view.getCurrentDir(), name);
+                    view.updateNodesTable(view.getCurrentDir());
+                } else {
+                    logger.getConsole().putStringLater("Invalid name!");
+                }
+            } catch (Exception e) {
+                logger.getConsole().putStringLater(e.getMessage());
+            }
+            break;
+
+        case NEW_LINK:
+            try {
+                final String name = view.getDialogString(2);
+                if (name != null && view.getSelectedItems().size() == 1) {
+                    operation.mkLink(view.getCurrentDir(), view.getSelectedItems().get(0), name);
+                    view.updateNodesTable(view.getCurrentDir());
+                } else {
+                    logger.getConsole().putStringLater("Invalid selection or name!");
+                }
+            } catch (Exception e) {
+                logger.getConsole().putStringLater(e.getMessage());
+            }
             break;
 
         case OPEN:
             try {
                 if (Desktop.isDesktopSupported()) {
-                    this.operation.open(this.view.getSelectedItems());
+                    operation.open(view.getSelectedItems());
                 } else {
                     logger.getConsole().putStringLater("Desktop mode not supported!");
                 }
@@ -142,7 +156,7 @@ public class ControllerImpl implements Controller {
         case COMPRESS:
 
 //            try {
-//                final String name = this.view.newObjectName("Inserire nome dell'archivio:");
+//                final String name = view.newObjectName("Inserire nome dell'archivio:");
 //                archiver.compress(view.getSelectedItems(), name, view.getCurrentDir());
 //            } catch (FileNotFoundException | ZipException e) {
 //                FileMinerLogger.getInstance().getConsole().putString(e.getMessage());
@@ -167,11 +181,11 @@ public class ControllerImpl implements Controller {
 
     @Override
     public FileSystemTreeImpl getFileSystem() {
-        return this.fst;
+        return fst;
     }
 
     public Chronology getChronology() {
-        return this.chronology;
+        return chronology;
     }
 
     @Override

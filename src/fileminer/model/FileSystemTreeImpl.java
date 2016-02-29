@@ -1,17 +1,7 @@
 
 package fileminer.model;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -22,7 +12,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 
 /**
  * Classe per la creazione del Tree del FileSystem.
@@ -110,7 +99,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
             }
 
 			//Test di funzionamento
-			printTree(rootNode);
+			//printTree(rootNode);
 
 			this.treeModel = new DefaultTreeModel(rootNode); 
 			treeReady = true;
@@ -136,6 +125,13 @@ public class FileSystemTreeImpl implements FileSystemTree {
     public void moveNodes(final DefaultMutableTreeNode rootNode, final List<DefaultMutableTreeNode> oldNodes) {
         for (final DefaultMutableTreeNode oldNode : oldNodes) {
             rootNode.add(oldNode);
+        }
+        sortNodes(rootNode);
+    }
+
+    public void removeNodes(final DefaultMutableTreeNode rootNode, final List<DefaultMutableTreeNode> nodes) {
+        for (final DefaultMutableTreeNode node : nodes) {
+            rootNode.remove(node);
         }
         sortNodes(rootNode);
     }

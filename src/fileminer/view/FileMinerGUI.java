@@ -17,7 +17,6 @@ import fileminer.controller.Commands;
 import fileminer.main.FileMinerLogger;
 import fileminer.view.components.InformationScrollPane;
 import fileminer.view.components.NodeContentTable;
-import fileminer.view.components.OSInfoDialog;
 import fileminer.view.components.TreeExplorer;
 import fileminer.view.components.UpperToolbar;
 
@@ -32,7 +31,6 @@ public class FileMinerGUI implements DefaultGUI {
     private final JFrame frame;
     private final Controller controller;
     private final SplashScreen splashScreen;
-    private final DialogManager dialogManager;
 
     private UpperToolbar toolbar;
     private TreeExplorer treeExplorer;
@@ -50,7 +48,6 @@ public class FileMinerGUI implements DefaultGUI {
         controller = ctrl;
 
         frame = new JFrame("FileMiner");
-        dialogManager = new DialogManager(frame);
         splashScreen = new SplashScreen(ResourcePath.LOGO_256);
         splashScreen.setVisible(true);
 
@@ -133,21 +130,87 @@ public class FileMinerGUI implements DefaultGUI {
         FileMinerLogger.getInstance().setConsole(info.getConsole());
     }
 
+    /**
+     * Get user input name.
+     * @param option 0 is file, 1 is directory, 2 is link
+     * @return string
+     */
+    public String getDialogString(final int option) {
+        final String name = (String) JOptionPane.showInputDialog(frame,
+                "Enter text:",
+                option == 0 ? "New file" : (option == 1 ? "New dir" : "New link"),
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "");
+
+        if (name == null || name.length() <= 0) {
+            return null;
+        }
+
+        for (final char c : name.toCharArray()) {
+            switch (c) {
+            case '/':
+            case '\\':
+            case ':':
+            case '"':
+            case '*':
+            case '?':
+            case '<':
+            case '>':
+            case '|':
+                JOptionPane.showMessageDialog(frame, "Incorrect name!", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            default: break;
+            }
+        }
+
+        return name;
+    }
+
+    /**
+     * Get user answer.
+     * @return 0 if yes, 1 if no
+     */
+    public boolean getConfirmDialog() {
+        final int n = JOptionPane.showConfirmDialog(frame,
+                                                    "Are you sure?",
+                                                    "Think about it",
+                                                    JOptionPane.YES_NO_OPTION,
+                                                    JOptionPane.WARNING_MESSAGE);
+        if (n == JOptionPane.YES_OPTION) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private JMenuBar createMenuBar() {
-        final JMenuBar menuBar2 = new JMenuBar();
-        JMenu menu;
+        final JMenuBar menuBar = new JMenuBar();
+        JMenu menu, menuNew;
         JMenuItem item;
-        ImageIcon itemIcon;
+        ImageIcon itemIcon, menuIcon;
         final CommandInvokeListener cil = new CommandInvokeListener(controller);
 
         // FILE MENU
         menu = new JMenu("File");
-        item = new JMenuItem("New");
-        item.setActionCommand(Commands.NEW.toString());
+
+        menuNew = new JMenu("New");
+        menuIcon = new ImageIcon(getClass().getResource(ResourcePath.NEW_ICON));
+        menuNew.setIcon(new ImageIcon(menuIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
+        item = new JMenuItem("File");
+        item.setActionCommand(Commands.NEW_FILE.toString());
         item.addActionListener(cil);
-        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.NEW_ICON));
-        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
-        menu.add(item);
+        menuNew.add(item);
+        item = new JMenuItem("Directory");
+        item.setActionCommand(Commands.NEW_DIR.toString());
+        item.addActionListener(cil);
+        menuNew.add(item);
+        item = new JMenuItem("Link");
+        item.setActionCommand(Commands.NEW_LINK.toString());
+        item.addActionListener(cil);
+        menuNew.add(item);
+        menu.add(menuNew);
         menu.addSeparator();
         item = new JMenuItem("Exit");
         item.setActionCommand("EXIT");
@@ -157,7 +220,7 @@ public class FileMinerGUI implements DefaultGUI {
             exitProcedure();
         });
         menu.add(item);
-        menuBar2.add(menu);
+        menuBar.add(menu);
 
         // EDIT MENU
         menu = new JMenu("Edit");
@@ -182,7 +245,7 @@ public class FileMinerGUI implements DefaultGUI {
         item = new JMenuItem("Delete");
         item.setActionCommand(Commands.DELETE.toString());
         item.addActionListener(cil);
-        menuBar2.add(menu);
+        menuBar.add(menu);
 
         // CONFIG MENU
         menu = new JMenu("Config");
@@ -203,13 +266,16 @@ public class FileMinerGUI implements DefaultGUI {
             FileMinerLogger.getInstance().getConsole().clear();
         });
         menu.add(item);
-        menuBar2.add(menu);
+        menuBar.add(menu);
 
         // HELP MENU
         menu = new JMenu("Help");
         item = new JMenuItem("About OS");
         item.addActionListener(e -> {
-            new OSInfoDialog(controller).openDialog();
+            JOptionPane.showMessageDialog(null,
+                                          controller.getOSInfo(),
+                                          "OS info",
+                                          JOptionPane.INFORMATION_MESSAGE);
         });
         menu.add(item);
         item = new JMenuItem("About FileMiner");
@@ -223,9 +289,9 @@ public class FileMinerGUI implements DefaultGUI {
                     null);
         });
         menu.add(item);
-        menuBar2.add(menu);
+        menuBar.add(menu);
 
-        return menuBar2;
+        return menuBar;
     }
 
     private void exitProcedure() {

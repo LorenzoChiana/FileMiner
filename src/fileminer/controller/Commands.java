@@ -27,17 +27,21 @@ public enum Commands {
      */
     CUT,
     /**
-     * MOVE = operation that move files into other directory.
-     */
-    LINK,
-    /**
-     * DELETE = operation that remove files..
+     * DELETE = operation that remove files.
      */
     DELETE,
     /**
-     * NEW = operation that create new file.
+     * NEW_FILE = operation that create a new file.
      */
-    NEW,
+    NEW_FILE,
+    /**
+     * NEW_DIR = operation that create a new directory.
+     */
+    NEW_DIR,
+    /**
+     * NEW_LINK = operation that create a new link.
+     */
+    NEW_LINK,
     /**
      * OPEN = operation that open a file.
      */

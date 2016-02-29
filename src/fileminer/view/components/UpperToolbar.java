@@ -29,8 +29,6 @@ public class UpperToolbar {
         toolbar.add(createButton(ResourcePath.LEFT_ARROW_ICON, Commands.BACK.toString(), "Previous visited dir", "Back", al));
         toolbar.add(createButton(ResourcePath.RIGHT_ARROW_ICON, Commands.NEXT.toString(), "Next visited dir", "Next", al));
         toolbar.addSeparator();
-        toolbar.add(createButton(ResourcePath.NEW_ICON, Commands.NEW.toString(), "Create new item", "New item", al));
-        toolbar.addSeparator();
         toolbar.add(createButton(ResourcePath.COPY_ICON, Commands.COPY.toString(), "Copy files or directories", "Copy", al));
         toolbar.add(createButton(ResourcePath.CUT_ICON, Commands.CUT.toString(), "Cut files or directories", "Cut", al));
         toolbar.add(createButton(ResourcePath.PASTE_ICON, Commands.PASTE.toString(), "Paste files or directories", "Paste", al));

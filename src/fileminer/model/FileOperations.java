@@ -33,9 +33,10 @@ public interface FileOperations {
 	/**
 	 * Remove a file or an entirely directory.
 	 * @param clipboard Files or directories source path
+	 * @param srcPath 
 	 * @throws IOException 
 	 */
-	void remove(List<TreePath> clipboard) throws IOException;
+	void remove(List<TreePath> clipboard, TreePath srcPath) throws IOException;
 
 	
 	/**

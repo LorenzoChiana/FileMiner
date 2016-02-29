@@ -1,13 +1,13 @@
 package fileminer.model;
 
 import java.awt.Desktop;
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -115,7 +115,7 @@ public class FileOperationsImpl implements FileOperations {
 
     
     @Override
-    public void remove(final List<TreePath> clipboard) throws IOException {
+    public void remove(final List<TreePath> clipboard, final TreePath srcPath) throws IOException {
         final List<File> files = getfileFromTP(clipboard);
 
         for (final File file : files) {
@@ -126,31 +126,54 @@ public class FileOperationsImpl implements FileOperations {
                 FileUtils.forceDelete(file);
             }
         }
+
+        final List<DefaultMutableTreeNode> nodeList = new ArrayList<>();
+        for (final TreePath pathNode : clipboard) {
+            nodeList.add((DefaultMutableTreeNode) pathNode.getLastPathComponent());
+        }
+        final DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) srcPath.getLastPathComponent();
+        fileSystemTree.removeNodes(rootNode, nodeList);
+        fileSystemTree.reloadTreeByNode(rootNode);
     }
 
 
     @Override
     public void mkDir(final TreePath srcPath, final String name) throws IOException {
-        new File(this.getfileFromTP(srcPath).toURI() + System.getProperty("file.separator") + name).mkdir();
+        final File f = new File(this.getfileFromTP(srcPath).getAbsolutePath() + System.getProperty("file.separator") + name);
+        f.mkdir();
 
+        final DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) srcPath.getLastPathComponent();
+        fileSystemTree.addNodesToTree(srcNode, new ArrayList<File>(Arrays.asList(f)));
+        fileSystemTree.reloadTreeByNode((DefaultMutableTreeNode) srcPath.getLastPathComponent());
     }
 
 
     @Override
     public void mkFile(final TreePath srcPath, final String name) throws IOException {
-        new File(this.getfileFromTP(srcPath).toURI() + System.getProperty("file.separator") + name).createNewFile();
+        final File f = new File(this.getfileFromTP(srcPath).getAbsolutePath() + System.getProperty("file.separator") + name);
+        f.createNewFile();
+
+        final DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) srcPath.getLastPathComponent();
+        fileSystemTree.addNodesToTree(srcNode, Arrays.asList(f));
+        fileSystemTree.reloadTreeByNode((DefaultMutableTreeNode) srcPath.getLastPathComponent());
     }
 
 
     @Override
     public void mkLink(final TreePath srcTarget, final TreePath srcLink, final String name) throws IOException {
-        final Node targetNode = (Node) srcTarget.getLastPathComponent();
-        final Node linkNode = (Node) srcLink.getLastPathComponent();
+        final DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) srcTarget.getLastPathComponent();
+        final DefaultMutableTreeNode linkNode = (DefaultMutableTreeNode) srcLink.getLastPathComponent();
 
-        final Path target = Paths.get(targetNode.getFile().getAbsolutePath());
-        final Path link = Paths.get(linkNode.getFile().getAbsolutePath() + System.getProperty("file.separator") + name);
+        final Node target = (Node) targetNode.getUserObject();
+        final Node link = (Node) linkNode.getUserObject();
 
-        Files.createSymbolicLink(link, target);
+        final Path targetPath = Paths.get(target.getFile().getAbsolutePath());
+        final File fileLink = new File(link.getFile().getAbsolutePath() + System.getProperty("file.separator") + name);
+        final Path linkPath = Paths.get(fileLink.getAbsolutePath());
+
+        Files.createSymbolicLink(linkPath, targetPath);
+        fileSystemTree.addNodesToTree(targetNode, Arrays.asList(fileLink));
+        fileSystemTree.reloadTreeByNode(targetNode);
     }
 
     

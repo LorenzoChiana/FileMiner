@@ -58,18 +58,23 @@ public class NodeContentTable {
         tableModel.removeRows();
     	gui.clearSelectedItems();
 
+        final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+        final Node node = (Node) treeNode.getUserObject();
+
+        if (node.getFile().isDirectory()) {
+            final Node newSelfNode = new Node(node.getFile());
+            newSelfNode.setFileName(".");
+            tableModel.addRow(newSelfNode, path, fst);
+        }
+
         final TreePath parentPath = path.getParentPath();
         if (parentPath.getPathCount() > 1) {
             final DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) parentPath.getLastPathComponent();
             final Node parent = (Node) parentNode.getUserObject();
             final Node newParentNode = new Node(parent.getFile());
             newParentNode.setFileName("..");
-
             tableModel.addRow(newParentNode, parentPath, fst);
         }
-
-        final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        final Node node = (Node) treeNode.getUserObject(); 
 
         if (node.getFile().isDirectory()) {
         	@SuppressWarnings("unchecked")
