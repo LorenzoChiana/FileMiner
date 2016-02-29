@@ -14,6 +14,8 @@ public class ResourcePath {
 
     public static final String PASTE_ICON = "/images/Paste.png";
 
+    public static final String DELETE_ICON = "/images/Delete.png";
+
     public static final String INFO_ICON = "/images/Info.png";
 
     public static final String OPEN_ICON = "/images/Open.png";

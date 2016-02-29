@@ -32,6 +32,7 @@ public class FileMinerGUI implements DefaultGUI {
     private final JFrame frame;
     private final Controller controller;
     private final SplashScreen splashScreen;
+    private final DialogManager dialogManager;
 
     private UpperToolbar toolbar;
     private TreeExplorer treeExplorer;
@@ -49,6 +50,7 @@ public class FileMinerGUI implements DefaultGUI {
         controller = ctrl;
 
         frame = new JFrame("FileMiner");
+        dialogManager = new DialogManager(frame);
         splashScreen = new SplashScreen(ResourcePath.LOGO_256);
         splashScreen.setVisible(true);
 
@@ -177,6 +179,9 @@ public class FileMinerGUI implements DefaultGUI {
         itemIcon = new ImageIcon(getClass().getResource(ResourcePath.PASTE_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
+        item = new JMenuItem("Delete");
+        item.setActionCommand(Commands.DELETE.toString());
+        item.addActionListener(cil);
         menuBar2.add(menu);
 
         // CONFIG MENU

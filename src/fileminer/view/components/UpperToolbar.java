@@ -34,6 +34,7 @@ public class UpperToolbar {
         toolbar.add(createButton(ResourcePath.COPY_ICON, Commands.COPY.toString(), "Copy files or directories", "Copy", al));
         toolbar.add(createButton(ResourcePath.CUT_ICON, Commands.CUT.toString(), "Cut files or directories", "Cut", al));
         toolbar.add(createButton(ResourcePath.PASTE_ICON, Commands.PASTE.toString(), "Paste files or directories", "Paste", al));
+        toolbar.add(createButton(ResourcePath.DELETE_ICON, Commands.DELETE.toString(), "Delete files or directories", "Delete", al));
         toolbar.addSeparator();
         toolbar.add(createButton(ResourcePath.OPEN_ICON, Commands.OPEN.toString(), "Open file in OS", "Open", al));
     }
