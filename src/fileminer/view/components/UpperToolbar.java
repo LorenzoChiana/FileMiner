@@ -1,15 +1,19 @@
 package fileminer.view.components;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.Optional;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JToolBar;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import fileminer.controller.Commands;
+import fileminer.model.Node;
 import fileminer.view.ResourcePath;
 
 /**
@@ -19,22 +23,22 @@ import fileminer.view.ResourcePath;
 public class UpperToolbar {
 
     private final JToolBar toolbar;
+    private final JLabel currentToolbarDir;
 
-    public UpperToolbar(final ActionListener al) {
+    public UpperToolbar(final ActionListener listener) {
         toolbar = new JToolBar();
         toolbar.setFloatable(false);
         toolbar.setRollover(true);
         toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        toolbar.add(createButton(ResourcePath.LEFT_ARROW_ICON, Commands.BACK.toString(), "Previous visited dir", "Back", al));
-        toolbar.add(createButton(ResourcePath.RIGHT_ARROW_ICON, Commands.NEXT.toString(), "Next visited dir", "Next", al));
+        toolbar.add(createButton(ResourcePath.LEFT_ARROW_ICON, Commands.BACK.toString(), "Previous visited dir", "Back", listener));
+        toolbar.add(createButton(ResourcePath.RIGHT_ARROW_ICON, Commands.NEXT.toString(), "Next visited dir", "Next", listener));
+        toolbar.add(createButton(ResourcePath.REFRESH_ICON, Commands.REFRESH.toString(), "Refresh current dir", "Refresh", listener));
         toolbar.addSeparator();
-        toolbar.add(createButton(ResourcePath.COPY_ICON, Commands.COPY.toString(), "Copy files or directories", "Copy", al));
-        toolbar.add(createButton(ResourcePath.CUT_ICON, Commands.CUT.toString(), "Cut files or directories", "Cut", al));
-        toolbar.add(createButton(ResourcePath.PASTE_ICON, Commands.PASTE.toString(), "Paste files or directories", "Paste", al));
-        toolbar.add(createButton(ResourcePath.DELETE_ICON, Commands.DELETE.toString(), "Delete files or directories", "Delete", al));
-        toolbar.addSeparator();
-        toolbar.add(createButton(ResourcePath.OPEN_ICON, Commands.OPEN.toString(), "Open file in OS", "Open", al));
+        currentToolbarDir = new JLabel();
+        currentToolbarDir.setFont(new Font(currentToolbarDir.getFont().getName(), Font.PLAIN, 16));
+        currentToolbarDir.setMaximumSize(currentToolbarDir.getPreferredSize());
+        toolbar.add(currentToolbarDir);
     }
 
     /**
@@ -67,7 +71,13 @@ public class UpperToolbar {
     public JToolBar getToolBar() {
         return toolbar;
     }
- 
+
+    public void setToolbarDir(final TreePath dirPath) {
+    	final DefaultMutableTreeNode dirNode = (DefaultMutableTreeNode) dirPath.getLastPathComponent();
+    	final Node node = (Node) dirNode.getUserObject();
+    	currentToolbarDir.setText(node.getFile().getAbsolutePath());
+    }
+
     @Override
     public String toString() {
         return "UpperToolbar";

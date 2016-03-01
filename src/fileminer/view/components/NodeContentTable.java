@@ -68,7 +68,8 @@ public class NodeContentTable {
         }
 
         final TreePath parentPath = path.getParentPath();
-        if (parentPath.getPathCount() > 1) {
+
+        if (parentPath != null && parentPath.getPathCount() > 1) {
             final DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) parentPath.getLastPathComponent();
             final Node parent = (Node) parentNode.getUserObject();
             final Node newParentNode = new Node(parent.getFile());
@@ -90,6 +91,5 @@ public class NodeContentTable {
         	tableModel.addRow(node, nodePath, fst);
         }
         tableModel.fireTableDataChanged();
-        FileMinerLogger.getInstance().getConsole().putString("Current path: " + gui.getCurrentDir().toString());
     }
 }

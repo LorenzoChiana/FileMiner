@@ -31,6 +31,10 @@ public enum Commands {
      */
     DELETE,
     /**
+     * 
+     */
+    DELETE_BOOKMARK,
+    /**
      * NEW_FILE = operation that create a new file.
      */
     NEW_FILE,
@@ -43,15 +47,27 @@ public enum Commands {
      */
     NEW_LINK,
     /**
+     * 
+     */
+    NEW_BOOKMARK,
+    /**
      * OPEN = operation that open a file.
      */
     OPEN,
     /**
-     * COMPRESS = operation that compress files.
+     * 
      */
-    COMPRESS,
+    OPEN_BOOKMARK,
     /**
-     * DECOMPRESS = operation that decompress files.
+     * REFRESH = operation that refresh the current directory.
      */
-    DECOMPRESS;
+    REFRESH,
+    /**
+     * ZIP = operation that compress files into ".zip".
+     */
+    ZIP,
+    /**
+     * UNZIP = operation that decompress files from ".zip".
+     */
+    UNZIP;
 }

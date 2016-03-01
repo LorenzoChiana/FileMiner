@@ -5,6 +5,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.tree.TreePath;
 
+import fileminer.listeners.CommandInvokeListener;
+
 /**
  * Interface of FileMinerGUI.
  * @author Michele
@@ -41,4 +43,8 @@ public interface DefaultGUI {
 	 * @param node 
 	 */
 	void updateNodesTable(TreePath node);
+
+    CommandInvokeListener getCommandListener();
+
+    void addPathToChronology(TreePath path);
 }

@@ -9,7 +9,6 @@ import javax.swing.JTable;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import fileminer.main.FileMinerLogger;
 import fileminer.model.FileSystemTreeImpl;
 import fileminer.model.Node;
 import fileminer.model.runnable.AddFileNodes;
@@ -53,8 +52,6 @@ public class DoubleClickOnTableListener extends MouseAdapter {
                 view.setCurrentDir(treePath);
                 view.addPathToChronology(treePath);
                 view.updateNodesTable(treePath);
-            } else {
-                
             }
         }
     }

@@ -1,11 +1,8 @@
 package fileminer.main;
 
-import java.io.IOException;
-
 import javax.swing.UIManager;
 
 import fileminer.controller.ControllerImpl;
-import fileminer.model.test.Test;
 
 /**
  * Class that contains the main.
@@ -23,11 +20,6 @@ public final class FileMinerApp {
             useSystemLookAndFeel(Boolean.parseBoolean(args[0]));
         }
         new ControllerImpl();
-
-        // Little Test
-        /*Test test = new Test();
-        test.modelTest();*/
-
     }
 
     private static void useSystemLookAndFeel(final boolean flag) {

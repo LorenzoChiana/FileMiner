@@ -1,7 +1,6 @@
 package fileminer.view;
 
 import java.awt.*;
-import java.awt.event.ItemEvent;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -15,6 +14,7 @@ import fileminer.controller.Controller;
 import fileminer.listeners.CommandInvokeListener;
 import fileminer.controller.Commands;
 import fileminer.main.FileMinerLogger;
+import fileminer.view.components.BookmarksDialog;
 import fileminer.view.components.InformationScrollPane;
 import fileminer.view.components.NodeContentTable;
 import fileminer.view.components.TreeExplorer;
@@ -32,6 +32,8 @@ public class FileMinerGUI implements DefaultGUI {
     private final Controller controller;
     private final SplashScreen splashScreen;
 
+    private final CommandInvokeListener cmdListener;
+
     private UpperToolbar toolbar;
     private TreeExplorer treeExplorer;
     private NodeContentTable ncp;
@@ -48,6 +50,7 @@ public class FileMinerGUI implements DefaultGUI {
         controller = ctrl;
 
         frame = new JFrame("FileMiner");
+        cmdListener = new CommandInvokeListener(ctrl);
         splashScreen = new SplashScreen(ResourcePath.LOGO_256);
         splashScreen.setVisible(true);
 
@@ -104,7 +107,7 @@ public class FileMinerGUI implements DefaultGUI {
         frame.setJMenuBar(menuBar);
 
         // TOOLBAR
-        toolbar = new UpperToolbar(new CommandInvokeListener(controller));
+        toolbar = new UpperToolbar(cmdListener);
         frame.getContentPane().add(toolbar.getToolBar(), BorderLayout.NORTH);
         // END TOOL PANEL
 
@@ -138,7 +141,7 @@ public class FileMinerGUI implements DefaultGUI {
     public String getDialogString(final int option) {
         final String name = (String) JOptionPane.showInputDialog(frame,
                 "Enter text:",
-                option == 0 ? "New file" : (option == 1 ? "New dir" : (option == 2 ? "New link" : "New archiver")),
+                option == 0 ? "New file" : (option == 1 ? "New dir" : "New link"),
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
@@ -190,7 +193,6 @@ public class FileMinerGUI implements DefaultGUI {
         JMenu menu, menuNew;
         JMenuItem item;
         ImageIcon itemIcon, menuIcon;
-        final CommandInvokeListener cil = new CommandInvokeListener(controller);
 
         // FILE MENU
         menu = new JMenu("File");
@@ -200,17 +202,27 @@ public class FileMinerGUI implements DefaultGUI {
         menuNew.setIcon(new ImageIcon(menuIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         item = new JMenuItem("File");
         item.setActionCommand(Commands.NEW_FILE.toString());
-        item.addActionListener(cil);
+        item.addActionListener(cmdListener);
         menuNew.add(item);
         item = new JMenuItem("Directory");
         item.setActionCommand(Commands.NEW_DIR.toString());
-        item.addActionListener(cil);
+        item.addActionListener(cmdListener);
         menuNew.add(item);
         item = new JMenuItem("Link");
         item.setActionCommand(Commands.NEW_LINK.toString());
-        item.addActionListener(cil);
+        item.addActionListener(cmdListener);
+        menuNew.add(item);
+        item = new JMenuItem("Zip");
+        item.setActionCommand(Commands.ZIP.toString());
+        item.addActionListener(cmdListener);
         menuNew.add(item);
         menu.add(menuNew);
+        item = new JMenuItem("Open");
+        item.setActionCommand(Commands.OPEN.toString());
+        item.addActionListener(cmdListener);
+        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.OPEN_ICON));
+        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
+        menu.add(item);
         menu.addSeparator();
         item = new JMenuItem("Exit");
         item.setActionCommand("EXIT");
@@ -226,41 +238,50 @@ public class FileMinerGUI implements DefaultGUI {
         menu = new JMenu("Edit");
         item = new JMenuItem("Copy");
         item.setActionCommand(Commands.COPY.toString());
-        item.addActionListener(cil);
+        item.addActionListener(cmdListener);
         itemIcon = new ImageIcon(getClass().getResource(ResourcePath.COPY_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         item = new JMenuItem("Cut");
         item.setActionCommand(Commands.CUT.toString());
-        item.addActionListener(cil);
+        item.addActionListener(cmdListener);
         itemIcon = new ImageIcon(getClass().getResource(ResourcePath.CUT_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         item = new JMenuItem("Paste");
         item.setActionCommand(Commands.PASTE.toString());
-        item.addActionListener(cil);
+        item.addActionListener(cmdListener);
         itemIcon = new ImageIcon(getClass().getResource(ResourcePath.PASTE_ICON));
         item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         item = new JMenuItem("Delete");
         item.setActionCommand(Commands.DELETE.toString());
-        item.addActionListener(cil);
-        menuBar.add(menu);
-
-        // CONFIG MENU
-        menu = new JMenu("Config");
-        item = new JCheckBoxMenuItem("Set toolbar floatable");
-        item.addItemListener(i -> {
-            if (i.getStateChange() == ItemEvent.SELECTED) {
-                toolbar.getToolBar().setFloatable(true);
-                FileMinerLogger.getInstance().getConsole().put(toolbar.toString(), toolbar.getToolBar().isFloatable());
-            } else {
-                toolbar.getToolBar().setFloatable(false);
-                FileMinerLogger.getInstance().getConsole().put(toolbar.toString(), toolbar.getToolBar().isFloatable());
-            }
-        });
+        item.addActionListener(cmdListener);
+        itemIcon = new ImageIcon(getClass().getResource(ResourcePath.DELETE_ICON));
+        item.setIcon(new ImageIcon(itemIcon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
         menu.add(item);
         menu.addSeparator();
+        item = new JMenuItem("Unzip");
+        item.setActionCommand(Commands.UNZIP.toString());
+        item.addActionListener(cmdListener);
+        menu.add(item);
+        menuBar.add(menu);
+        
+        // BOOKMARKS
+        menu = new JMenu("Bookmarks");
+        item = new JMenuItem("Add bookmark");
+        item.setActionCommand(Commands.NEW_BOOKMARK.toString());
+        item.addActionListener(cmdListener);
+        menu.add(item);
+        menu.addSeparator();
+        item = new JMenuItem("View bookmarks");
+        item.setActionCommand(Commands.OPEN_BOOKMARK.toString());
+        item.addActionListener(cmdListener);
+        menu.add(item);
+        menuBar.add(menu);
+        
+        // CONFIG MENU
+        menu = new JMenu("Config");
         item = new JMenuItem("Clear console");
         item.addActionListener(e -> {
             FileMinerLogger.getInstance().getConsole().clear();
@@ -310,6 +331,16 @@ public class FileMinerGUI implements DefaultGUI {
         return frame;
     }
 
+    @Override
+    public CommandInvokeListener getCommandListener() {
+        return cmdListener;
+    }
+
+    public void openBookmarksDialog(final boolean viewType) {
+        new BookmarksDialog(this, controller.getBookmarks(), viewType);
+    }
+
+    @Override
     public void addPathToChronology(final TreePath path) {
         controller.getChronology().addDirectory(currentDir);
     }
@@ -327,6 +358,7 @@ public class FileMinerGUI implements DefaultGUI {
     @Override
     public void setCurrentDir(final TreePath path) {
         currentDir = path;
+        toolbar.setToolbarDir(path);
     }
 
     @Override
@@ -336,6 +368,12 @@ public class FileMinerGUI implements DefaultGUI {
 
     @Override
     public void updateNodesTable(final TreePath path) {
-        ncp.generateTableByPath(path);
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ncp.generateTableByPath(path);
+            }
+        });
+        
     }
 }

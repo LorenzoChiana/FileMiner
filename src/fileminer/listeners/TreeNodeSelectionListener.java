@@ -7,7 +7,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import fileminer.main.FileMinerLogger;
 import fileminer.model.FileSystemTreeImpl;
 import fileminer.model.Node;
 import fileminer.model.runnable.AddFileNodes;

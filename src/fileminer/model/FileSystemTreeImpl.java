@@ -38,45 +38,6 @@ public class FileSystemTreeImpl implements FileSystemTree {
 			final DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
 			final List<Node> roots = new ArrayList<>();
 
-			// Bookmarks
-			/*final Path pathFolder = FileSystems.getDefault().getPath(System.getProperty("user.dir") + System.getProperty("file.separator") + "FileMiner");
-			final File bookMarksFolder = new File(pathFolder.toUri());
-			bookMarksFolder.mkdir();
-			final DefaultMutableTreeNode bookmarksTreeNode = new DefaultMutableTreeNode("Bookmarks");
-
-			final File bookMarksTxt = new File(bookMarksFolder.getAbsolutePath() + System.getProperty("file.separator") + "bookmarks2.txt");
-
-			if (bookMarksTxt.exists() && bookMarksTxt.canRead()) {
-				try {
-					ObjectInputStream oir = new ObjectInputStream(new BufferedInputStream(new FileInputStream(bookMarksTxt)));
-					TreePath bookmarkPath;
-
-					int length = oir.readInt();
-					int l = 0;
-
-					while (l < length) {
-						bookmarkPath = (TreePath) oir.readObject();
-						final DefaultMutableTreeNode bookmarkNode = (DefaultMutableTreeNode) bookmarkPath.getLastPathComponent();
-						final Node node = (Node) bookmarkNode.getUserObject();
-						bookmarksTreeNode.add(new DefaultMutableTreeNode(node));
-					}
-					oir.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			} else {
-				try {
-					final ObjectOutputStream oir = new ObjectOutputStream(new FileOutputStream(bookMarksTxt));
-					bookMarksTxt.createNewFile();
-					oir.writeInt(0);
-					oir.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}*/
-
 			// Home
 			final Path path = FileSystems.getDefault().getPath(System.getProperty("user.home"));
 			roots.add(new Node(new File(path.toUri())));
@@ -97,9 +58,6 @@ public class FileSystemTreeImpl implements FileSystemTree {
                 addGrandChildren(rootNode);
             } catch (NullPointerException e) {
             }
-
-			//Test di funzionamento
-			//printTree(rootNode);
 
 			this.treeModel = new DefaultTreeModel(rootNode); 
 			treeReady = true;
@@ -133,7 +91,6 @@ public class FileSystemTreeImpl implements FileSystemTree {
         for (final DefaultMutableTreeNode node : nodes) {
             rootNode.remove(node);
         }
-        sortNodes(rootNode);
     }
 
 	private void sortNodes(final DefaultMutableTreeNode rootNode) {

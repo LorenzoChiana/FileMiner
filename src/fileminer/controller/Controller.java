@@ -1,5 +1,6 @@
 package fileminer.controller;
 
+import fileminer.model.Bookmark;
 import fileminer.model.FileSystemTreeImpl;
 
 /**
@@ -21,9 +22,11 @@ public interface Controller {
     FileSystemTreeImpl getFileSystem();
 
     /**
-     * @return the chronology
+     * @return chronology
      */
     Chronology getChronology();
+
+    Bookmark getBookmarks();
 
     /**
      * Print OS information.

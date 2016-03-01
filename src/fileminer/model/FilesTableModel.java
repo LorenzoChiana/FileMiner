@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -30,7 +31,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private final String[] columns = { "X", "Icon", "Name", "Last Modified", "Size", "Hidden", "Writable", "Readable", "Executable", "TreePath" };
+	private final String[] columns = { "X", "Icon", "Name", "Last Modified", "Size (Bytes)", "Hidden", "Writable", "Readable", "Executable", "TreePath" };
 
 	private List<List<Object>> rows;
 
@@ -71,16 +72,15 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	@Override
 	public void addRow(final Node node, final TreePath nodePath, final FileSystemTreeImpl fst) {
 		final List<Object> row = new ArrayList<>();
-		final long fileSize = node.getFile().length();
 
 		row.add(Boolean.FALSE);
 		row.add(node.getFileIcon());
 		row.add(node.getFileName());
 		row.add(node.getFile().lastModified());
-		if (fileSize >= 1024) {
-		    row.add(node.getFile().length() / 1024 + " KB");
+		if (FileSystemView.getFileSystemView().isFileSystemRoot(node.getFile())) {
+		    row.add(node.getFile().getTotalSpace() - node.getFile().getFreeSpace());
 		} else {
-		    row.add(node.getFile().length() + " B");
+		    row.add(node.getFile().length());
 		}
 		row.add(node.getFile().isHidden());
 		row.add(node.getFile().canWrite());
@@ -113,7 +113,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 		case 3:
 			return Date.class;
 		case 4:
-			return String.class;
+			return Long.class;
 		case 5:
 		case 6:
 		case 7:
@@ -125,7 +125,8 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 			return null;
 		}
 	}
-	
+
+	@Override
 	public int setColumnWidths(final JTable table) {
         DefaultTableCellRenderer centerRenderer = new ObjectRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -145,7 +146,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
         return width + 30;
     }
      
-    private int setColumnWidth(final JTable table, int column, int width) {
+    private int setColumnWidth(final JTable table, final int column, int width) {
         final TableColumn tableColumn = table.getColumnModel().getColumn(column);
         final JLabel label = new JLabel((String) tableColumn.getHeaderValue());
         final Dimension preferred = label.getPreferredSize();

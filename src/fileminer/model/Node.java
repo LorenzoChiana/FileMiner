@@ -5,6 +5,9 @@ import java.io.File;
 import javax.swing.Icon;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.filechooser.FileView;
+
+import javafx.stage.FileChooser;
 
 /**
  * @author Daniele

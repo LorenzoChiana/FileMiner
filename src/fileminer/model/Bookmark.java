@@ -9,10 +9,12 @@ public interface Bookmark {
 
     void addBookmark(List<TreePath> bookmarks) throws IOException;
 
-    void removeBookmark(TreePath bookmark);
+    void removeBookmark(List<TreePath> bookmark) throws IOException, ClassNotFoundException;
 
     public void readBookmark() throws IOException, ClassNotFoundException;
 
     public void writeBookmark() throws IOException;
+
+	List<TreePath> getBookmarks();
 
 }

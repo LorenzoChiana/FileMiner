@@ -63,6 +63,6 @@ public interface FileOperations {
 	 */
 	void mkLink(TreePath srcTarget, TreePath srcLink, String name) throws IOException;
 
-	void rename(final TreePath srcPath, final String name) throws IOException;
+//    void update(TreePath dirPath, TreePath newFilePath, TreePath oldFilePath);
 
 }

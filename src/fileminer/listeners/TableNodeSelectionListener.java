@@ -32,10 +32,8 @@ public class TableNodeSelectionListener implements TableModelListener {
     
             if (selected && !list.contains(path)) {
                 list.add(path);
-                FileMinerLogger.getInstance().getConsole().putString(list.size() + " node/s selected = " + list.toString());
             } else if (!selected && list.contains(path)) {
                 list.remove(path);
-                FileMinerLogger.getInstance().getConsole().putString(list.size() + " node/s selected = " + list.toString());
             }
         }
     }
