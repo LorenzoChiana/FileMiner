@@ -34,7 +34,7 @@ public class ControllerImpl implements Controller {
     private final Bookmark bookmarks;
     private final FileOperations operation;
     private final Chronology chronology;
-
+    private final Archiver archiver;
     /**
      * ControllerImpl constructor:
      *          I create the view and the model.
@@ -47,7 +47,7 @@ public class ControllerImpl implements Controller {
         this.operation = new FileOperationsImpl(fst);
         this.view = new FileMinerGUI(this);
         this.logger = FileMinerLogger.getInstance();
-
+        this.archiver = new ArchiverZIP(this.fst);
     }
 
     @Override
@@ -115,12 +115,12 @@ public class ControllerImpl implements Controller {
             }
             break;
 
-//        case DELETE_BOOKMARK:
-//        	try {
-//        		
-//        	}
-//        	break;
-        	
+            //        case DELETE_BOOKMARK:
+            //        	try {
+            //        		
+            //        	}
+            //        	break;
+
         case NEW_FILE:
             try {
                 final String name = this.view.getDialogString(DIALOG_FILE);
@@ -176,48 +176,47 @@ public class ControllerImpl implements Controller {
             break;
 
         case OPEN_BOOKMARK:
-        	this.view.clearSelectedItems();
-        	this.view.openBookmarksDialog(true);
-        	if (!this.view.getSelectedItems().isEmpty()) {
-        		this.view.setCurrentDir(this.view.getSelectedItems().get(0));
-        		this.view.updateNodesTable(this.view.getSelectedItems().get(0));
-        	} else {
-        		this.logger.getConsole().putStringLater("No bookmark selected!");
-        	}
-        	break;
+            this.view.clearSelectedItems();
+            this.view.openBookmarksDialog(true);
+            if (!this.view.getSelectedItems().isEmpty()) {
+                this.view.setCurrentDir(this.view.getSelectedItems().get(0));
+                this.view.updateNodesTable(this.view.getSelectedItems().get(0));
+            } else {
+                this.logger.getConsole().putStringLater("No bookmark selected!");
+            }
+            break;
 
         case NEW_BOOKMARK:
-        	try {
-        		if (!this.view.getSelectedItems().isEmpty()) {
-        			this.bookmarks.addBookmark(this.view.getSelectedItems());
-        			this.logger.getConsole().putStringLater(this.view.getSelectedItems().get(0) + " added to bookmarks");
-        		} else {
-        			this.logger.getConsole().putStringLater("Invalid selection!");
-        		}
-        	} catch (IOException e) {
-        		this.logger.getConsole().putStringLater(e.getMessage());
-        	}
-        	break;
+            try {
+                if (!this.view.getSelectedItems().isEmpty()) {
+                    this.bookmarks.addBookmark(this.view.getSelectedItems());
+                    this.logger.getConsole().putStringLater(this.view.getSelectedItems().get(0) + " added to bookmarks");
+                } else {
+                    this.logger.getConsole().putStringLater("Invalid selection!");
+                }
+            } catch (IOException e) {
+                this.logger.getConsole().putStringLater(e.getMessage());
+            }
+            break;
 
         case ZIP:
             try {
-            	final Archiver archiver = new ArchiverZIP(fst);
-            	final String name = this.view.getDialogString(DIALOG_ARCHIVER);
-            	if (name != null) {
-                    archiver.compress(this.view.getSelectedItems(), name, this.view.getCurrentDir());
+                final String name = this.view.getDialogString(DIALOG_ARCHIVER);
+                if (name != null) {
+                    this.archiver.compress(this.view.getSelectedItems(), name, this.view.getCurrentDir());
                     this.view.updateNodesTable(this.view.getCurrentDir());
-            	} else {
-            		this.logger.getConsole().putStringLater("Invalid name!");
-            	}
+                } else {
+                    this.logger.getConsole().putStringLater("Invalid name!");
+                }
             } catch (FileNotFoundException | ZipException e) {
                 this.logger.getConsole().putStringLater(e.getMessage());
             }
             break;
 
         case UNZIP:
-        	final Archiver archiver = new ArchiverZIP(fst);
             try {
-                archiver.decompress(this.view.getSelectedItems(), this.view.getCurrentDir());
+                this.archiver.decompress(this.view.getSelectedItems(), this.view.getCurrentDir());
+                this.view.updateNodesTable(this.view.getCurrentDir());
             } catch (FileNotFoundException | ZipException e) {
                 this.logger.getConsole().putStringLater(e.getMessage());
             }
@@ -237,7 +236,7 @@ public class ControllerImpl implements Controller {
     }
 
     public Bookmark getBookmarks() {
-    	return this.bookmarks;
+        return this.bookmarks;
     }
 
     @Override
