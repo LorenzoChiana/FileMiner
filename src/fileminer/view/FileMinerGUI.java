@@ -274,9 +274,12 @@ public class FileMinerGUI implements DefaultGUI {
         item.setActionCommand(Commands.NEW_BOOKMARK.toString());
         item.addActionListener(cmdListener);
         menu.add(item);
-        menu.addSeparator();
-        item = new JMenuItem("View bookmarks");
+        item = new JMenuItem("Open bookmark");
         item.setActionCommand(Commands.OPEN_BOOKMARK.toString());
+        item.addActionListener(cmdListener);
+        menu.add(item);
+        item = new JMenuItem("Delete bookmark");
+        item.setActionCommand(Commands.DELETE_BOOKMARK.toString());
         item.addActionListener(cmdListener);
         menu.add(item);
         menuBar.add(menu);

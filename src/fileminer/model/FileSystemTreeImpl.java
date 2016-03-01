@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  * Classe per la creazione del Tree del FileSystem.
@@ -153,5 +154,23 @@ public class FileSystemTreeImpl implements FileSystemTree {
 			System.out.println((node.isLeaf() ? "  - " : "+ ") + path[path.length - 1]);
 		}
 	}
+
+    public void refreshFromPath(final TreePath currentDir) {
+        final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) currentDir.getLastPathComponent();
+        treeNode.removeAllChildren();
+
+        final Node node = (Node) treeNode.getUserObject();
+        final File file = node.getFile();
+
+        try {
+            for (final File child : file.listFiles()) {
+                treeNode.add(new DefaultMutableTreeNode(new Node(child)));
+            }
+        } catch (NullPointerException e) {
+        }
+
+        addGrandChildren(treeNode);
+        reloadTreeByNode(treeNode);
+    }
 }
 

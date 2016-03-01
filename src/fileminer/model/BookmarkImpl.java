@@ -16,7 +16,7 @@ public class BookmarkImpl implements Bookmark{
 
     private List<TreePath> bookmarks = new ArrayList<>();
     private File file;
-    private static final String NAME = "FileMinerBookmarks.txt";
+    private static final String NAME = "bookmarks.txt";
 
     
     public BookmarkImpl() {
@@ -60,9 +60,8 @@ public class BookmarkImpl implements Bookmark{
     	}
     }
 
-    
-    @SuppressWarnings("unchecked")
-	@Override
+	@SuppressWarnings("unchecked")
+    @Override
     public void readBookmark() throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);

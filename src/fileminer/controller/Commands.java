@@ -7,11 +7,11 @@ package fileminer.controller;
  */
 public enum Commands {
     /**
-     * 
+     * BACK = operation that set the current directory to an old visited one.
      */
     BACK,
     /**
-     * 
+     * NEXT = operation that set the current directory to a recent visited one.
      */
     NEXT,
     /**
@@ -31,7 +31,7 @@ public enum Commands {
      */
     DELETE,
     /**
-     * 
+     * DELETE_BOOKMARK = operation that open a dialog view to choose what bookmark should be deleted.
      */
     DELETE_BOOKMARK,
     /**
@@ -47,7 +47,7 @@ public enum Commands {
      */
     NEW_LINK,
     /**
-     * 
+     * NEW_BOOKMARK = operation that create a new bookmark of the selected item.
      */
     NEW_BOOKMARK,
     /**
@@ -55,7 +55,7 @@ public enum Commands {
      */
     OPEN,
     /**
-     * 
+     * OPEN_BOOKMARK = operation that open a dialog view of saved bookmarks.
      */
     OPEN_BOOKMARK,
     /**

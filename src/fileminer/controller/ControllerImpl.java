@@ -99,6 +99,11 @@ public class ControllerImpl implements Controller {
             }
             break;
 
+        case REFRESH:
+            this.fst.refreshFromPath(this.view.getCurrentDir());
+            this.view.updateNodesTable(this.view.getCurrentDir());
+            break;
+
         case DELETE:
             try {
                 if (!this.view.getSelectedItems().isEmpty()) {

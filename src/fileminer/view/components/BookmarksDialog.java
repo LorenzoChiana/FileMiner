@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -33,7 +34,7 @@ public class BookmarksDialog implements ActionListener {
 
         this.dialog = new JDialog(view.getFrame(), this.viewType ? "Open bookmark" : "Delete bookmark", true);
         this.dialog.setContentPane(this.viewType ? createViewPane() : createDeletePane());
-        this.dialog.setSize(new Dimension(150, 300));
+        this.dialog.setSize(400,500);
         this.dialog.setVisible(true);
     }
 
@@ -44,9 +45,12 @@ public class BookmarksDialog implements ActionListener {
         final JLabel label = new JLabel("Choose a bookmark to open:");
         pane.add(label, BorderLayout.NORTH);
 
-        bookmarksList = new JList<TreePath>((TreePath[]) bookmarks.getBookmarks().toArray());
+        final DefaultListModel<TreePath> listModel = new DefaultListModel<>();
+        for (final TreePath path : bookmarks.getBookmarks()) {
+            listModel.addElement(path);
+        }
+        bookmarksList = new JList<TreePath>(listModel);
         bookmarksList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        bookmarksList.setSelectedIndex(0);
         pane.add(bookmarksList, BorderLayout.CENTER);
 
         final JPanel buttons = new JPanel();
@@ -55,10 +59,12 @@ public class BookmarksDialog implements ActionListener {
         final JButton ok = new JButton("OK");
         ok.setActionCommand("OK");
         ok.addActionListener(this);
+        buttons.add(ok);
 
         final JButton cancel = new JButton("Cancel");
         cancel.setActionCommand("CANCEL");
         cancel.addActionListener(this);
+        buttons.add(cancel);
 
         pane.add(buttons, BorderLayout.SOUTH);
 
@@ -72,9 +78,12 @@ public class BookmarksDialog implements ActionListener {
         final JLabel label = new JLabel("Choose a bookmark to delete:");
         pane.add(label, BorderLayout.NORTH);
 
-        bookmarksList = new JList<TreePath>((TreePath[]) bookmarks.getBookmarks().toArray());
+        final DefaultListModel<TreePath> listModel = new DefaultListModel<>();
+        for (final TreePath path : bookmarks.getBookmarks()) {
+            listModel.addElement(path);
+        }
+        bookmarksList = new JList<TreePath>(listModel);
         bookmarksList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        bookmarksList.setSelectedIndex(0);
         pane.add(bookmarksList, BorderLayout.CENTER);
 
         final JPanel buttons = new JPanel();
@@ -83,10 +92,12 @@ public class BookmarksDialog implements ActionListener {
         final JButton ok = new JButton("OK");
         ok.setActionCommand("OK");
         ok.addActionListener(this);
+        buttons.add(ok);
 
         final JButton cancel = new JButton("Cancel");
         cancel.setActionCommand("CANCEL");
         cancel.addActionListener(this);
+        buttons.add(cancel);
 
         pane.add(buttons, BorderLayout.SOUTH);
 
