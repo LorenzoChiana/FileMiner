@@ -14,6 +14,7 @@ import fileminer.controller.Controller;
 import fileminer.listeners.CommandInvokeListener;
 import fileminer.controller.Commands;
 import fileminer.main.FileMinerLogger;
+import fileminer.model.Bookmark;
 import fileminer.view.components.BookmarksDialog;
 import fileminer.view.components.InformationScrollPane;
 import fileminer.view.components.NodeContentTable;
@@ -336,8 +337,8 @@ public class FileMinerGUI implements DefaultGUI {
         return cmdListener;
     }
 
-    public void openBookmarksDialog(final boolean viewType) {
-        new BookmarksDialog(this, controller.getBookmarks(), viewType);
+    public void openBookmarksDialog(final Bookmark bookmarks, final boolean viewType) {
+        new BookmarksDialog(this, bookmarks, viewType);
     }
 
     @Override

@@ -115,11 +115,19 @@ public class ControllerImpl implements Controller {
             }
             break;
 
-            //        case DELETE_BOOKMARK:
-            //        	try {
-            //        		
-            //        	}
-            //        	break;
+        case DELETE_BOOKMARK:
+        	try {
+	        	this.view.clearSelectedItems();
+	        	this.view.openBookmarksDialog(this.bookmarks, false);
+	        	if (!this.view.getSelectedItems().isEmpty() && this.view.getSelectedItems().size() == 1) {
+	        		this.bookmarks.removeBookmark(this.view.getSelectedItems());
+	        	} else {
+	        		this.logger.getConsole().putStringLater("Invalid selection!");
+	        	}
+        	} catch (ClassNotFoundException | IOException e) {
+        		this.logger.getConsole().putStringLater(e.getMessage());
+        	}
+        	break;
 
         case NEW_FILE:
             try {
@@ -177,12 +185,12 @@ public class ControllerImpl implements Controller {
 
         case OPEN_BOOKMARK:
             this.view.clearSelectedItems();
-            this.view.openBookmarksDialog(true);
-            if (!this.view.getSelectedItems().isEmpty()) {
+            this.view.openBookmarksDialog(this.bookmarks, true);
+            if (!this.view.getSelectedItems().isEmpty() && this.view.getSelectedItems().size() == 1) {
                 this.view.setCurrentDir(this.view.getSelectedItems().get(0));
                 this.view.updateNodesTable(this.view.getSelectedItems().get(0));
             } else {
-                this.logger.getConsole().putStringLater("No bookmark selected!");
+                this.logger.getConsole().putStringLater("Invalid selection!");
             }
             break;
 
