@@ -201,7 +201,7 @@ public class ControllerImpl implements Controller {
 
         case ZIP:
             try {
-            	final Archiver archiver = new ArchiverZIP();
+            	final Archiver archiver = new ArchiverZIP(fst);
             	final String name = this.view.getDialogString(DIALOG_ARCHIVER);
             	if (name != null) {
                     archiver.compress(this.view.getSelectedItems(), name, this.view.getCurrentDir());
@@ -215,7 +215,7 @@ public class ControllerImpl implements Controller {
             break;
 
         case UNZIP:
-        	final Archiver archiver = new ArchiverZIP();
+        	final Archiver archiver = new ArchiverZIP(fst);
             try {
                 archiver.decompress(this.view.getSelectedItems(), this.view.getCurrentDir());
             } catch (FileNotFoundException | ZipException e) {

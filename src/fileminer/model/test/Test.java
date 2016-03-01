@@ -48,7 +48,6 @@ public class Test {
         FileMinerLogger logger = FileMinerLogger.getInstance();
         FileSystemTreeImpl fst = new FileSystemTreeImpl();
         FileOperationsImpl fo = new FileOperationsImpl(fst);
-        Archiver archivezip = new ArchiverZIP();
 
         DefaultTreeModel model = fst.getTree();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();

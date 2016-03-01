@@ -176,22 +176,4 @@ public class FileOperationsImpl implements FileOperations {
         fileSystemTree.reloadTreeByNode(targetNode);
     }
 
-//    @Override
-//    public void update(final TreePath dirPath, final TreePath newFilePath, final TreePath oldFilePath) {
-//    	final DefaultMutableTreeNode dirNode = (DefaultMutableTreeNode) dirPath.getLastPathComponent();
-//    	final DefaultMutableTreeNode newNode = (DefaultMutableTreeNode) newFilePath.getLastPathComponent();
-//    	final DefaultMutableTreeNode oldNode = (DefaultMutableTreeNode) oldFilePath.getLastPathComponent();
-//
-//    	fileSystemTree.removeNodes(dirNode, Arrays.asList(oldNode));
-//    	fileSystemTree.
-//    	/*
-//        final DefaultMutableTreeNode dirNode = (DefaultMutableTreeNode) dirPath.getLastPathComponent();
-//        final DefaultMutableTreeNode fileNode = (DefaultMutableTreeNode) newFilePath.getLastPathComponent();
-//        final Node node = (Node) fileNode.getUserObject();
-//
-//        fileSystemTree.removeNodes(dirNode, Arrays.asList(fileNode));
-//        fileSystemTree.addNodesToTree(dirNode, Arrays.asList(node.getFile()));
-//        fileSystemTree.reloadTreeByNode(dirNode);
-//        */
-//    }
 }
