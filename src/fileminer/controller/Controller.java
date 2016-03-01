@@ -26,6 +26,10 @@ public interface Controller {
      */
     Chronology getChronology();
 
+    /**
+     * 
+     * @return bookmarks
+     */
     Bookmark getBookmarks();
 
     /**

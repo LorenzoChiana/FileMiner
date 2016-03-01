@@ -44,8 +44,8 @@ public class ClipboardImpl implements Clipboard {
     }
 
     @Override
-    public void setParameter(final boolean isCopy) {
-        this.isCopy = isCopy;
+    public void setParameter(final boolean paramIsCopy) {
+        this.isCopy = paramIsCopy;
     }
 
     @Override

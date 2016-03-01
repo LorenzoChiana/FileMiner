@@ -32,11 +32,11 @@ public interface Clipboard {
     boolean isEmpty();
     /**
      * 
-     * @param isCopy
+     * @param paramIsCopy
      *          true if it is copy
      *          false if it is cut
      */
-    void setParameter(boolean isCopy);
+    void setParameter(boolean paramIsCopy);
     /**
      * 
      * @return a boolean that represents if it is copy or cut operation.

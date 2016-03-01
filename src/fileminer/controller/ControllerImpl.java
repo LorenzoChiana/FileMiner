@@ -239,10 +239,12 @@ public class ControllerImpl implements Controller {
         return fst;
     }
 
+    @Override
     public Chronology getChronology() {
         return chronology;
     }
 
+    @Override
     public Bookmark getBookmarks() {
         return this.bookmarks;
     }
