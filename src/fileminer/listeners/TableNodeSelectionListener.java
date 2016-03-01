@@ -7,7 +7,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
-import fileminer.main.FileMinerLogger;
 import fileminer.view.FileMinerGUI;
 
 public class TableNodeSelectionListener implements TableModelListener {

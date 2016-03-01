@@ -372,12 +372,6 @@ public class FileMinerGUI implements DefaultGUI {
 
     @Override
     public void updateNodesTable(final TreePath path) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ncp.generateTableByPath(path);
-            }
-        });
-        
+        ncp.generateTableByPath(this, controller.getFileSystem(), path);
     }
 }

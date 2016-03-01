@@ -1,7 +1,6 @@
 package fileminer.model.archiver;
 
 import java.io.FileNotFoundException;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 
 import javax.swing.tree.TreePath;

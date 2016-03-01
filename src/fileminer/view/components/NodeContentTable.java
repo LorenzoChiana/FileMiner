@@ -12,35 +12,25 @@ import fileminer.model.Node;
 import fileminer.view.FileMinerGUI;
 import fileminer.listeners.DoubleClickOnTableListener;
 import fileminer.listeners.TableNodeSelectionListener;
-import fileminer.main.FileMinerLogger;
 import fileminer.model.FileSystemTreeImpl;
 
 public class NodeContentTable {
-
-	private final FileSystemTreeImpl fst;
-
-	private final FileMinerGUI gui;
 
     private JTable table;
 
     private FilesTableModel tableModel;
 
-    public NodeContentTable(final FileSystemTreeImpl f, final FileMinerGUI g) {
-    	this.fst = f;
-    	this.gui = g;
-        createTable();
-    }
+    public NodeContentTable(final FileSystemTreeImpl fst, final FileMinerGUI gui) {
 
-    private void createTable() {
-    	tableModel = new FilesTableModel();
+        tableModel = new FilesTableModel();
 
-    	table = new JTable(tableModel);
-    	table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    	table.setColumnSelectionAllowed(false);
-    	table.setAutoCreateRowSorter(true);
-    	table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    	table.addMouseListener(new DoubleClickOnTableListener(fst, gui));
-    	table.getModel().addTableModelListener(new TableNodeSelectionListener(gui, table));
+        table = new JTable(tableModel);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setColumnSelectionAllowed(false);
+        table.setAutoCreateRowSorter(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        table.addMouseListener(new DoubleClickOnTableListener(fst, gui));
+        table.getModel().addTableModelListener(new TableNodeSelectionListener(gui, table));
     }
 
     /**
@@ -54,7 +44,7 @@ public class NodeContentTable {
      * Generate table view by passing a TreePath.
      * @param path 
      */
-    public void generateTableByPath(final TreePath path) {
+    public void generateTableByPath(final FileMinerGUI gui, final FileSystemTreeImpl fst, final TreePath path) {
         tableModel.removeRows();
     	gui.clearSelectedItems();
 
