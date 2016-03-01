@@ -18,21 +18,27 @@ import org.apache.commons.io.FileUtils;
 import fileminer.main.FileMinerLogger;
 
 /**
- * Classe per le varie operazioni sui files.
+ * @author Daniele Gambaletta
+ * Class for various operations on files.
  */
 public class FileOperationsImpl implements FileOperations {
 
     private final FileSystemTreeImpl fileSystemTree;
     private final FileMinerLogger logger;
 
+    /**
+     * Initialization.
+     * @param fst FileSystemTreeImpl
+     */
     public FileOperationsImpl(final FileSystemTreeImpl fst) {
         this.fileSystemTree = fst;
         this.logger = FileMinerLogger.getInstance();
     }
 
     /**
-     * Add files from paths.
-     * @param files
+     * Add files from tree paths.
+     * @param treePaths list of treepath
+     * @return files list
      */
     public List<File> getfileFromTP(final List<TreePath> treePaths) {
         final List<File> tmp = new ArrayList<>();
@@ -43,19 +49,20 @@ public class FileOperationsImpl implements FileOperations {
         }
         return tmp;
     }
-    
-    
+
+
     /**
-     * Add file from path.
-     * @param file
+     * Add file from tree path.
+     * @param treePath
+     * @return file
      */
-    private File getfileFromTP(final TreePath treePath){
-    	final DefaultMutableTreeNode destNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
+    private File getfileFromTP(final TreePath treePath) {
+        final DefaultMutableTreeNode destNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         final Node node = (Node) destNode.getUserObject();
-		return node.getFile();
+        return node.getFile();
     }
 
-    
+
     @Override
     public void pasteTo(final List<TreePath> clipboard, final TreePath destPath, final boolean isCopy) throws IOException {
 
@@ -66,7 +73,7 @@ public class FileOperationsImpl implements FileOperations {
         final List<File> files = this.getfileFromTP(clipboard);
         int size = files.size();
 
-        if (isCopy) {
+        if (isCopy) { // Incolla di una Copia
             int n = 1;
             for (final File file : files) {
                 logger.getConsole().putStringLater("Copy of " + n + " element out of " + size + " in progress...");
@@ -77,8 +84,9 @@ public class FileOperationsImpl implements FileOperations {
                 }
                 n++;
             }
+            // Aggiorna albero
             fileSystemTree.addNodesToTree(destNode, files);
-        } else {
+        } else { // Incolla di un Taglia
 
             int n = 1;
             for (final File file : files) {
@@ -95,31 +103,35 @@ public class FileOperationsImpl implements FileOperations {
                 oldNodes.add((DefaultMutableTreeNode) oldNode.getLastPathComponent());
             }
             final DefaultMutableTreeNode oldParent = (DefaultMutableTreeNode) oldNodes.get(0).getParent();
+            // Aggiorna albero
             fileSystemTree.moveNodes(destNode, oldNodes);
             fileSystemTree.reloadTreeByNode(oldParent);
         }
+        // Aggiorna albero
         fileSystemTree.reloadTreeByNode(destNode);
     }
 
 
     @Override
-    public void open(final List<TreePath> srcPath) throws IOException {
-        for (final TreePath filePath : srcPath) {
+    public void open(final List<TreePath> clipboard) throws IOException {
+        // Apri files
+        for (final TreePath filePath : clipboard) {
             final File file = this.getfileFromTP(filePath);
             Desktop desktop = Desktop.getDesktop();
-            if(file.exists()) {
-            	desktop.open(file);
+            if (file.exists()) {
+                desktop.open(file);
             }
         }
     }
 
-    
+
     @Override
     public void remove(final List<TreePath> clipboard, final TreePath srcPath) throws IOException {
         final List<File> files = getfileFromTP(clipboard);
 
+        // Rimuovi files
         for (final File file : files) {
-            
+
             if (file.isDirectory()) {
                 FileUtils.deleteDirectory(file);
             } else {
@@ -132,6 +144,8 @@ public class FileOperationsImpl implements FileOperations {
             nodeList.add((DefaultMutableTreeNode) pathNode.getLastPathComponent());
         }
         final DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) srcPath.getLastPathComponent();
+
+        // Aggiorna albero
         fileSystemTree.removeNodes(rootNode, nodeList);
         fileSystemTree.reloadTreeByNode(rootNode);
     }
@@ -140,9 +154,13 @@ public class FileOperationsImpl implements FileOperations {
     @Override
     public void mkDir(final TreePath srcPath, final String name) throws IOException {
         final File f = new File(this.getfileFromTP(srcPath).getAbsolutePath() + System.getProperty("file.separator") + name);
+        
+        // Crea cartella
         f.mkdir();
 
         final DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) srcPath.getLastPathComponent();
+
+        // Aggiorna albero
         fileSystemTree.addNodesToTree(srcNode, new ArrayList<File>(Arrays.asList(f)));
         fileSystemTree.reloadTreeByNode((DefaultMutableTreeNode) srcPath.getLastPathComponent());
     }
@@ -151,9 +169,13 @@ public class FileOperationsImpl implements FileOperations {
     @Override
     public void mkFile(final TreePath srcPath, final String name) throws IOException {
         final File f = new File(this.getfileFromTP(srcPath).getAbsolutePath() + System.getProperty("file.separator") + name);
+        
+        // Crea file
         f.createNewFile();
 
         final DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) srcPath.getLastPathComponent();
+
+        // Aggiorna albero
         fileSystemTree.addNodesToTree(srcNode, Arrays.asList(f));
         fileSystemTree.reloadTreeByNode((DefaultMutableTreeNode) srcPath.getLastPathComponent());
     }
@@ -171,7 +193,10 @@ public class FileOperationsImpl implements FileOperations {
         final File fileLink = new File(link.getFile().getAbsolutePath() + System.getProperty("file.separator") + name);
         final Path linkPath = Paths.get(fileLink.getAbsolutePath());
 
+        // Crea link
         Files.createSymbolicLink(linkPath, targetPath);
+
+        // Aggiorna albero
         fileSystemTree.addNodesToTree(targetNode, Arrays.asList(fileLink));
         fileSystemTree.reloadTreeByNode(targetNode);
     }

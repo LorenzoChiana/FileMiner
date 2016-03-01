@@ -7,47 +7,47 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
- * Classe per la creazione dell'albero del FileSystem.
- * @author Daniele
- *
+ * @author Daniele Gambaletta
+ * Interface to manage tree.
  */
 public interface FileSystemTree {
 
 
 	/**
-	 * Metodo per inserire file e cartelle del FileSystem nell'albero.
+	 * Get filesystem tree.
 	 * @return DefaultMutableTreeNode
 	 */
 	DefaultTreeModel getTree();
 
 	/**
-     * Aggiunge i file dal nodo passatogli per aggiornare l'alberto dopo un operazione.
-     * @param rootNode 
+     * Add file to reload tree, after an operation.
+     * @param rootNode tree node
      * @param files 
      */
     void addNodesToTree(DefaultMutableTreeNode rootNode, List<File> files);
 
     /**
-     * Sposta i vecchi nodi 
-     * @param rootNode
-     * @param oldNodes
+     * Move old nodes in new position.
+     * @param rootNode tree node
+     * @param oldNodes old tree nodes
      */
     void moveNodes(DefaultMutableTreeNode rootNode, List<DefaultMutableTreeNode> oldNodes);
 
 	/**
-	 * @param rootNode
+	 * Reload tree if changed.
+	 * @param rootNode tree node
 	 */
 	void reloadTreeByNode(DefaultMutableTreeNode rootNode);
 
 	/**
-	 * Aggiunge files alle sottocartelle all'albero.
-	 * @param rootNode root dell'albero
+	 * Add files grand children in the tree.
+	 * @param rootNode tree node
 	 */
 	void addGrandChildren(DefaultMutableTreeNode rootNode);
 
 	/**
-	 * Aggiunge i file della root all'albero.
-	 * @param rootNode root dell'albero
+	 * Add files children in the tree.
+	 * @param rootNode tree node
 	 */
 	void addChildren(DefaultMutableTreeNode rootNode);
 }

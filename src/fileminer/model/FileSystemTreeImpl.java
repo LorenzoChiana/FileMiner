@@ -15,7 +15,8 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 /**
- * Classe per la creazione del Tree del FileSystem.
+ * @author Daniele Gambaletta
+ * Class to manage tree.
  */
 public class FileSystemTreeImpl implements FileSystemTree {
 
@@ -23,7 +24,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 	private boolean treeReady;
 
 	/**
-	 * Costruttore di FileBrowserImpl inizializza la FileSystemView.
+	 * Initialization.
 	 */
 	public FileSystemTreeImpl() {
 		this.treeReady = false;
@@ -48,12 +49,13 @@ public class FileSystemTreeImpl implements FileSystemTree {
 				roots.add(new Node(file));
 			}
 
-			//rootNode.add(bookmarksTreeNode);
+			// Aggiungo le root
 			for (final Node fsRoot : roots) {
 				final DefaultMutableTreeNode node = new DefaultMutableTreeNode(fsRoot);
 				rootNode.add(node);
 			}
 
+			// Aggiungo figli
 			try {
                 addChildren(rootNode);
                 addGrandChildren(rootNode);
@@ -81,6 +83,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
         sortNodes(rootNode);
     }
 
+    @Override
     public void moveNodes(final DefaultMutableTreeNode rootNode, final List<DefaultMutableTreeNode> oldNodes) {
         for (final DefaultMutableTreeNode oldNode : oldNodes) {
             rootNode.add(oldNode);
@@ -88,12 +91,21 @@ public class FileSystemTreeImpl implements FileSystemTree {
         sortNodes(rootNode);
     }
 
+    /**
+     * Remove nodes.
+     * @param rootNode
+     * @param nodes
+     */
     public void removeNodes(final DefaultMutableTreeNode rootNode, final List<DefaultMutableTreeNode> nodes) {
         for (final DefaultMutableTreeNode node : nodes) {
             rootNode.remove(node);
         }
     }
 
+    /**
+     * Sort nodes by ascending order.
+     * @param rootNode
+     */
 	private void sortNodes(final DefaultMutableTreeNode rootNode) {
 	    @SuppressWarnings("unchecked")
         final ArrayList<DefaultMutableTreeNode> children = Collections.list(rootNode.children());
@@ -143,7 +155,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
 	}
 
 	/**
-	 * Stampa l'albero del FileSystem per i test.
+	 * Print tree for tests.
 	 */
 	public static void printTree(final DefaultMutableTreeNode root) {
 		@SuppressWarnings("unchecked")
@@ -155,6 +167,10 @@ public class FileSystemTreeImpl implements FileSystemTree {
 		}
 	}
 
+    /**
+     * Reload node from path.
+     * @param currentDir
+     */
     public void refreshFromPath(final TreePath currentDir) {
         final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) currentDir.getLastPathComponent();
         treeNode.removeAllChildren();

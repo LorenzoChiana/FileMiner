@@ -1,6 +1,5 @@
 package fileminer.model;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,13 +11,19 @@ import java.util.List;
 
 import javax.swing.tree.TreePath;
 
+/**
+ * @author Daniele
+ * Class to manage bookmarks.
+ */
 public class BookmarkImpl implements Bookmark{
 
     private List<TreePath> bookmarks = new ArrayList<>();
     private File file;
     private static final String NAME = "bookmarks.txt";
 
-    
+    /**
+     * Initialization.
+     */
     public BookmarkImpl() {
         file = new File(System.getProperty("user.home") + System.getProperty("file.separator") + NAME);
         try {

@@ -20,9 +20,8 @@ import fileminer.cellrenderer.ObjectRenderer;
 
 
 /**
- * Classe per impostare la tabella dei files e delle directories.
- * @author Daniele
- *
+ * @author Daniele Gambaletta
+ * Class to manage files and directories table.
  */
 public class FilesTableModel extends AbstractTableModel implements FilesTable {
 
@@ -36,7 +35,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
 	private List<List<Object>> rows;
 
 	/**
-	 * 
+	 * Initialization.
 	 */
 	public FilesTableModel() {
         this.rows = new ArrayList<List<Object>>();
@@ -146,6 +145,7 @@ public class FilesTableModel extends AbstractTableModel implements FilesTable {
         return width + 30;
     }
      
+	// Larghezza di ogni colonna
     private int setColumnWidth(final JTable table, final int column, int width) {
         final TableColumn tableColumn = table.getColumnModel().getColumn(column);
         final JLabel label = new JLabel((String) tableColumn.getHeaderValue());

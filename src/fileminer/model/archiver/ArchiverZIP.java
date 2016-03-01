@@ -2,7 +2,6 @@ package fileminer.model.archiver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +33,8 @@ public class ArchiverZIP implements Archiver {
 
 
     /**
-     * @param fst
+     * Initialization.
+     * @param fst FileSystemTreeImpl
      */
     public ArchiverZIP(final FileSystemTreeImpl fst) {
         this.logger = FileMinerLogger.getInstance();
@@ -47,6 +47,7 @@ public class ArchiverZIP implements Archiver {
 
         List<File> files = new ArrayList<File>(); 
 
+        // da TreePath a lista files
         for (final TreePath path : paths) {
             final DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
             final Node node = (Node) treeNode.getUserObject();
@@ -68,6 +69,7 @@ public class ArchiverZIP implements Archiver {
 
         int n = 1;
         int size = files.size();
+        // Aggiungo i files all'archivio
         for (final File f : files) {
             logger.getConsole().putStringLater("Compression of " + n + " element out of " + size + " in progress...");
             if (f.isDirectory()) {
@@ -77,6 +79,8 @@ public class ArchiverZIP implements Archiver {
             }
             n++;
         }
+        
+        // Aggiorno l'albero
         fileSystemTree.addNodesToTree(treeDest, Arrays.asList(zipFile.getFile()));
         fileSystemTree.reloadTreeByNode(treeDest);
     }
@@ -90,6 +94,7 @@ public class ArchiverZIP implements Archiver {
 
         int n = 1;
         int size = archives.size();
+        // Decomprimo tutti gli archivi
         for (final TreePath archivePath: archives) {
             logger.getConsole().putStringLater("Decompression of " + n + " element out of " + size + " in progress...");
             final DefaultMutableTreeNode treeNode2 = (DefaultMutableTreeNode) archivePath.getLastPathComponent();
@@ -97,16 +102,12 @@ public class ArchiverZIP implements Archiver {
             ZipFile zipFile = new ZipFile(archiveNode.getFile());
             n++;
             @SuppressWarnings("unchecked")
+            
+            // Estraggo i files dall'archivio
             List<FileHeader> fileHeaders = zipFile.getFileHeaders();
-            for (FileHeader fileHeader : fileHeaders) {
-                File file = FileUtils.getFile(destNode.getFile().getAbsolutePath() 
-                        + System.getProperty("file.separator") 
-                        + fileHeader.getFileName().replace('/', File.separatorChar));
-                
+            for (FileHeader fileHeader : fileHeaders) { 
                 zipFile.extractFile(fileHeader, destNode.getFile().getAbsolutePath());      
             }
         }
     }
-
-
 }
