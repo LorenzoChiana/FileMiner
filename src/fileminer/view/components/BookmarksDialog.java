@@ -17,6 +17,10 @@ import javax.swing.tree.TreePath;
 import fileminer.model.Bookmark;
 import fileminer.view.FileMinerGUI;
 
+/**
+ * @author Michele
+ *
+ */
 public class BookmarksDialog implements ActionListener {
 
     private final JDialog dialog;
@@ -26,6 +30,12 @@ public class BookmarksDialog implements ActionListener {
 
     private JList<TreePath> bookmarksList;
 
+    /**
+     * The BookmarksDialog object is initialized by the controller when the user choose to open or delete bookmarks.
+     * @param v the main frame
+     * @param b the Bookmark object
+     * @param viewType true to open a bookmark, false to choose what bookmark should be deleted
+     */
     public BookmarksDialog(final FileMinerGUI v, final Bookmark b, final boolean viewType) {
     	this.view = v;
     	this.bookmarks = b;

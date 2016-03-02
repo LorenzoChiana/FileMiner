@@ -9,11 +9,21 @@ import javax.swing.tree.TreePath;
 
 import fileminer.view.FileMinerGUI;
 
+/**
+ * This class implements a TableModelListener to update the list of selected items in the table.
+ * @author Michele
+ *
+ */
 public class TableNodeSelectionListener implements TableModelListener {
 
     private final FileMinerGUI frame;
     private final JTable table;
  
+	/**
+	 * Constructor of TableNodeSelectionListener.
+	 * @param g main frame
+	 * @param jt node table
+	 */
 	public TableNodeSelectionListener(final FileMinerGUI g, final JTable jt) {
 		this.frame = g;
 		this.table = jt;

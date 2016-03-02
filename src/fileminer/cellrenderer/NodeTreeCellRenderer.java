@@ -11,12 +11,17 @@ import javax.swing.tree.TreeCellRenderer;
 
 import fileminer.model.Node;
 
+/**
+ * This class implements a TreeCellRenderer to specify how the node should be rendered in the viewport.
+ * @author Michele
+ *
+ */
 public class NodeTreeCellRenderer implements TreeCellRenderer {
 
     private final JLabel label;
 
     /**
-     * @param f file system object
+     * Constructor of NodeTreeCellRenderer.
      */
     public NodeTreeCellRenderer() {
         this.label = new JLabel("");

@@ -17,6 +17,7 @@ import fileminer.model.Node;
 import fileminer.view.ResourcePath;
 
 /**
+ * 
  * @author Michele Durante
  *
  */
@@ -25,6 +26,10 @@ public class UpperToolbar {
     private final JToolBar toolbar;
     private final JLabel currentToolbarDir;
 
+    /**
+     * Constructor of UpperToolbar.
+     * @param listener CommandInvokeListener object
+     */
     public UpperToolbar(final ActionListener listener) {
         toolbar = new JToolBar();
         toolbar.setFloatable(false);
@@ -42,11 +47,12 @@ public class UpperToolbar {
     }
 
     /**
+     * A button factory method.
      * @param imagePath image path
      * @param actionCmd action command
      * @param toolTipText roll-over description
      * @param altText button name if image not found
-     * @return button with imageicon
+     * @return JButton object with Icon
      */
     private JButton createButton(final String imagePath, final String actionCmd, final String toolTipText, final String altText, final ActionListener al) {
         final JButton btn = new JButton();
@@ -72,6 +78,10 @@ public class UpperToolbar {
         return toolbar;
     }
 
+    /**
+     * Set the label to display the current visited directory.
+     * @param dirPath the current dir
+     */
     public void setToolbarDir(final TreePath dirPath) {
     	final DefaultMutableTreeNode dirNode = (DefaultMutableTreeNode) dirPath.getLastPathComponent();
     	final Node node = (Node) dirNode.getUserObject();

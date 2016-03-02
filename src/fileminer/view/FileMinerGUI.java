@@ -340,6 +340,11 @@ public class FileMinerGUI implements DefaultGUI {
         return cmdListener;
     }
 
+    /**
+     * Open the bookmarks dialog. The method returns only when the user close the dialog.
+     * @param bookmarks Bookmark object
+     * @param viewType true to open a bookmark, false to choose what bookmark should be deleted
+     */
     public void openBookmarksDialog(final Bookmark bookmarks, final boolean viewType) {
         new BookmarksDialog(this, bookmarks, viewType);
     }

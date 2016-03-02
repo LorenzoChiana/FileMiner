@@ -12,6 +12,7 @@ import javax.swing.JTextArea;
 public final class FileMinerConsole implements DefaultConsole {
 
     private final JTextArea console;
+    private static final int FONTSIZE = 13;
 
     /**
      * Constructor of FileMinerConsole.
@@ -21,7 +22,7 @@ public final class FileMinerConsole implements DefaultConsole {
     public FileMinerConsole(final int lines, final int rows) {
         console = new JTextArea(lines, rows);
         console.setEditable(false);
-        console.setFont(new Font("Courier New", Font.PLAIN, 13));
+        console.setFont(new Font("Courier New", Font.PLAIN, FONTSIZE));
     }
 
     /**
@@ -66,7 +67,7 @@ public final class FileMinerConsole implements DefaultConsole {
     }
 
     @Override
-    public void putStringLater(String arg) {
+    public void putStringLater(final String arg) {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

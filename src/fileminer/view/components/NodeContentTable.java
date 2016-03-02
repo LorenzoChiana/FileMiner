@@ -14,12 +14,22 @@ import fileminer.listeners.DoubleClickOnTableListener;
 import fileminer.listeners.TableNodeSelectionListener;
 import fileminer.model.FileSystemTreeImpl;
 
+/**
+ * The NodeContentTable class manage to initialized the node table and how the JTable should be updated.
+ * @author Michele
+ *
+ */
 public class NodeContentTable {
 
     private JTable table;
 
     private FilesTableModel tableModel;
 
+    /**
+     * Constructor of NodeContentTable.
+     * @param fst FileSystemTreeImpl object
+     * @param gui main frame
+     */
     public NodeContentTable(final FileSystemTreeImpl fst, final FileMinerGUI gui) {
 
         tableModel = new FilesTableModel();
@@ -34,7 +44,8 @@ public class NodeContentTable {
     }
 
     /**
-     * @return the actual table
+     * Get the table.
+     * @return JTable object
      */
     public JTable getTable() {
         return table;
@@ -42,7 +53,9 @@ public class NodeContentTable {
 
     /**
      * Generate table view by passing a TreePath.
-     * @param path 
+     * @param gui main frame
+     * @param fst FileSystemTreeImpl object
+     * @param path from where the table updated its nodes
      */
     public void generateTableByPath(final FileMinerGUI gui, final FileSystemTreeImpl fst, final TreePath path) {
         tableModel.removeRows();

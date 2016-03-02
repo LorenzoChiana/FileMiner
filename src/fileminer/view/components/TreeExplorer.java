@@ -20,8 +20,8 @@ public class TreeExplorer {
 
     /**
      * Constructor of TreeExplorerPanel.
-     * @param fst 
-     * @param gui 
+     * @param fst FileSystemTreeImpl object
+     * @param gui main frame
      */
     public TreeExplorer(final FileSystemTreeImpl fst, final FileMinerGUI gui) {
         tree = new JTree(fst.getTree());
@@ -35,7 +35,8 @@ public class TreeExplorer {
     }
 
     /**
-     * @return the actual tree.
+     * Get the tree.
+     * @return JTree object
      */
     public JTree getTree() {
         return tree;

@@ -14,6 +14,10 @@ import fileminer.listeners.CommandInvokeListener;
  */
 public interface DefaultGUI {
 
+    /**
+     * Get the current main JFrame object.
+     * @return the main frame
+     */
     JFrame getFrame();
 
 	/**
@@ -44,7 +48,15 @@ public interface DefaultGUI {
 	 */
 	void updateNodesTable(TreePath node);
 
+    /**
+     * Get the command listener.
+     * @return CommandInvokeListener object
+     */
     CommandInvokeListener getCommandListener();
 
+    /**
+     * Add the current directory to chronology.
+     * @param path the current dir
+     */
     void addPathToChronology(TreePath path);
 }

@@ -12,6 +12,10 @@ public interface DefaultConsole {
      */
     void putString(String arg);
 
+    /**
+     * Print string on console using EventQueue's invokeLater method.
+     * @param arg string argument
+     */
     void putStringLater(String arg);
 
     /**
