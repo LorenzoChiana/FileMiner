@@ -185,6 +185,7 @@ public class FileSystemTreeImpl implements FileSystemTree {
         } catch (NullPointerException e) {
         }
 
+		addChildren(treeNode);
         addGrandChildren(treeNode);
         reloadTreeByNode(treeNode);
     }
