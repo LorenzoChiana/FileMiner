@@ -1,6 +1,7 @@
 package fileminer.model;
 
 import java.io.File;
+import java.io.Serializable;
 
 import javax.swing.Icon;
 import javax.swing.UIManager;
@@ -10,7 +11,8 @@ import javax.swing.filechooser.FileSystemView;
  * @author Daniele Gambaletta
  * Class for the tree node.
  */
-public class Node {
+@SuppressWarnings("serial")
+public class Node implements Serializable{
     private final File file;
     private boolean hasGenerated;
     private Icon fileIcon;
